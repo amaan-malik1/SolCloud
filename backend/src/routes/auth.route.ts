@@ -48,16 +48,28 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/me", authMiddleware, async (req: Request, res: Response) => {
-  try {
-    if (!req.user) {
-      return;
+router.get(
+  "/me",
+  authMiddleware,
+  async (
+    req: Request & {
+      user?: {
+        userId: string;
+        email: string;
+      };
+    },
+    res: Response,
+  ) => {
+    try {
+      if (!req.user) {
+        return;
+      }
+      const user = await getMe(req.user.userId);
+      res.json({ user });
+    } catch {
+      res.status(404).json({ error: "User not found" });
     }
-    const user = await getMe(req.user.userId);
-    res.json({ user });
-  } catch {
-    res.status(404).json({ error: "User not found" });
-  }
-});
+  },
+);
 
 export default router;
