@@ -1,0 +1,152 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Users ────────────────────────────────────────────────
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String   @map("password_hash")
+  walletAddress String?  @map("wallet_address")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  balance             Balance?
+  transactions        Transaction[]
+  bucket              Bucket?
+  billingRecords      BillingRecord[]
+  usageSnapshots      UsageSnapshot[]
+  credentialRotations CredentialRotation[]
+
+  @@map("users")
+}
+
+// ─── Balances ─────────────────────────────────────────────
+model Balance {
+  id        String   @id @default(uuid())
+  userId    String   @unique @map("user_id")
+  amountUsd Decimal  @default(0) @map("amount_usd") @db.Decimal(12, 6)
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("balances")
+}
+
+// ─── Transactions ─────────────────────────────────────────
+model Transaction {
+  id          String            @id @default(uuid())
+  userId      String            @map("user_id")
+  txSignature String            @unique @map("tx_signature")
+  solAmount   Decimal           @map("sol_amount") @db.Decimal(18, 9)
+  usdAmount   Decimal           @map("usd_amount") @db.Decimal(12, 6)
+  solPriceUsd Decimal           @map("sol_price_usd") @db.Decimal(12, 4)
+  status      TransactionStatus @default(CONFIRMED)
+  createdAt   DateTime          @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([txSignature])
+  @@map("transactions")
+}
+
+enum TransactionStatus {
+  CONFIRMED
+  FAILED
+  REFUNDED
+}
+
+// ─── Buckets ──────────────────────────────────────────────
+model Bucket {
+  id           String          @id @default(uuid())
+  userId       String          @unique @map("user_id")
+  bucketName   String          @unique @map("bucket_name")
+  provider     StorageProvider @default(R2)
+  cfTokenId    String?         @map("cf_token_id")
+  cfAccessKey  String?         @map("cf_access_key")
+  cfSecretKey  String?         @map("cf_secret_key")
+  status       BucketStatus    @default(ACTIVE)
+  storageBytes BigInt          @default(0) @map("storage_bytes")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@map("buckets")
+}
+
+enum BucketStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum StorageProvider {
+  R2
+  AWS
+  GCS
+}
+
+// ─── Indexer state ────────────────────────────────────────
+model IndexerState {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("indexer_state")
+}
+
+// ─── Billing records ──────────────────────────────────────
+model BillingRecord {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  amountUsd    Decimal  @map("amount_usd") @db.Decimal(12, 6)
+  storageBytes BigInt   @map("storage_bytes")
+  gbHours      Decimal  @map("gb_hours") @db.Decimal(12, 6)
+  periodStart  DateTime @map("period_start")
+  periodEnd    DateTime @map("period_end")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("billing_records")
+}
+
+// ─── Usage snapshots ──────────────────────────────────────
+model UsageSnapshot {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  storageBytes BigInt   @map("storage_bytes")
+  objectCount  Int      @default(0) @map("object_count")
+  recordedAt   DateTime @default(now()) @map("recorded_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([recordedAt])
+  @@map("usage_snapshots")
+}
+
+// ─── Credential rotations ─────────────────────────────────
+model CredentialRotation {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  reason    String   @default("manual")
+  rotatedAt DateTime @default(now()) @map("rotated_at")
+  ipAddress String?  @map("ip_address")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("credential_rotations")
+}
