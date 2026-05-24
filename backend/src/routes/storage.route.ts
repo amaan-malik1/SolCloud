@@ -211,7 +211,10 @@ router.post(
         res.status(403).json({ error: "Bucket must be active" });
         return;
       }
-      const usage = await syncBucketUsage((req as any).user.userId, bucket.bucketName);
+      const usage = await syncBucketUsage(
+        (req as any).user.userId,
+        bucket.bucketName,
+      );
       res.json({
         storageBytes: usage.storageBytes,
         objectCount: usage.objectCount,

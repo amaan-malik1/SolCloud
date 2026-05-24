@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ─── Users ────────────────────────────────────────────────
+// Users 
 model User {
   id            String   @id @default(uuid())
   email         String   @unique
@@ -26,7 +26,7 @@ model User {
   @@map("users")
 }
 
-// ─── Balances ─────────────────────────────────────────────
+// Balances 
 model Balance {
   id        String   @id @default(uuid())
   userId    String   @unique @map("user_id")
@@ -38,7 +38,7 @@ model Balance {
   @@map("balances")
 }
 
-// ─── Transactions ─────────────────────────────────────────
+// Transactions 
 model Transaction {
   id          String            @id @default(uuid())
   userId      String            @map("user_id")
@@ -62,7 +62,7 @@ enum TransactionStatus {
   REFUNDED
 }
 
-// ─── Buckets ──────────────────────────────────────────────
+// Buckets 
 model Bucket {
   id           String          @id @default(uuid())
   userId       String          @unique @map("user_id")
@@ -95,7 +95,7 @@ enum StorageProvider {
   GCS
 }
 
-// ─── Indexer state ────────────────────────────────────────
+// Indexer state 
 model IndexerState {
   key       String   @id
   value     String
@@ -104,7 +104,7 @@ model IndexerState {
   @@map("indexer_state")
 }
 
-// ─── Billing records ──────────────────────────────────────
+// Billing records 
 model BillingRecord {
   id           String   @id @default(uuid())
   userId       String   @map("user_id")
@@ -122,7 +122,7 @@ model BillingRecord {
   @@map("billing_records")
 }
 
-// ─── Usage snapshots ──────────────────────────────────────
+// Usage snapshots 
 model UsageSnapshot {
   id           String   @id @default(uuid())
   userId       String   @map("user_id")
@@ -137,7 +137,7 @@ model UsageSnapshot {
   @@map("usage_snapshots")
 }
 
-// ─── Credential rotations ─────────────────────────────────
+// Credential rotations 
 model CredentialRotation {
   id        String   @id @default(uuid())
   userId    String   @map("user_id")

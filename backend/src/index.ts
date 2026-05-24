@@ -33,7 +33,7 @@ app.use(
 );
 app.use(express.json({ limit: "10kb" }));
 
-// ─── Routes ───────────────────────────────────────────────
+// health check route
 app.get("/health", (_req, res) => {
   res.json({
     status: "ok",
@@ -53,9 +53,9 @@ app.use((_req, res) => {
 });
 app.use(errorHandler);
 
-// ─── Startup ──────────────────────────────────────────────
+// Startup
 async function start() {
-  console.log("\n🚀 Starting SolStore backend...\n");
+  console.log("Starting SolStore backend...\n");
 
   // 1. Database
   await testConnection();
@@ -64,7 +64,7 @@ async function start() {
   const redisOk = await checkRedisConnection();
   if (!redisOk) {
     console.warn(
-      "⚠️  Redis connection failed — queue disabled. Start Redis and restart.",
+      "Redis connection failed — queue disabled. Start Redis and restart.",
     );
   } else {
     startWorker();
@@ -73,25 +73,23 @@ async function start() {
   // 3. Solana
   const solanaOk = await checkSolanaConnection();
   if (!solanaOk) {
-    console.warn("⚠️  Solana connection failed — indexer disabled");
+    console.warn("Solana connection failed — indexer disabled");
   } else {
     if (config.solana.platformWalletPrivateKey) {
       try {
         const keypair = getPlatformKeypair();
-        console.log(`💳 Platform wallet: ${getPlatformAddress()}`);
+        console.log(`Platform wallet: ${getPlatformAddress()}`);
         if (keypair.publicKey.toBase58() !== getPlatformAddress()) {
-          console.error("❌ WALLET MISMATCH — check your env vars");
+          console.error("WALLET MISMATCH — check your env vars");
           process.exit(1);
         }
         await initIndexerState();
         await startIndexer();
       } catch (err) {
-        console.warn("⚠️  Wallet not configured — indexer disabled");
+        console.warn("Wallet not configured — indexer disabled");
       }
     } else {
-      console.warn(
-        "⚠️  PLATFORM_WALLET_PRIVATE_KEY not set — indexer disabled",
-      );
+      console.warn("PLATFORM_WALLET_PRIVATE_KEY not set — indexer disabled");
     }
   }
 
@@ -102,12 +100,12 @@ async function start() {
   if (config.cloudflare.accountId) {
     startUsageSync();
   } else {
-    console.warn("⚠️  Cloudflare not configured — usage sync disabled");
+    console.warn("Cloudflare not configured — usage sync disabled");
   }
 
   // 6. Start HTTP server
   app.listen(config.app.port, () => {
-    console.log(`\n✅ Backend running on http://localhost:${config.app.port}`);
+    console.log(` Backend running on http://localhost:${config.app.port}`);
     console.log(`   Environment: ${config.app.nodeEnv}`);
     console.log(`   Frontend:    ${config.app.frontendUrl}\n`);
   });
