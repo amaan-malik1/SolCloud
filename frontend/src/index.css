@@ -8,58 +8,84 @@
     --foreground: 240 10% 96%;
     --radius: 0.75rem;
   }
-  * { box-sizing: border-box; }
+  * {
+    box-sizing: border-box;
+  }
   body {
     background-color: #050508;
     color: #f0f0f8;
-    font-family: 'DM Sans', sans-serif;
+    font-family: "DM Sans", sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
-  h1, h2, h3, h4 { font-family: 'Syne', sans-serif; }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: "Syne", sans-serif;
+  }
 }
 
 @layer utilities {
   .gradient-text {
-    background: linear-gradient(135deg, #fff 0%, #14F195 55%, #9945FF 100%);
+    background: linear-gradient(135deg, #fff 0%, #14f195 55%, #9945ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   .gradient-text-green {
-    background: linear-gradient(135deg, #14F195, #00C2FF);
+    background: linear-gradient(135deg, #14f195, #00c2ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .sol-gradient { background: linear-gradient(135deg, #9945FF, #14F195); }
+  .sol-gradient {
+    background: linear-gradient(135deg, #9945ff, #14f195);
+  }
   .grid-bg {
     background-image:
-      linear-gradient(rgba(153,69,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(153,69,255,0.025) 1px, transparent 1px);
+      linear-gradient(rgba(153, 69, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(153, 69, 255, 0.025) 1px, transparent 1px);
     background-size: 60px 60px;
   }
-  .glow-purple { box-shadow: 0 0 24px rgba(153,69,255,0.35); transition: box-shadow 0.2s, transform 0.2s; }
-  .glow-purple:hover { box-shadow: 0 0 40px rgba(153,69,255,0.55); transform: translateY(-1px); }
-  .surface-card { background: rgba(19,19,31,0.9); border: 1px solid rgba(255,255,255,0.07); }
+  .glow-purple {
+    box-shadow: 0 0 24px rgba(153, 69, 255, 0.35);
+    transition:
+      box-shadow 0.2s,
+      transform 0.2s;
+  }
+  .glow-purple:hover {
+    box-shadow: 0 0 40px rgba(153, 69, 255, 0.55);
+    transform: translateY(-1px);
+  }
+  .surface-card {
+    background: rgba(19, 19, 31, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+  }
 }
 
 /* Wallet adapter dark theme */
 .wallet-adapter-modal-wrapper {
-  background: rgba(19,19,31,0.98) !important;
-  border: 1px solid rgba(255,255,255,0.07) !important;
+  background: rgba(19, 19, 31, 0.98) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
   border-radius: 20px !important;
 }
-.wallet-adapter-modal-title { color: #f0f0f8 !important; font-family: 'Syne', sans-serif !important; }
+.wallet-adapter-modal-title {
+  color: #f0f0f8 !important;
+  font-family: "Syne", sans-serif !important;
+}
 .wallet-adapter-button {
-  background: rgba(255,255,255,0.05) !important;
-  border: 1px solid rgba(255,255,255,0.08) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   border-radius: 12px !important;
   color: #f0f0f8 !important;
-  font-family: 'DM Sans', sans-serif !important;
+  font-family: "DM Sans", sans-serif !important;
 }
 .wallet-adapter-button:hover {
-  background: rgba(153,69,255,0.1) !important;
-  border-color: rgba(153,69,255,0.3) !important;
+  background: rgba(153, 69, 255, 0.1) !important;
+  border-color: rgba(153, 69, 255, 0.3) !important;
 }
-.wallet-adapter-modal-overlay { background: rgba(0,0,0,0.7) !important; backdrop-filter: blur(8px) !important; }
+.wallet-adapter-modal-overlay {
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(8px) !important;
+}

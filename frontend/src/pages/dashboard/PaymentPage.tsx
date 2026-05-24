@@ -40,7 +40,7 @@ export default function PaymentPage() {
 
   useEffect(() => {
     fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd')
-      .then(r => r.json()).then(d => setSolPrice(d?.solana?.usd ?? null)).catch(() => {})
+      .then(r => r.json()).then(d => setSolPrice(d?.solana?.usd ?? null)).catch(() => { })
   }, [])
 
   useEffect(() => {
@@ -105,7 +105,7 @@ export default function PaymentPage() {
               <h2 className="font-display font-bold text-xl text-white mb-2">Waiting for confirmation</h2>
               <p className="text-white/40 text-sm font-body mb-6">Our indexer checks the blockchain every 2 seconds. Usually under 10 seconds.</p>
               <div className="flex justify-center gap-1.5 mb-6">
-                {[0,1,2].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full bg-sol-purple/60" style={{ animation: `pulse 1.2s ease-in-out ${i * 0.2}s infinite` }} />)}
+                {[0, 1, 2].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full bg-sol-purple/60" style={{ animation: `pulse 1.2s ease-in-out ${i * 0.2}s infinite` }} />)}
               </div>
               {explorerUrl && <a href={explorerUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors font-body"><ExternalLink className="w-3 h-3" />{shortenAddress(txSignature ?? '')}</a>}
             </div>

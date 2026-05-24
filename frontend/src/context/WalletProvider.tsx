@@ -4,7 +4,6 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 import '@solana/wallet-adapter-react-ui/styles.css'
 
-// Use the standard public devnet endpoint — matches what Phantom uses by default
 const DEVNET_ENDPOINT = 'https://api.devnet.solana.com'
 
 export function SolanaWalletProvider({ children }: { children: React.ReactNode }) {

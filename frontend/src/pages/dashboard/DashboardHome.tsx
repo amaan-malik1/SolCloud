@@ -60,7 +60,7 @@ export default function DashboardHome() {
             <h2 className="font-display font-semibold text-base text-white">Recent payments</h2>
             <span className="text-xs text-white/30 font-body">Last {Math.min(transactions?.length ?? 0, 5)}</span>
           </div>
-          {txLoading && <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="h-12 rounded-lg animate-pulse" style={{ background: 'rgba(255,255,255,0.03)' }} />)}</div>}
+          {txLoading && <div className="space-y-3">{[1, 2, 3].map(i => <div key={i} className="h-12 rounded-lg animate-pulse" style={{ background: 'rgba(255,255,255,0.03)' }} />)}</div>}
           {!txLoading && (!transactions || transactions.length === 0) && (
             <div className="text-center py-8"><p className="text-white/25 text-sm font-body">No payments yet</p></div>
           )}

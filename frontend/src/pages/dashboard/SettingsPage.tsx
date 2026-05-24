@@ -169,7 +169,7 @@ function NotificationsSection() {
         <input type="range" min={0.5} max={10} step={0.5} value={threshold} onChange={e => setThreshold(parseFloat(e.target.value))} className="w-full accent-sol-purple" />
         <div className="flex justify-between text-xs text-white/25 font-body"><span>$0.50</span><span>$10.00</span></div>
       </div>
-      <Toggle checked={false} onChange={() => {}} label="Monthly usage report" description="Coming soon — monthly storage summary via email" disabled />
+      <Toggle checked={false} onChange={() => { }} label="Monthly usage report" description="Coming soon — monthly storage summary via email" disabled />
       <button onClick={() => updateNotifications.mutate({ emailAlerts, lowBalanceThreshold: threshold })} disabled={updateNotifications.isPending}
         className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-white/70 border border-white/10 hover:border-white/20 hover:text-white transition-all disabled:opacity-50">
         {updateNotifications.isPending ? <><LoadingSpinner className="w-4 h-4" />Saving...</> : <><Bell className="w-4 h-4" />Save preferences</>}

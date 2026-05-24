@@ -1,4 +1,10 @@
-interface SnippetParams { endpoint: string; accessKeyId: string; secretAccessKey: string; bucketName: string; region: string }
+interface SnippetParams {
+  endpoint: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+  bucketName: string;
+  region: string;
+}
 
 export function getNodeSnippet(p: SnippetParams): string {
   return `import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
@@ -17,7 +23,7 @@ await s3.send(new PutObjectCommand({
   Bucket: '${p.bucketName}',
   Key: 'hello.txt',
   Body: 'Hello from SolStore!',
-}))`
+}))`;
 }
 
 export function getPythonSnippet(p: SnippetParams): string {
@@ -32,7 +38,7 @@ s3 = boto3.client(
 )
 
 # Upload
-s3.put_object(Bucket='${p.bucketName}', Key='hello.txt', Body=b'Hello!')`
+s3.put_object(Bucket='${p.bucketName}', Key='hello.txt', Body=b'Hello!')`;
 }
 
 export function getCliSnippet(p: SnippetParams): string {
@@ -45,7 +51,7 @@ aws s3 cp ./file.txt s3://${p.bucketName}/file.txt \\
   --endpoint-url ${p.endpoint}
 
 # List
-aws s3 ls s3://${p.bucketName} --endpoint-url ${p.endpoint}`
+aws s3 ls s3://${p.bucketName} --endpoint-url ${p.endpoint}`;
 }
 
 export function getEnvSnippet(p: SnippetParams): string {
@@ -53,5 +59,5 @@ export function getEnvSnippet(p: SnippetParams): string {
 R2_ACCESS_KEY_ID="${p.accessKeyId}"
 R2_SECRET_ACCESS_KEY="${p.secretAccessKey}"
 R2_BUCKET_NAME="${p.bucketName}"
-R2_REGION="${p.region}"`
+R2_REGION="${p.region}"`;
 }
