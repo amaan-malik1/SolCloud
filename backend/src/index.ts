@@ -1,104 +1,119 @@
-import express from 'express'
-import cors from 'cors'
-import helmet from 'helmet'
-import { config } from './config'
-import { testConnection } from './db/client'
-import { initIndexerState } from './db/indexer.state'
-import { checkSolanaConnection } from './services/solana.connection'
-import { getPlatformKeypair, getPlatformAddress } from './services/wallet.service'
-import { startIndexer } from './services/indexer.service'
-import { startBillingScheduler } from './services/billing/billing.scheduler'
-import { startUsageSync } from './services/usage.sync'
-import { checkRedisConnection } from './queue/redis.connection'
-import { startWorker } from './queue/worker'
-import { errorHandler } from './middleware/error.middleware'
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import { config } from "./config";
+import { testConnection } from "./db/client";
+import { initIndexerState } from "./db/indexer.state";
+import { checkSolanaConnection } from "./services/solana.connection";
+import {
+  getPlatformKeypair,
+  getPlatformAddress,
+} from "./services/wallet.service";
+import { startIndexer } from "./services/indexer.service";
+import { startBillingScheduler } from "./services/billing/billing.scheduler";
+import { startUsageSync } from "./services/usage.sync";
+import { checkRedisConnection } from "./queue/redis.connection";
+import { startWorker } from "./queue/worker";
+import { errorHandler } from "./middleware/error.middleware";
 
-import authRouter from './routes/auth.route'
-import solanaRouter from './routes/solana.route'
-import storageRouter from './routes/storage.route'
-import billingRouter from './routes/billing.route'
-import settingsRouter from './routes/settings.route'
+import authRouter from "./routes/auth.route";
+import solanaRouter from "./routes/solana.route";
+import storageRouter from "./routes/storage.route";
+import billingRouter from "./routes/billing.route";
+import settingsRouter from "./routes/settings.route";
 
-const app = express()
+const app = express();
 
-app.use(helmet())
-app.use(cors({
-  origin: config.app.frontendUrl,
-  credentials: true,
-}))
-app.use(express.json({ limit: '10kb' }))
+app.use(helmet());
+app.use(
+  cors({
+    origin: config.app.frontendUrl,
+    credentials: true,
+  }),
+);
+app.use(express.json({ limit: "10kb" }));
 
 // ─── Routes ───────────────────────────────────────────────
-app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', env: config.app.nodeEnv, timestamp: new Date().toISOString() })
-})
+app.get("/health", (_req, res) => {
+  res.json({
+    status: "ok",
+    env: config.app.nodeEnv,
+    timestamp: new Date().toISOString(),
+  });
+});
 
-app.use('/api/auth', authRouter)
-app.use('/api/solana', solanaRouter)
-app.use('/api/storage', storageRouter)
-app.use('/api/billing', billingRouter)
-app.use('/api/settings', settingsRouter)
+app.use("/api/auth", authRouter);
+app.use("/api/solana", solanaRouter);
+app.use("/api/storage", storageRouter);
+app.use("/api/billing", billingRouter);
+app.use("/api/settings", settingsRouter);
 
-app.use((_req, res) => { res.status(404).json({ error: 'Route not found' }) })
-app.use(errorHandler)
+app.use((_req, res) => {
+  res.status(404).json({ error: "Route not found" });
+});
+app.use(errorHandler);
 
 // ─── Startup ──────────────────────────────────────────────
 async function start() {
-  console.log('\n🚀 Starting SolStore backend...\n')
+  console.log("\n🚀 Starting SolStore backend...\n");
 
   // 1. Database
-  await testConnection()
+  await testConnection();
 
   // 2. Redis
-  const redisOk = await checkRedisConnection()
+  const redisOk = await checkRedisConnection();
   if (!redisOk) {
-    console.warn('⚠️  Redis connection failed — queue disabled. Start Redis and restart.')
+    console.warn(
+      "⚠️  Redis connection failed — queue disabled. Start Redis and restart.",
+    );
   } else {
-    startWorker()
+    startWorker();
   }
 
   // 3. Solana
-  const solanaOk = await checkSolanaConnection()
+  const solanaOk = await checkSolanaConnection();
   if (!solanaOk) {
-    console.warn('⚠️  Solana connection failed — indexer disabled')
+    console.warn("⚠️  Solana connection failed — indexer disabled");
   } else {
     if (config.solana.platformWalletPrivateKey) {
       try {
-        const keypair = getPlatformKeypair()
-        console.log(`💳 Platform wallet: ${getPlatformAddress()}`)
+        const keypair = getPlatformKeypair();
+        console.log(`💳 Platform wallet: ${getPlatformAddress()}`);
         if (keypair.publicKey.toBase58() !== getPlatformAddress()) {
-          console.error('❌ WALLET MISMATCH — check your env vars')
-          process.exit(1)
+          console.error("❌ WALLET MISMATCH — check your env vars");
+          process.exit(1);
         }
-        await initIndexerState()
-        await startIndexer()
+        await initIndexerState();
+        await startIndexer();
       } catch (err) {
-        console.warn('⚠️  Wallet not configured — indexer disabled')
+        console.warn("⚠️  Wallet not configured — indexer disabled");
       }
     } else {
-      console.warn('⚠️  PLATFORM_WALLET_PRIVATE_KEY not set — indexer disabled')
+      console.warn(
+        "⚠️  PLATFORM_WALLET_PRIVATE_KEY not set — indexer disabled",
+      );
     }
   }
 
   // 4. Billing scheduler
-  startBillingScheduler()
+  startBillingScheduler();
 
   // 5. Usage sync
   if (config.cloudflare.accountId) {
-    startUsageSync()
+    startUsageSync();
   } else {
-    console.warn('⚠️  Cloudflare not configured — usage sync disabled')
+    console.warn("⚠️  Cloudflare not configured — usage sync disabled");
   }
 
   // 6. Start HTTP server
   app.listen(config.app.port, () => {
-    console.log(`\n✅ Backend running on http://localhost:${config.app.port}`)
-    console.log(`   Environment: ${config.app.nodeEnv}`)
-    console.log(`   Frontend:    ${config.app.frontendUrl}\n`)
-  })
+    console.log(`\n✅ Backend running on http://localhost:${config.app.port}`);
+    console.log(`   Environment: ${config.app.nodeEnv}`);
+    console.log(`   Frontend:    ${config.app.frontendUrl}\n`);
+  });
 }
 
-start().catch(err => {
-  console.error('Fatal startup error:', err)
-  process.exit(1)
-})
+start().catch((err) => {
+  console.error("Fatal startup error:", err);
+  process.exit(1);
+});

@@ -9,8 +9,8 @@ const router = Router()
 router.get('/history', authMiddleware, async (req: Request, res: Response) => {
   try {
     const [history, totalBilled] = await Promise.all([
-      getUserBillingHistory(req.user!.userId),
-      getTotalBilled(req.user!.userId),
+      getUserBillingHistory((req as any).user.userId),
+      getTotalBilled((req as any).user.userId),
     ])
     res.json({
       history: history.map(r => ({

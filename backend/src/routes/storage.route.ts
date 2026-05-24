@@ -23,7 +23,7 @@ router.get(
   authMiddleware,
   credentialRateLimit,
   async (req: Request, res: Response) => {
-    const result = await getDecryptedCredentials(req.user!.userId);
+    const result = await getDecryptedCredentials((req as any).user.userId);
     if ("error" in result) {
       const statusMap: Record<string, number> = {
         NO_BUCKET: 404,
@@ -51,7 +51,7 @@ router.get(
 // ─── Status ────────────────────────────────────────────────
 router.get("/status", authMiddleware, async (req: Request, res: Response) => {
   try {
-    const bucket = await getBucket(req.user!.userId);
+    const bucket = await getBucket((req as any).user.userId);
     res.json({
       hasStorage: !!bucket,
       status: bucket?.status ?? null,
@@ -69,14 +69,14 @@ router.get("/status", authMiddleware, async (req: Request, res: Response) => {
 // ─── Usage ─────────────────────────────────────────────────
 router.get("/usage", authMiddleware, async (req: Request, res: Response) => {
   try {
-    const bucket = await getBucket(req.user!.userId);
+    const bucket = await getBucket((req as any).user.userId);
     if (!bucket) {
       res.status(404).json({ error: "No bucket found" });
       return;
     }
 
     const snapshots = await prisma.usageSnapshot.findMany({
-      where: { userId: req.user!.userId },
+      where: { userId: (req as any).user.userId },
       orderBy: { recordedAt: "desc" },
       take: 7,
       select: { storageBytes: true, objectCount: true, recordedAt: true },
@@ -114,7 +114,7 @@ router.get(
       since.setDate(since.getDate() - days);
 
       const snapshots = await prisma.usageSnapshot.findMany({
-        where: { userId: req.user!.userId, recordedAt: { gte: since } },
+        where: { userId: (req as any).user.userId, recordedAt: { gte: since } },
         orderBy: { recordedAt: "asc" },
         select: { storageBytes: true, objectCount: true, recordedAt: true },
       });
@@ -164,7 +164,7 @@ router.get(
       since.setDate(since.getDate() - days);
 
       const records = await prisma.billingRecord.findMany({
-        where: { userId: req.user!.userId, createdAt: { gte: since } },
+        where: { userId: (req as any).user.userId, createdAt: { gte: since } },
         orderBy: { periodStart: "asc" },
         select: {
           amountUsd: true,
@@ -202,7 +202,7 @@ router.post(
   authMiddleware,
   async (req: Request, res: Response) => {
     try {
-      const bucket = await getBucket(req.user!.userId);
+      const bucket = await getBucket((req as any).user.userId);
       if (!bucket) {
         res.status(404).json({ error: "No bucket found" });
         return;
@@ -211,7 +211,7 @@ router.post(
         res.status(403).json({ error: "Bucket must be active" });
         return;
       }
-      const usage = await syncBucketUsage(req.user!.userId, bucket.bucketName);
+      const usage = await syncBucketUsage((req as any).user.userId, bucket.bucketName);
       res.json({
         storageBytes: usage.storageBytes,
         objectCount: usage.objectCount,
@@ -227,7 +227,7 @@ router.post(
 router.get("/balance", authMiddleware, async (req: Request, res: Response) => {
   try {
     const balance = await prisma.balance.findUnique({
-      where: { userId: req.user!.userId },
+      where: { userId: (req as any).user.userId },
       select: { amountUsd: true, updatedAt: true },
     });
     res.json({
@@ -246,7 +246,7 @@ router.get(
   async (req: Request, res: Response) => {
     try {
       const transactions = await prisma.transaction.findMany({
-        where: { userId: req.user!.userId },
+        where: { userId: (req as any).user.userId },
         orderBy: { createdAt: "desc" },
         take: 10,
         select: {
@@ -280,7 +280,7 @@ router.post(
   regenerateRateLimit,
   async (req: Request, res: Response) => {
     try {
-      const bucket = await getBucket(req.user!.userId);
+      const bucket = await getBucket((req as any).user.userId);
       if (!bucket) {
         res.status(404).json({ error: "No bucket found" });
         return;
@@ -292,10 +292,10 @@ router.post(
         return;
       }
 
-      await reactivateStorage(req.user!.userId);
-      await logCredentialRotation(req.user!.userId, "manual", req.ip);
+      await reactivateStorage((req as any).user.userId);
+      await logCredentialRotation((req as any).user.userId, "manual", req.ip);
 
-      const result = await getDecryptedCredentials(req.user!.userId);
+      const result = await getDecryptedCredentials((req as any).user.userId);
       if ("error" in result) {
         res.status(500).json({ error: "Failed to retrieve new credentials" });
         return;
@@ -318,7 +318,7 @@ router.get(
   authMiddleware,
   async (req: Request, res: Response) => {
     try {
-      const history = await getRotationHistory(req.user!.userId);
+      const history = await getRotationHistory((req as any).user.userId);
       res.json({ history });
     } catch (err) {
       res.status(500).json({ error: "Failed to fetch rotation history" });
@@ -337,7 +337,7 @@ router.get(
   authMiddleware,
   async (req: Request, res: Response) => {
     try {
-      const userId = req.user!.userId;
+      const userId = (req as any).user.userId;
       const bucket = await getBucket(userId);
       if (!bucket) {
         res.json({ status: "NO_BUCKET" });

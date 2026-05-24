@@ -15,7 +15,7 @@ export function createRateLimit(options: { windowMs: number; maxReqs: number; me
   }, 5 * 60 * 1000)
 
   return function rateLimitMiddleware(req: Request, res: Response, next: NextFunction): void {
-    const key = req.user?.userId ?? req.ip ?? 'unknown'
+    const key = (req as any).user.userId ?? req.ip ?? 'unknown'
     const now = Date.now()
 
     if (!store[key] || store[key].resetTime < now) {
