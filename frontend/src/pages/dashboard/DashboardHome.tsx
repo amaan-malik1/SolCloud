@@ -22,7 +22,7 @@ export default function DashboardHome() {
     <div className="space-y-8">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="font-display font-bold text-2xl text-white tracking-tight">Hey, {firstName} 👋</h1>
+          <h1 className="font-display font-bold text-2xl text-white tracking-tight">Hey, {firstName} </h1>
           <p className="text-white/40 text-sm font-body mt-1">Here's your SolStore overview</p>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-body surface-card">
