@@ -28,14 +28,6 @@ cp .env.local.example .env.local   # or edit .env.local directly
 
 ### 2. Generate secrets
 
-```bash
-# JWT Secret (64 chars)
-node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
-
-# Encryption Key (32 bytes = 64 hex chars)
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-```
-
 Paste output into `backend/.env` for `JWT_SECRET` and `ENCRYPTION_KEY`.
 
 ### 3. Generate platform wallet

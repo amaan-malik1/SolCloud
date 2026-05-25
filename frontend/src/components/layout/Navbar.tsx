@@ -22,16 +22,25 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           {isAuthenticated ? (
             <>
-              <span className="text-sm text-white/50 font-body hidden sm:block">{user?.email}</span>
+              <span className="text-sm text-white/50 font-body hidden sm:block">
+                {user?.email}
+              </span>
               <Link to="/dashboard" className="px-4 py-2 rounded-lg text-sm font-medium text-white border border-white/10 hover:border-white/20 transition-all flex items-center gap-2">
-                <User className="w-4 h-4" />Dashboard
+                <User className="w-4 h-4" />
+                Dashboard
               </Link>
-              <button onClick={clearAuth} className="p-2 rounded-lg text-white/50 hover:text-white transition-colors"><LogOut className="w-4 h-4" /></button>
+              <button onClick={clearAuth} className="p-2 rounded-lg text-white/50 hover:text-white transition-colors">
+                <LogOut className="w-4 h-4" />
+              </button>
             </>
           ) : (
             <>
-              <Link to="/login" className="text-sm text-white/60 hover:text-white transition-colors font-body">Log in</Link>
-              <Link to="/register" className="glow-purple px-4 py-2 rounded-lg bg-gradient-to-r from-sol-purple to-[#7233cc] text-white text-sm font-medium">Get started</Link>
+              <Link to="/login" className="text-sm text-white/60 hover:text-white transition-colors font-body">
+                Log in
+              </Link>
+              <Link to="/register" className="glow-purple px-4 py-2 rounded-lg bg-gradient-to-r from-sol-purple to-[#7233cc] text-white text-sm font-medium">
+                Get started
+              </Link>
             </>
           )}
         </div>

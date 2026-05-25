@@ -30,12 +30,12 @@ export function Sidebar() {
           </NavLink>
         ))}
       </nav>
-      <div className="p-3 border-t border-white/5">
+      {/* <div className="p-3 border-t border-white/5">
         <a href="https://earn.superteam.fun" target="_blank" rel="noreferrer"
           className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-white/30 hover:text-white/50 transition-colors">
           <ExternalLink className="w-3 h-3" />Superteam Grant
         </a>
-      </div>
+      </div> */}
     </aside>
   )
 }
