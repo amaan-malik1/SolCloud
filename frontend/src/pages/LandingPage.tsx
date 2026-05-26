@@ -52,7 +52,7 @@ import TypingText from '@/components/shared/TypingText';
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-// ── Particle Canvas ─────────────────────────────────────────────────────────
+// ── Particle Canvas 
 // function ParticleCanvas() {
 //   const ref = useRef<HTMLCanvasElement>(null)
 
@@ -194,7 +194,7 @@ function Counter({ target, suffix = '', prefix = '' }: { target: number; suffix?
   return <div ref={ref}>{prefix}{count.toLocaleString()}{suffix}</div>
 }
 
-// ── Reveal wrapper ──────────────────────────────────────────────────────────
+// ── Reveal wrapper 
 function Reveal({ children, delay = 0, y = 30 }: { children: React.ReactNode; delay?: number; y?: number }) {
   const ref = useRef<HTMLDivElement>(null)
 
@@ -220,7 +220,8 @@ function Reveal({ children, delay = 0, y = 30 }: { children: React.ReactNode; de
 }
 
 
-// ── 3D Card ─────────────────────────────────────────────────────────────────
+// ── 3D Card 
+
 function Card3D({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
 
@@ -250,7 +251,7 @@ function Card3D({ children, className = '' }: { children: React.ReactNode; class
   )
 }
 
-// ── Glow Button ─────────────────────────────────────────────────────────────
+// ── Glow Button 
 function GlowButton({ to, children, variant = 'primary' }: { to: string; children: React.ReactNode; variant?: 'primary' | 'ghost' }) {
   const ref = useRef<HTMLAnchorElement>(null)
 
@@ -316,7 +317,7 @@ function GlowButton({ to, children, variant = 'primary' }: { to: string; childre
   )
 }
 
-// ── Flow diagram ─────────────────────────────────────────────────────────────
+// ── Flow diagram 
 function FlowStep({ num, icon, title, body, accent }: {
   num: string; icon: string; title: string; body: string; accent: string
 }) {
@@ -338,7 +339,7 @@ function FlowStep({ num, icon, title, body, accent }: {
   )
 }
 
-// ── Market card ──────────────────────────────────────────────────────────────
+// ── Market card 
 function MarketCard({ value, color, label, sub }: { value: string; color: string; label: string; sub: string }) {
   return (
     <Card3D className="p-7 rounded-2xl"
@@ -350,7 +351,7 @@ function MarketCard({ value, color, label, sub }: { value: string; color: string
   )
 }
 
-// ── Roadmap phase ────────────────────────────────────────────────────────────
+// ── Roadmap phase 
 function RoadmapPhase({ tag, tagColor, phase, period, items, active }: {
   tag: string; tagColor: string; phase: string; period: string; items: string[]; active?: boolean
 }) {
@@ -378,7 +379,8 @@ function RoadmapPhase({ tag, tagColor, phase, period, items, active }: {
   )
 }
 
-// ── Main LandingPage ─────────────────────────────────────────────────────────
+// ── Main LandingPage 
+
 export default function LandingPage() {
   const [scrollY, setScrollY] = useState(0)
   const [navBg, setNavBg] = useState(false)
