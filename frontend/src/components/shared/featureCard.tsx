@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 interface FeatureCardProps {
     title?: string
     description?: string
+    icon?: React.ReactNode
     className?: string
 }
 
@@ -90,7 +91,7 @@ const FeatureCard = ({
                     </p>
 
                     <div className='mt-6 flex items-center gap-2 text-cyan-400 transition-all duration-300 group-hover:translate-x-1'>
-                        <span className='text-sm font-medium'>Explore More</span>
+                        {/* <span className='text-sm font-medium'>Explore More</span> */}
 
                         <svg
                             xmlns='http://www.w3.org/2000/svg'

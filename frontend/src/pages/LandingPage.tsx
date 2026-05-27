@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import { Navbar } from '../components/layout/Navbar'
 import Hero from '@/components/shared/Hero'
 import Features from '@/components/shared/Features'
+import Footer from '@/components/shared/Footer'
+import TrustedBy from '@/components/shared/TrustedCompany'
 
 export default function LandingPage() {
   return (
@@ -9,6 +11,8 @@ export default function LandingPage() {
       <Navbar />
       <Hero />
       <Features />
+      <TrustedBy />
+      <Footer />
     </div>
   )
 }
