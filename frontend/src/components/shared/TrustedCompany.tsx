@@ -34,78 +34,68 @@ const companies = [
 const TrustedBy = () => {
     const sectionRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
+    useEffect(
+        () => {
+            const ctx = gsap.context(() => {
 
-            // Split Heading
-            const headingSplit = new SplitText('.trusted-title', {
-                type: 'chars, words',
-            })
+                // Split Heading
+                const headingSplit = new SplitText('.trusted-title', {
+                    type: 'chars, words',
+                })
 
-            // Gradient per character
-            headingSplit.chars.forEach((char) => {
-                char.classList.add(
-                    'bg-gradient-to-b',
-                    'from-white',
-                    'via-zinc-200',
-                    'to-zinc-500',
-                    'bg-clip-text',
-                    'text-transparent'
-                )
-            })
+                // Gradient per character
+                headingSplit.chars.forEach((char) => {
+                    char.classList.add(
+                        'bg-gradient-to-b',
+                        'from-white',
+                        'via-zinc-200',
+                        'to-zinc-500',
+                        'bg-clip-text',
+                        'text-transparent'
+                    )
+                })
 
-            // Split Subtitle
-            const subSplit = new SplitText('.trusted-subtitle', {
-                type: 'chars, words',
-            })
+                // Split Subtitle
+                const subSplit = new SplitText('.trusted-subtitle', {
+                    type: 'chars, words',
+                })
 
-            // Heading Animation
-            gsap.from(headingSplit.chars, {
-                y: 100,
-                opacity: 0,
-                stagger: 0.035,
-                duration: 1.2,
-                ease: 'expo.out',
-                scrollTrigger: {
-                    trigger: '.trusted-title',
-                    start: 'top 85%',
-                },
-            })
+                // Heading Animation
+                gsap.from(headingSplit.chars, {
+                    y: 100,
+                    opacity: 0,
+                    stagger: 0.035,
+                    duration: 1.2,
+                    ease: 'expo.out',
+                    scrollTrigger: {
+                        trigger: '.trusted-title',
+                        start: 'top 85%',
+                    },
+                })
 
-            // Subtitle Animation
-            gsap.from(subSplit.chars, {
-                y: 60,
-                opacity: 0,
-                stagger: 0.01,
-                duration: 0.8,
-                ease: 'power4.out',
-                scrollTrigger: {
-                    trigger: '.trusted-subtitle',
-                    start: 'top 90%',
-                },
-            })
+                // Subtitle Animation
+                gsap.from(subSplit.chars, {
+                    y: 60,
+                    opacity: 0,
+                    stagger: 0.01,
+                    duration: 0.8,
+                    ease: 'power4.out',
+                    scrollTrigger: {
+                        trigger: '.trusted-subtitle',
+                        start: 'top 90%',
+                    },
+                })
 
-            // Cards Animation
-            // gsap.from('.company-card', {
-            //     y: 80,
-            //     opacity: 0,
-            //     stagger: 0.12,
-            //     duration: 1,
-            //     ease: 'power4.out',
-            //     scrollTrigger: {
-            //         trigger: '.company-grid',
-            //         start: 'top bottom-=100',
-            //     },
-            // })
-        }, sectionRef)
+            }, sectionRef)
 
-        return () => ctx.revert()
-    }, [])
+            return () => ctx.revert()
+        }, []
+    )
 
     return (
         <section
             ref={sectionRef}
-            className='min-h-screen relative overflow-hidden px-6 pt-24 pb-16 text-white'
+            className='min-h-screen relative overflow-hidden px-6 pt-24 pb-16 text-white bg-black'
         >
 
             {/* Background Glow */}

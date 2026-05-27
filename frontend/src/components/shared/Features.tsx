@@ -8,6 +8,9 @@ import {
 } from 'lucide-react'
 
 import { motion } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { SplitText } from 'gsap/all'
 
 const features = [
   {
@@ -93,21 +96,79 @@ const features = [
   },
 ]
 
+
 const Features = () => {
+  const sectionRef = useRef<HTMLDivElement>(null)
+
+  useEffect(
+    () => {
+      const ctx = gsap.context(() => {
+        // split heading
+        const headingSplit = new SplitText('.main-heading', { type: 'chars, words' })
+
+        headingSplit.chars.forEach((char) => {
+          char.classList.add(
+            'bg-gradient-to-b',
+            'from-white',
+            'via-zinc-200',
+            'to-zinc-500',
+            'bg-clip-text',
+            'text-transparent'
+          )
+        });
+
+
+        const splitSubHeading = new SplitText('.sub-heading', {
+          type: 'chars, words'
+        })
+
+        // heading animation
+        gsap.from(headingSplit.chars, {
+          y: 100,
+          opacity: 0,
+          stagger: 0.035,
+          duration: 1.2,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: '.main-heading',
+            start: 'top 85%'
+          }
+        })
+
+        //sub heading animation
+        gsap.from(splitSubHeading.chars, {
+          y: 90,
+          opacity: 0,
+          stagger: 0.01,
+          duration: 1,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: '.sub-heading',
+            start: 'top 90%'
+          }
+        })
+      }, sectionRef)
+
+      return () => ctx.revert()
+    }, []
+  )
+
   return (
-    <section className='relative min-h-screen overflow-hidden px-6 py-24 text-white'>
+    <section className='relative min-h-screen bg-black overflow-hidden px-6 py-24 text-white'
+      ref={sectionRef}
+    >
 
       <div className='mx-auto max-w-7xl'>
 
         {/* Heading */}
         <div className='mx-auto mb-14 max-w-3xl text-center'>
-          <h2 className='text-3xl font-black tracking-tight text-white md:text-2xl'>
+          <h2 className='main-heading text-3xl font-black tracking-tight text-white font-serif md:text-3xl'>
             Everything You Need
             <br />
             to Deploy Faster
           </h2>
 
-          <p className='mt-5 text-lg leading-relaxed text-zinc-500'>
+          <p className='sub-heading mt-5 text-lg leading-relaxed text-zinc-500'>
             Modern infrastructure tooling designed for developers.
           </p>
         </div>
