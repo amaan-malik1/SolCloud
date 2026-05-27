@@ -5,6 +5,9 @@ const REDIS_OPTIONS = {
   maxRetriesPerRequest: null as any,
   enableReadyCheck: false,
   lazyConnect: true,
+  ...(process.env.NODE_ENV === "production" && {
+    tls: { rejectUnauthorized: false },
+  }),
 };
 
 let _producerConnection: Redis | null = null;

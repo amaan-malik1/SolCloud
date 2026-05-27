@@ -31,7 +31,7 @@ export async function queueProvisionStorage(
   data: ProvisionStorageJob,
 ): Promise<void> {
   await getStorageQueue().add(JOB_NAMES.PROVISION_STORAGE, data, {
-    jobId: `provision:${data.userId}`,
+    jobId: `provision_${data.userId}`,
     ...DEFAULT_JOB_OPTIONS,
   });
   console.log(`[queue] Queued provision for user ${data.userId.slice(0, 8)}`);
@@ -41,7 +41,7 @@ export async function queueSuspendStorage(
   data: SuspendStorageJob,
 ): Promise<void> {
   await getStorageQueue().add(JOB_NAMES.SUSPEND_STORAGE, data, {
-    jobId: `suspend:${data.userId}`,
+    jobId: `suspend_${data.userId}`,
     attempts: 3,
     backoff: { type: "exponential", delay: 1000 },
   });
@@ -51,7 +51,7 @@ export async function queueReactivateStorage(
   data: ReactivateStorageJob,
 ): Promise<void> {
   await getStorageQueue().add(JOB_NAMES.REACTIVATE_STORAGE, data, {
-    jobId: `reactivate:${data.userId}`,
+    jobId: `reactivate_${data.userId}`,
     ...DEFAULT_JOB_OPTIONS,
   });
 }
@@ -68,7 +68,7 @@ export async function queueSendLowBalanceEmail(
 ): Promise<void> {
   const today = new Date().toISOString().split("T")[0];
   await getStorageQueue().add(JOB_NAMES.SEND_LOW_BAL_EMAIL, data, {
-    jobId: `lowbal:${data.userId}:${today}`,
+    jobId: `lowbal_${data.userId}_${today}`,
     attempts: 3,
     backoff: { type: "exponential", delay: 5000 },
   });
