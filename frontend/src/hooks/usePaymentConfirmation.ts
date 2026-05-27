@@ -8,6 +8,7 @@ export function usePaymentConfirmation() {
   const [creditedUsd, setCreditedUsd] = useState<number | null>(null);
   const pollingRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
+  const previousBalanceRef = useRef<number>(0); // ← store in ref not closure
 
   const stopPolling = useCallback(() => {
     if (pollingRef.current) {
@@ -20,24 +21,39 @@ export function usePaymentConfirmation() {
     async (previousBalance: number) => {
       setStatus("waiting");
       startTimeRef.current = Date.now();
+      previousBalanceRef.current = previousBalance; // ← save in ref
+
+      console.log("[polling] Starting — previous balance:", previousBalance);
 
       pollingRef.current = setInterval(async () => {
+        // 2 min timeout
         if (Date.now() - startTimeRef.current > 120_000) {
           stopPolling();
           setStatus("timeout");
           return;
         }
+
         try {
           const data = await storageApi.getBalance();
-          if (data.amountUsd > previousBalance) {
+          const newBalance = data.amountUsd;
+          const prev = previousBalanceRef.current;
+
+          console.log("[polling] Balance check:", {
+            prev,
+            newBalance,
+            diff: newBalance - prev,
+          });
+
+          // Confirmed if balance increased by at least $0.01
+          if (newBalance > prev + 0.01) {
             stopPolling();
-            setCreditedUsd(data.amountUsd - previousBalance);
+            setCreditedUsd(parseFloat((newBalance - prev).toFixed(4)));
             setStatus("confirmed");
           }
-        } catch {
-          /* silent retry */
+        } catch (err) {
+          console.error("[polling] Error:", err);
         }
-      }, 3000);
+      }, 2500); // ← poll every 2.5s (indexer runs every 2s)
     },
     [stopPolling],
   );
@@ -46,6 +62,7 @@ export function usePaymentConfirmation() {
     stopPolling();
     setStatus("idle");
     setCreditedUsd(null);
+    previousBalanceRef.current = 0;
   }, [stopPolling]);
 
   return { status, creditedUsd, startPolling, reset };

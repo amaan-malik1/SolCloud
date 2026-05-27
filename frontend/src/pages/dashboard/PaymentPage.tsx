@@ -60,17 +60,34 @@ export default function PaymentPage() {
 
   const handleSend = async () => {
     if (!wallet.connected || !user || !isValidAmount) return
-    const previousBalance = currentBalance?.amountUsd ?? 0
+
+    // fetch fresh balance right now, before transaction
+    let previousBalance = 0
+    try {
+      const fresh = await storageApi.getBalance()
+      previousBalance = fresh.amountUsd
+      console.log('[payment] Fresh balance before send:', previousBalance)
+    } catch {
+      previousBalance = currentBalance?.amountUsd ?? 0
+    }
+
     setIsSending(true)
     try {
-      const result = await sendPayment({ wallet, platformAddress: solanaStatus?.platformAddress ?? '', solAmount: parsedSol, userId: user.id })
+      const result = await sendPayment({
+        wallet,
+        platformAddress: solanaStatus?.platformAddress ?? '',
+        solAmount: parsedSol,
+        userId: user.id,
+      })
       setTxSignature(result.signature)
       toast.success('Transaction sent! Waiting for confirmation...')
       await startPolling(previousBalance)
     } catch (err: any) {
       const msg = err?.message ?? 'Transaction failed'
       toast.error(msg.includes('rejected') || msg.includes('cancelled') ? 'Transaction cancelled' : msg)
-    } finally { setIsSending(false) }
+    } finally {
+      setIsSending(false)
+    }
   }
 
   return (
