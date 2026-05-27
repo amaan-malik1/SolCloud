@@ -26,12 +26,12 @@ const Footer = () => {
                             </div>
 
                             <h2 className='text-3xl font-bold tracking-tight'>
-                                SolCloud
+                                SolStore
                             </h2>
                         </div>
 
                         <p className='max-w-sm text-[15px] leading-8 text-zinc-500'>
-                            © copyright SolCloud 2026.
+                            © copyright SolStore 2026.
                             <br />
                             All rights reserved.
                         </p>
@@ -46,31 +46,25 @@ const Footer = () => {
                         <ul className='space-y-5 text-[17px] text-white'>
                             <li>
                                 <a href='#' className='transition hover:text-zinc-400'>
-                                    All Products
+                                    About
                                 </a>
                             </li>
 
                             <li>
                                 <a href='#' className='transition hover:text-zinc-400'>
-                                    Studio
+                                    Why SolStore
                                 </a>
                             </li>
 
                             <li>
                                 <a href='#' className='transition hover:text-zinc-400'>
-                                    Clients
+                                    Testmonial
                                 </a>
                             </li>
 
                             <li>
                                 <a href='#' className='transition hover:text-zinc-400'>
                                     Pricing
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href='#' className='transition hover:text-zinc-400'>
-                                    Blog
                                 </a>
                             </li>
                         </ul>
@@ -132,9 +126,9 @@ const Footer = () => {
                 </div>
             </div>
 
-            {/* BIG SolCloud in bg */}
+            {/* BIG SolStore in bg */}
             <div className='pointer-events-none absolute bottom-[-100px] left-1/2 z-0 -translate-x-1/2 select-none whitespace-nowrap text-[220px] font-black leading-none tracking-tight text-white/[0.03] md:text-[340px]'>
-                SolCloud
+                SolStore
             </div>
         </footer>
     )

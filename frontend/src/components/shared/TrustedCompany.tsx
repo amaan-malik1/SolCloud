@@ -15,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger, SplitText)
 const companies = [
     {
         icon: Cloud,
-        name: 'SolCloud',
+        name: 'SolStore',
     },
     {
         icon: ShieldCheck,

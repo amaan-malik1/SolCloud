@@ -131,7 +131,7 @@ const Hero = () => {
 
       {/* Huge Background Text */}
       <div className='pointer-events-none absolute bottom-[-100px] left-1/2 -translate-x-1/2 select-none text-[260px] font-black tracking-tight text-white/[0.03]'>
-        SOL
+        SOLSTORE
       </div>
 
       {/* Floating Cards */}
@@ -144,7 +144,13 @@ const Hero = () => {
             drag
             dragElastic={0.12}
             whileDrag={{
-              scale: 1.05,
+              scale: 1.1,
+            }}
+            dragConstraints={{
+              top: 30,
+              left: 40,
+              right: 80,
+              bottom: 50
             }}
             className={`floating-card absolute hidden w-[240px] overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.03] p-5 backdrop-blur-xl lg:block ${card.position}`}
           >
@@ -171,27 +177,7 @@ const Hero = () => {
       {/* Main Content */}
       <div className='relative z-10 mx-auto max-w-5xl text-center'>
 
-        {/* Badge */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 0.8,
-          }}
-          className='mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-5 py-2 backdrop-blur-sm'
-        >
-          <span className='h-2 w-2 rounded-full bg-green-400 shadow-[0_0_10px_#4ade80]' />
-
-          <span className='text-xs font-semibold uppercase tracking-[0.25em] text-zinc-300'>
-            SolStore
-          </span>
-        </motion.div>
+       
 
         {/* Heading */}
         <h1

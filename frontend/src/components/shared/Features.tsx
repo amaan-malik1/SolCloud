@@ -33,8 +33,8 @@ const features = [
       'No credit cards or banking friction required.',
     button: 'Connect',
 
-    cardBg: 'bg-blue-950/40',
-    border: 'border-blue-500/20',
+    cardBg: 'bg-yellow-500/30',
+    border: 'border-yellow-500/20',
     iconBg: 'bg-blue-500/10',
     iconColor: 'text-blue-300',
     shadow: 'shadow-blue-950/40',
@@ -46,8 +46,8 @@ const features = [
     description: 'Transactions finalize in under 400ms.',
     button: 'Launch',
 
-    cardBg: 'bg-orange-950/40',
-    border: 'border-orange-500/20',
+    cardBg: 'bg-red-950/20',
+    border: 'border-red-500/20',
     iconBg: 'bg-orange-500/10',
     iconColor: 'text-orange-300',
     shadow: 'shadow-orange-950/40',
@@ -74,7 +74,7 @@ const features = [
       'No hidden charges or surprise bandwidth costs.',
     button: 'Storage',
 
-    cardBg: 'bg-zinc-900',
+    cardBg: 'bg-orange-950/40',
     border: 'border-zinc-700/40',
     iconBg: 'bg-zinc-700/20',
     iconColor: 'text-zinc-200',
@@ -88,7 +88,7 @@ const features = [
       'Perfect for startups and indie hackers.',
     button: 'Explore',
 
-    cardBg: 'bg-neutral-900',
+    cardBg: 'bg-black',
     border: 'border-neutral-600/30',
     iconBg: 'bg-neutral-500/10',
     iconColor: 'text-neutral-200',
@@ -104,9 +104,10 @@ const Features = () => {
     () => {
       const ctx = gsap.context(() => {
         // split heading
-        const headingSplit = new SplitText('.main-heading', { type: 'chars, words' })
+        const splitHeading = new SplitText('.main-heading', { type: 'chars, words' })
 
-        headingSplit.chars.forEach((char) => {
+        //heading char animation
+        splitHeading.chars.forEach((char) => {
           char.classList.add(
             'bg-gradient-to-b',
             'from-white',
@@ -117,13 +118,8 @@ const Features = () => {
           )
         });
 
-
-        const splitSubHeading = new SplitText('.sub-heading', {
-          type: 'chars, words'
-        })
-
         // heading animation
-        gsap.from(headingSplit.chars, {
+        gsap.from(splitHeading.chars, {
           y: 100,
           opacity: 0,
           stagger: 0.035,
@@ -134,6 +130,11 @@ const Features = () => {
             start: 'top 85%'
           }
         })
+
+        // sub heading splitting
+        const splitSubHeading = new SplitText('.sub-heading', {
+          type: 'chars, words'
+        });
 
         //sub heading animation
         gsap.from(splitSubHeading.chars, {
@@ -147,6 +148,36 @@ const Features = () => {
             start: 'top 90%'
           }
         })
+
+        //spliting title text
+        const splitFeatureTitle = new SplitText('.feature-title', {
+          type: 'chars, words'
+        });
+
+        //animation to chars
+        splitFeatureTitle.chars.forEach((char) => {
+          char.classList.add(
+            'bg-gradient-to-r',
+            'from-yellow-400',
+            'to-orange-600',
+            'bg-clip-text',
+            'text-transparent'
+          )
+        })
+
+        //aniimation for span feature title
+        gsap.from(splitFeatureTitle.chars, {
+          x: -100,
+          opacity: 0,
+          duration: 1.2,
+          stagger: 0.03,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: '.feature-title',
+            start: 'top 90%',
+          },
+        })
+
       }, sectionRef)
 
       return () => ctx.revert()
@@ -159,6 +190,13 @@ const Features = () => {
     >
 
       <div className='mx-auto max-w-7xl'>
+
+        {/* ticker Title */}
+        <div className='flex items-center justify-center py-4'>
+          <h2 className='feature-title rounded-full border border-b-orange-500/40 px-4 py-1 text-center font-body text-sm tracking-wide'>
+            Why SolStore
+          </h2>
+        </div>
 
         {/* Heading */}
         <div className='mx-auto mb-14 max-w-3xl text-center'>
