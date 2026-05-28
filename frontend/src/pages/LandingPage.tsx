@@ -3,6 +3,7 @@ import Hero from '@/components/shared/Hero'
 import Features from '@/components/shared/Features'
 import Footer from '@/components/shared/Footer'
 import TrustedBy from '@/components/shared/TrustedCompany'
+import HowItWorks from '@/components/shared/WorkSteps'
 
 export default function LandingPage() {
   return (
@@ -10,6 +11,7 @@ export default function LandingPage() {
       <Navbar />
       <Hero />
       <Features />
+      <HowItWorks />
       <TrustedBy />
       <Footer />
     </div>

@@ -17,7 +17,7 @@ import { isInGracePeriod } from "../services/billing/billing.engine";
 
 const router = Router();
 
-// ─── Credentials ──────────────────────────────────────────
+// Credentials
 router.get(
   "/credentials",
   authMiddleware,

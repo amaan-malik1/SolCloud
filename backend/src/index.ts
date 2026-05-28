@@ -57,10 +57,10 @@ app.use(errorHandler);
 async function start() {
   console.log("Starting SolStore backend...\n");
 
-  // 1. Database
+  // Database
   await testConnection();
 
-  // 2. Redis
+  // Redis
   const redisOk = await checkRedisConnection();
   if (!redisOk) {
     console.warn(
@@ -70,7 +70,7 @@ async function start() {
     startWorker();
   }
 
-  // 3. Solana
+  // Solana
   const solanaOk = await checkSolanaConnection();
   if (!solanaOk) {
     console.warn("Solana connection failed — indexer disabled");
@@ -93,17 +93,17 @@ async function start() {
     }
   }
 
-  // 4. Billing scheduler
+  // Billing scheduler
   startBillingScheduler();
 
-  // 5. Usage sync
+  // Usage sync
   if (config.cloudflare.accountId) {
     startUsageSync();
   } else {
     console.warn("Cloudflare not configured — usage sync disabled");
   }
 
-  // 6. Start HTTP server
+  // Start HTTP server
   app.listen(config.app.port, () => {
     console.log(` Backend running on http://localhost:${config.app.port}`);
     console.log(`   Environment: ${config.app.nodeEnv}`);
