@@ -45,7 +45,7 @@ export function Navbar() {
         {/* Center Nav */}
         <div className='hidden items-center gap-8 md:flex'>
           <a
-            href='#features'
+            href='#why-solStore'
             className='text-sm text-zinc-400 transition-colors hover:text-white'
           >
             Features
