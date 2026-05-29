@@ -4,6 +4,7 @@ import Footer from '@/components/shared/Footer'
 import TrustedBy from '@/components/shared/Solution'
 import HowItWorks from '@/components/shared/HowItWork'
 import WhySolStore from '@/components/shared/WhySolStore'
+import Solution from '@/components/shared/Solution'
 
 export default function LandingPage() {
   return (
@@ -12,7 +13,7 @@ export default function LandingPage() {
       <Hero />
       <WhySolStore />
       <HowItWorks />
-      <TrustedBy />
+      {/* <Solution /> */}
       <Footer />
     </div>
   )

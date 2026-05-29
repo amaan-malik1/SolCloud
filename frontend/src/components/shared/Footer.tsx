@@ -80,7 +80,8 @@ const Footer = () => {
                         <ul className='space-y-5 text-[14px] text-white'>
                             <li>
                                 <a
-                                    href='#'
+                                    href='https://x.com/amaaan_malik'
+                                    target='_blank'
                                     className='flex items-center gap-2 transition hover:text-orange-300'
                                 >
                                     Twitter
@@ -89,10 +90,10 @@ const Footer = () => {
 
                             <li>
                                 <a
-                                    href='#'
+                                    href='https://github.com/amaan-malik1/solstore'
                                     className='flex items-center gap-2 transition hover:text-orange-300'
                                 >
-                                    LinkedIn
+                                    Github
                                 </a>
                             </li>
                         </ul>
