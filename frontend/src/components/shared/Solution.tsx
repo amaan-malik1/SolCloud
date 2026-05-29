@@ -11,6 +11,7 @@ import {
     Zap,
     ArrowRight,
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
@@ -19,28 +20,28 @@ const companies = [
         icon: Cloud,
         name: 'Instant Setup',
         description:
-            'Deploy Cloudflare R2 buckets instantly with seamless Solana payments.',
+            'Pay with SOL, get a dedicated Cloudflare R2 bucket in under 60 seconds. No credit card, no KYC, no rejected Indian debit cards.',
     },
 
     {
         icon: ShieldCheck,
         name: 'Secure Infrastructure',
         description:
-            'Enterprise-grade security and globally distributed cloud reliability.',
+            'Every credential is encrypted AES-256-GCM before touching the database. Rate limiting on all sensitive routes, and automatic key rotation.',
     },
 
     {
         icon: Database,
         name: 'Zero Egress Fees',
         description:
-            'Scale storage without hidden bandwidth charges or surprise costs.',
+            'Built on Cloudflare R2 with $0.00 egress fees. Billed daily from your SOL balance at $0.015/GB/month.',
     },
 
     {
         icon: Zap,
         name: 'Lightning Fast',
         description:
-            'Built on Solana for ultra-fast confirmations and modern developer workflows.',
+            'Solana finality in 400ms. Transaction fees under $0.001. Our indexer detects your payment within 10 seconds and credits your balance — faster than any credit card authorization.',
     },
 ]
 
@@ -148,7 +149,7 @@ const Solution = () => {
             <div className='relative z-10 mx-auto max-w-7xl'>
                 {/* Heading */}
                 <div className='mx-auto max-w-5xl text-center'>
-                    <h2 className='trusted-title text-4xl font-black leading-none tracking-tight md:text-5xl font-serif'>
+                    <h2 className='trusted-title text-4xl font-black leading-none tracking-tight md:text-4xl font-serif'>
                         The Smarter Cloud Solution
                     </h2>
 
@@ -238,7 +239,9 @@ const Solution = () => {
                                         <div className='mt-8 flex items-center gap-2 text-zinc-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-white'>
 
                                             <span className='text-sm font-medium'>
-                                                Learn More
+                                                <Link to={'/register'}>
+                                                    Get Started
+                                                </Link>
                                             </span>
 
                                             <ArrowRight className='h-4 w-4' />

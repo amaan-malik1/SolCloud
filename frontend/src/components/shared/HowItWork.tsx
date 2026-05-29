@@ -268,23 +268,6 @@ const HowItWorks = () => {
                 }}
             />
 
-            {/* Glow */}
-            <div
-                style={{
-                    position: 'absolute',
-                    top: '10%',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: 700,
-                    height: 500,
-                    borderRadius: '50%',
-                    background:
-                        'radial-gradient(circle, rgba(249,115,22,0.12), transparent 70%)',
-                    filter: 'blur(90px)',
-                    pointerEvents: 'none',
-                }}
-            />
-
             <div
                 style={{
                     maxWidth: 1120,

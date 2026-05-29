@@ -177,7 +177,7 @@ const Hero = () => {
       {/* Main Content */}
       <div className='relative z-10 mx-auto max-w-5xl text-center'>
 
-       
+
 
         {/* Heading */}
         <h1
