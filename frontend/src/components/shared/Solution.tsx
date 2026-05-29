@@ -44,7 +44,7 @@ const companies = [
     },
 ]
 
-const TrustedBy = () => {
+const Solution = () => {
     const sectionRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -254,4 +254,4 @@ const TrustedBy = () => {
     )
 }
 
-export default TrustedBy
+export default Solution

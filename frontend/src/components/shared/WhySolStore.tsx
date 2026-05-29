@@ -224,6 +224,7 @@ const WhySolStore = () => {
 
   return (
     <section
+    id='why-solStore'
       className='relative min-h-screen overflow-hidden bg-black px-6 py-24 text-white'
       ref={sectionRef}
     >

@@ -40,30 +40,31 @@ const Footer = () => {
                     {/* Pages */}
                     <div>
                         <h3 className='mb-7 text-xl font-semibold'>
-                            Pages
+                            Links
                         </h3>
 
-                        <ul className='space-y-5 text-[17px] text-white'>
-                            <li>
-                                <a href='#' className='transition hover:text-zinc-400'>
-                                    About
-                                </a>
-                            </li>
+                        <ul className='space-y-5 text-[14px] text-white'>
 
                             <li>
-                                <a href='#' className='transition hover:text-zinc-400'>
+                                <a href='#why-solStore' className='transition hover:text-orange-300'>
                                     Why SolStore
                                 </a>
                             </li>
 
                             <li>
-                                <a href='#' className='transition hover:text-zinc-400'>
-                                    Testmonial
+                                <a href='#how-it-work' className='transition hover:text-orange-300'>
+                                    How it works?
                                 </a>
                             </li>
 
                             <li>
-                                <a href='#' className='transition hover:text-zinc-400'>
+                                <a href='#solution' className='transition hover:text-orange-300'>
+                                    Solution
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href='#' className='transition hover:text-orange-300'>
                                     Pricing
                                 </a>
                             </li>
@@ -76,11 +77,11 @@ const Footer = () => {
                             Socials
                         </h3>
 
-                        <ul className='space-y-5 text-[17px] text-white'>
+                        <ul className='space-y-5 text-[14px] text-white'>
                             <li>
                                 <a
                                     href='#'
-                                    className='flex items-center gap-2 transition hover:text-zinc-400'
+                                    className='flex items-center gap-2 transition hover:text-orange-300'
                                 >
                                     Twitter
                                 </a>
@@ -89,7 +90,7 @@ const Footer = () => {
                             <li>
                                 <a
                                     href='#'
-                                    className='flex items-center gap-2 transition hover:text-zinc-400'
+                                    className='flex items-center gap-2 transition hover:text-orange-300'
                                 >
                                     LinkedIn
                                 </a>
@@ -103,21 +104,21 @@ const Footer = () => {
                             Legal
                         </h3>
 
-                        <ul className='space-y-5 text-[17px] text-white'>
+                        <ul className='space-y-5 text-[14px] text-white'>
                             <li>
-                                <a href='#' className='transition hover:text-zinc-400'>
+                                <a href='#' className='transition hover:text-orange-300'>
                                     Privacy Policy
                                 </a>
                             </li>
 
                             <li>
-                                <a href='#' className='transition hover:text-zinc-400'>
+                                <a href='#' className='transition hover:text-orange-300'>
                                     Terms of Service
                                 </a>
                             </li>
 
                             <li>
-                                <a href='#' className='transition hover:text-zinc-400'>
+                                <a href='#' className='transition hover:text-orange-300'>
                                     Cookie Policy
                                 </a>
                             </li>

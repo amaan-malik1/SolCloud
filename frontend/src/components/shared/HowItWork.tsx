@@ -242,7 +242,7 @@ const HowItWorks = () => {
     return (
         <section
             ref={sectionRef}
-            id='how'
+            id='how-it-work'
             style={{
                 position: 'relative',
                 overflow: 'hidden',
