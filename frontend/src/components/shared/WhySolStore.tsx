@@ -128,7 +128,7 @@ const features = [
   },
 ]
 
-const Features = () => {
+const WhySolStore = () => {
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -233,7 +233,7 @@ const Features = () => {
       </div>
 
       {/* Ambient Glow */}
-      <div className='absolute left-1/2 top-20 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-orange-500/10 blur-[140px]' />
+      {/* <div className='absolute left-1/2 top-20 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-orange-500/10 blur-[140px]' /> */}
 
       <div className='relative mx-auto max-w-7xl'>
         {/* Badge */}
@@ -245,18 +245,18 @@ const Features = () => {
 
         {/* Heading */}
         <div className='mx-auto mb-16 max-w-3xl text-center'>
-          <h2 className='main-heading font-serif text-4xl font-black tracking-tight text-white md:text-5xl'>
+          <h2 className='main-heading font-serif text-4xl font-black tracking-tight text-white md:text-4xl'>
             Everything You Need
             <br />
             to Deploy Faster
           </h2>
 
-          <p className='sub-heading mt-6 text-lg leading-relaxed text-zinc-500'>
+          {/* <p className='sub-heading mt-6 text-lg leading-relaxed text-zinc-500'>
             Modern infrastructure tooling designed
             for developers who want speed,
             simplicity, and beautiful cloud
             infrastructure.
-          </p>
+          </p> */}
         </div>
 
         {/* Cards */}
@@ -351,4 +351,4 @@ const Features = () => {
   )
 }
 
-export default Features
+export default WhySolStore

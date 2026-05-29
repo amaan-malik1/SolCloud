@@ -247,12 +247,8 @@ const HowItWorks = () => {
                 position: 'relative',
                 overflow: 'hidden',
                 padding: '120px 24px',
-                borderTop:
-                    '1px solid rgba(255,255,255,0.05)',
-                borderBottom:
-                    '1px solid rgba(255,255,255,0.05)',
                 background:
-                    'linear-gradient(to bottom, #050505, #080808)',
+                    'black',
             }}
         >
             {/* Background Texture */}
@@ -318,17 +314,7 @@ const HowItWorks = () => {
                     </p>
 
                     <h2
-                        style={{
-                            fontFamily:
-                                'Syne, sans-serif',
-                            fontWeight: 500,
-                            fontSize:
-                                'clamp(42px, 6vw, 72px)',
-                            lineHeight: 1,
-                            letterSpacing: '-3px',
-                            marginBottom: 22,
-                            color: '#fff',
-                        }}
+                        className='font-serif space-y-[-3] text-5xl'
                     >
                         Pay with SOL.
                         <br />
@@ -531,115 +517,6 @@ const HowItWorks = () => {
                                 </div>
                             )
                         })}
-                    </div>
-                </div>
-
-                {/* CTA */}
-                <div
-                    style={{
-                        marginTop: 100,
-                        padding: '34px 42px',
-
-                        background:
-                            'rgba(14,14,18,0.9)',
-
-                        border:
-                            '1px solid rgba(255,255,255,0.07)',
-
-                        borderRadius: 28,
-
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent:
-                            'space-between',
-
-                        gap: 24,
-                        flexWrap: 'wrap',
-                    }}
-                >
-                    <div>
-                        <p
-                            style={{
-                                fontSize: 24,
-                                fontWeight: 700,
-                                color: '#fff',
-                                marginBottom: 8,
-                            }}
-                        >
-                            Ready to deploy?
-                        </p>
-
-                        <p
-                            style={{
-                                fontSize: 14,
-                                color:
-                                    'rgba(255,255,255,0.45)',
-                            }}
-                        >
-                            Works with AWS SDK v3,
-                            boto3, and any S3-compatible
-                            tooling.
-                        </p>
-                    </div>
-
-                    <div
-                        style={{
-                            display: 'flex',
-                            gap: 14,
-                            flexWrap: 'wrap',
-                        }}
-                    >
-                        <a
-                            href='/register'
-                            style={{
-                                padding: '14px 26px',
-                                borderRadius: 14,
-
-                                background:
-                                    'linear-gradient(135deg,#f97316,#facc15)',
-
-                                color: '#000',
-                                fontWeight: 700,
-                                fontSize: 14,
-
-                                textDecoration: 'none',
-
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: 8,
-                            }}
-                        >
-                            Get started free
-                            <ArrowRight size={16} />
-                        </a>
-
-                        <a
-                            href='https://developers.cloudflare.com/r2/'
-                            target='_blank'
-                            rel='noreferrer'
-                            style={{
-                                padding: '14px 26px',
-                                borderRadius: 14,
-
-                                border:
-                                    '1px solid rgba(255,255,255,0.1)',
-
-                                color:
-                                    'rgba(255,255,255,0.7)',
-
-                                fontWeight: 600,
-                                fontSize: 14,
-
-                                textDecoration: 'none',
-
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: 8,
-                            }}
-                        >
-                            R2 Docs
-                            <ExternalLink size={15} />
-                        </a>
                     </div>
                 </div>
             </div>
