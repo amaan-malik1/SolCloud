@@ -7,6 +7,7 @@ export interface UserProfile {
   createdAt: string;
   balanceUsd: number;
   totalTransactions: number;
+  emailVerified: boolean;
 }
 export interface NotificationPrefs {
   lowBalanceThreshold: number;

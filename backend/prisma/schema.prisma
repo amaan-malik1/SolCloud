@@ -9,12 +9,17 @@ datasource db {
 
 // Users 
 model User {
-  id            String   @id @default(uuid())
-  email         String   @unique
-  passwordHash  String   @map("password_hash")
-  walletAddress String?  @map("wallet_address")
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
+  id                String    @id @default(uuid())
+  email             String    @unique
+  passwordHash      String    @map("password_hash")
+  walletAddress     String?   @map("wallet_address")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+  emailVerified     Boolean   @default(false) @map("email_verified")
+  verifyToken       String?   @unique @map("verify_token")
+  verifyTokenExpiry DateTime? @map("verify_token_expiry")
+  resetToken        String?   @unique @map("reset_token")
+  resetTokenExpiry  DateTime? @map("reset_token_expiry")
 
   balance             Balance?
   transactions        Transaction[]

@@ -16,6 +16,7 @@ router.get("/profile", authMiddleware, async (req: Request, res: Response) => {
         email: true,
         walletAddress: true,
         createdAt: true,
+        emailVerified: true,
         balance: { select: { amountUsd: true } },
         _count: { select: { transactions: true } },
       },
@@ -31,6 +32,7 @@ router.get("/profile", authMiddleware, async (req: Request, res: Response) => {
       createdAt: user.createdAt,
       balanceUsd: user.balance ? Number(user.balance.amountUsd) : 0,
       totalTransactions: user._count.transactions,
+      emailVerified: user.emailVerified,
     });
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch profile" });
@@ -166,7 +168,7 @@ router.delete(
       }
       const bucket = await getBucket((req as any).user.userId);
       if (bucket && bucket.status === "ACTIVE") {
-        await suspendStorage((req as any).user.userId).catch(() => {});
+        await suspendStorage((req as any).user.userId).catch(() => { });
       }
       await prisma.user.delete({ where: { id: (req as any).user.userId } });
       res.json({ message: "Account deleted" });

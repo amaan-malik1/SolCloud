@@ -7,6 +7,77 @@ import { UsageChart } from '../../components/shared/UsageChart'
 import { useAuthStore } from '../../store/auth.store'
 import { useBalance, useStorageStatus, useTransactions, useSolanaStatus, useSuspensionStatus, useUsageHistory } from '../../hooks/useDashboard'
 import { formatBytes, formatUsd } from '../../lib/utils'
+import { useState } from 'react'
+import { Mail } from 'lucide-react'
+import { authApi } from '@/api/auth.api'
+import { useProfile } from '@/hooks/useSettings'
+
+function UnverifiedBanner() {
+  const { user } = useAuthStore()
+
+  const [resent, setResent] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const { data: profile } = useProfile()
+
+  if (!profile || profile.emailVerified) {
+    return null
+  }
+
+  const handleResend = async () => {
+    setLoading(true)
+
+    try {
+      await authApi.resendVerification(user?.email ?? '')
+      setResent(true)
+    } catch {
+      // silent
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div
+      className="flex flex-wrap items-center justify-between gap-4 rounded-xl p-4"
+      style={{
+        background: 'rgba(249,115,22,0.06)',
+        border: '1px solid rgba(249,115,22,0.18)',
+      }}
+    >
+      <div className="flex items-center gap-3">
+        <Mail
+          size={16}
+          className="text-orange-400"
+        />
+
+        <div>
+          <p className="mb-1 text-sm font-medium text-white">
+            Please verify your email
+          </p>
+
+          <p className="font-body text-xs text-white/40">
+            Check your inbox for a verification link from SolStore.
+          </p>
+        </div>
+      </div>
+
+      {resent ? (
+        <span className="font-body text-sm text-emerald-400">
+          ✓ Email sent
+        </span>
+      ) : (
+        <button
+          onClick={handleResend}
+          disabled={loading}
+          className="rounded-lg border border-orange-500/20 bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-400 transition-colors hover:bg-orange-500/15"
+        >
+          {loading ? 'Sending...' : 'Resend email'}
+        </button>
+      )}
+    </div>
+  )
+}
 
 export default function DashboardHome() {
   const { user } = useAuthStore()
@@ -31,6 +102,8 @@ export default function DashboardHome() {
             : <><WifiOff className="w-3 h-3 text-red-400" /><span className="text-red-400">Disconnected</span></>}
         </div>
       </div>
+
+      <UnverifiedBanner />
 
       {suspensionStatus && (suspensionStatus.inGracePeriod || suspensionStatus.status === 'SUSPENDED') && (
         <GracePeriodBanner status={suspensionStatus} />

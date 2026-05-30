@@ -20,24 +20,21 @@ const floatingCards = [
     icon: Database,
     title: 'Storage Active',
     value: '12.4 TB',
-    position:
-      'top-[12%] left-[4%] rotate-[-8deg]',
+    position: 'top-[18%] left-[2%] rotate-[-8deg]',
   },
 
   {
     icon: Wallet,
     title: 'SOL Payment',
     value: 'Confirmed',
-    position:
-      'top-[18%] right-[5%] rotate-[8deg]',
+    position: 'top-[22%] right-[2%] rotate-[8deg]',
   },
 
   {
     icon: ShieldCheck,
     title: 'Global Edge',
     value: '99.99%',
-    position:
-      'bottom-[18%] left-[10%] rotate-[-6deg]',
+    position: 'bottom-[18%] left-[8%] rotate-[-6deg]',
   },
 ]
 
@@ -46,13 +43,10 @@ const Hero = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-
-      // Split Main Title
       const heroSplit = new SplitText('.hero-title', {
         type: 'chars, words',
       })
 
-      // Gradient per char
       heroSplit.chars.forEach((char) => {
         char.classList.add(
           'bg-gradient-to-b',
@@ -64,12 +58,10 @@ const Hero = () => {
         )
       })
 
-      // Subtitle Split
       const subSplit = new SplitText('.hero-subtitle', {
         type: 'lines, words',
       })
 
-      // Heading Animation
       gsap.from(heroSplit.chars, {
         y: 120,
         opacity: 0,
@@ -78,7 +70,6 @@ const Hero = () => {
         ease: 'expo.out',
       })
 
-      // Subtitle Animation
       gsap.from(subSplit.lines, {
         y: 80,
         opacity: 0,
@@ -88,7 +79,6 @@ const Hero = () => {
         ease: 'power4.out',
       })
 
-      // Buttons
       gsap.from('.hero-btn', {
         y: 40,
         opacity: 0,
@@ -98,14 +88,21 @@ const Hero = () => {
         ease: 'power3.out',
       })
 
-      // Floating Cards
       gsap.from('.floating-card', {
         y: 40,
         opacity: 0,
         stagger: 0.12,
         duration: 1,
-        delay: 0.9,
+        delay: 1,
         ease: 'power4.out',
+      })
+
+      gsap.from('.hero-stat', {
+        y: 20,
+        opacity: 0,
+        stagger: 0.08,
+        duration: 0.8,
+        delay: 1.1,
       })
     }, heroRef)
 
@@ -115,22 +112,27 @@ const Hero = () => {
   return (
     <section
       ref={heroRef}
-      className='relative flex min-h-screen items-center justify-center overflow-hidden px-6 text-white'
+      className='relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-24 text-white'
     >
-
       {/* Background */}
       <div className='absolute inset-0 bg-black' />
 
       {/* Grid */}
       <div className='absolute inset-0 opacity-[0.03]'>
-        <div className='h-full w-full bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] bg-[size:90px_90px]' />
+        <div className='h-full w-full bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:85px_85px]' />
       </div>
 
-      {/* Purple Glow */}
-      <div className='absolute top-[-120px] left-1/2 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-purple-500/10 blur-3xl' />
+      {/* Distributed Glow */}
+      <div className='absolute inset-0 overflow-hidden'>
+        <div className='absolute left-1/2 top-[5%] h-[900px] w-[900px] -translate-x-1/2 rounded-full bg-purple-500/8 blur-[180px]' />
 
-      {/* Huge Background Text */}
-      <div className='pointer-events-none absolute bottom-[-100px] left-1/2 -translate-x-1/2 select-none text-[260px] font-black tracking-tight text-white/[0.03]'>
+        <div className='absolute left-[15%] top-[35%] h-[400px] w-[400px] rounded-full bg-purple-500/5 blur-[140px]' />
+
+        <div className='absolute right-[15%] top-[30%] h-[350px] w-[350px] rounded-full bg-violet-500/5 blur-[120px]' />
+      </div>
+
+      {/* Watermark */}
+      <div className='pointer-events-none absolute bottom-[-40px] left-1/2 -translate-x-1/2 select-none text-[240px] font-black tracking-tight text-white/[0.02]'>
         SOLSTORE
       </div>
 
@@ -143,20 +145,11 @@ const Hero = () => {
             key={index}
             drag
             dragElastic={0.12}
-            whileDrag={{
-              scale: 1.1,
-            }}
-            dragConstraints={{
-              top: 30,
-              left: 40,
-              right: 80,
-              bottom: 50
-            }}
-            className={`floating-card absolute hidden w-[240px] overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.03] p-5 backdrop-blur-xl lg:block ${card.position}`}
+            whileDrag={{ scale: 1.08 }}
+            className={`floating-card absolute hidden w-[200px] overflow-hidden rounded-[28px] border border-white/10 bg-black/60 p-5 backdrop-blur-xl lg:block ${card.position}`}
           >
             <div className='flex items-center gap-4'>
-
-              <div className='flex h-12 w-12 items-center justify-center rounded-2xl bg-white/[0.04]'>
+              <div className='flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04]'>
                 <Icon className='h-5 w-5 text-zinc-200' />
               </div>
 
@@ -165,7 +158,7 @@ const Hero = () => {
                   {card.title}
                 </p>
 
-                <h3 className='mt-1 text-lg font-bold text-white'>
+                <h3 className='mt-1 text-xl font-bold text-white'>
                   {card.value}
                 </h3>
               </div>
@@ -175,12 +168,11 @@ const Hero = () => {
       })}
 
       {/* Main Content */}
-      <div className='relative z-10 mx-auto max-w-5xl text-center'>
-        {/* Heading */}
+      <div className='relative z-10 mx-auto mt-10 max-w-6xl text-center'>
         <h1
-          className='hero-title font-black leading-none tracking-[-0.06em]'
+          className='hero-title font-black leading-[0.95] tracking-[-0.06em]'
           style={{
-            fontSize: 'clamp(58px, 9vw, 110px)',
+            fontSize: 'clamp(72px,10vw,140px)',
           }}
         >
           Cloud storage.
@@ -188,15 +180,14 @@ const Hero = () => {
           No card required.
         </h1>
 
-        {/* Subtitle */}
-        <p className='hero-subtitle mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-zinc-500 md:text-xl'>
+        <p className='hero-subtitle mx-auto mt-10 max-w-3xl text-xl leading-relaxed text-zinc-500'>
           Pay with SOL. Get instant access to production-grade
-          Cloudflare R2 storage with zero friction and zero nonsense.
+          Cloudflare R2 storage with zero friction,
+          zero banking headaches, and instant provisioning.
         </p>
 
-        {/* Buttons */}
+        {/* CTA */}
         <div className='mt-12 flex flex-wrap items-center justify-center gap-4'>
-
           <Link
             to='/register'
             className='hero-btn group flex items-center gap-2 rounded-2xl bg-white px-8 py-4 text-sm font-semibold text-black transition-all duration-300 hover:scale-[1.03]'
@@ -214,27 +205,59 @@ const Hero = () => {
           </Link>
         </div>
 
-        {/* Trust Indicators */}
+        {/* Stats */}
+        <div className='mt-14 flex flex-wrap items-center justify-center gap-12'>
+          <div className='hero-stat'>
+            <p className='text-4xl font-black text-white'>
+              10GB
+            </p>
+            <p className='mt-2 text-sm text-zinc-500'>
+              Free Storage
+            </p>
+          </div>
+
+          <div className='hero-stat'>
+            <p className='text-4xl font-black text-white'>
+              &lt;60s
+            </p>
+            <p className='mt-2 text-sm text-zinc-500'>
+              Provision Time
+            </p>
+          </div>
+
+          <div className='hero-stat'>
+            <p className='text-4xl font-black text-white'>
+              $0
+            </p>
+            <p className='mt-2 text-sm text-zinc-500'>
+              Egress Fees
+            </p>
+          </div>
+        </div>
+
+        {/* Trust Strip */}
         <div className='mt-14 flex flex-wrap items-center justify-center gap-6 text-sm text-zinc-500'>
           <span>Powered by Cloudflare R2</span>
+
           <span className='h-1 w-1 rounded-full bg-zinc-700' />
+
           <span>Solana Payments</span>
+
           <span className='h-1 w-1 rounded-full bg-zinc-700' />
+
           <span>Global Edge Network</span>
         </div>
 
         {/* Scroll Indicator */}
         <motion.div
-          animate={{
-            y: [0, 10, 0],
-          }}
+          animate={{ y: [0, 10, 0] }}
           transition={{
             repeat: Infinity,
             duration: 2,
           }}
           className='mt-20 flex flex-col items-center justify-center text-zinc-500'
         >
-          <span className='mb-2 text-xs uppercase tracking-[0.25em]'>
+          <span className='mb-2 text-xs uppercase tracking-[0.3em]'>
             Scroll
           </span>
 
