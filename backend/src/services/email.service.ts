@@ -1,12 +1,6 @@
 import nodemailer from "nodemailer"
 import { config } from "../config"
 
-console.log({
-  host: config.email.host,
-  port: config.email.port,
-  user: config.email.user,
-  passExists: !!config.email.pass,
-})
 
 const transporter = nodemailer.createTransport({
   host: config.email.host,
@@ -18,7 +12,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const BASE = config.app.frontendUrl;
+const FRONTEND_BASE = config.app.frontendUrl;
+const BACKEND_BASE = process.env.BACKEND_URL || 'http://localhost:3001';
 
 //shared email
 async function sendMail(to: string, subject: string, html: string) {
@@ -182,36 +177,47 @@ function template(body: string): string {
 }
 
 //verification email
-export async function sendVerificationEmail(email: string, token: string): Promise<void> {
-  const url = `${BASE}/verify-email?token=${token}`
+export async function sendVerificationEmail(
+  email: string,
+  token: string,
+): Promise<void> {
+  const url = `${BACKEND_BASE}/api/auth/verify-email?token=${token}`
 
-  await sendMail(email, 'Verify your SolStore email', template(`
-    <h1 style="font-size:30px;
-      font-weight:800;
-      letter-spacing:-1px;
-      line-height:1.1;font-weight:700;color:#fff;margin:0 0 12px;letter-spacing:-0.5px;">
-      Verify your email
-    </h1>
-    <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin:0 0 28px;">
-      Click the button below to verify your email address and activate your SolStore account.
-      This link expires in <strong style="color:#fff;">24 hours</strong>.
-    </p>
-    <a href="${url}" style="display:inline-block;padding:13px 28px;background:linear-gradient(135deg,#f97316,#f59e0b);box-shadow:0 10px 30px rgba(249,115,22,.25);color:#fff;text-decoration:none;border-radius:12px;font-weight:600;font-size:15px;margin-bottom:24px;">
-      Verify email →
-    </a>
-    <p style="font-size:12px;color:rgba(255,255,255,0.2);margin:0;">
-      Or paste this link in your browser:<br/>
-      <span style="color:rgba(153,69,255,0.7);word-break:break-all;">${url}</span>
-    </p>
-    <p style="font-size:12px;color:rgba(255,255,255,0.2);margin:20px 0 0;">
-      If you didn't create a SolStore account, you can safely ignore this email.
-    </p>
-  `))
+  await sendMail(
+    email,
+    'Verify your SolStore email',
+    template(`
+      <h1 style="font-size:30px;font-weight:800;letter-spacing:-1px;line-height:1.1;color:#fff;margin:0 0 12px;">
+        Verify your email
+      </h1>
+
+      <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin:0 0 28px;">
+        Click the button below to verify your email address and activate your SolStore account.
+        This link expires in <strong style="color:#fff;">24 hours</strong>.
+      </p>
+
+      <a href="${url}" style="display:inline-block;padding:13px 28px;background:linear-gradient(135deg,#f97316,#f59e0b);box-shadow:0 10px 30px rgba(249,115,22,.25);color:#fff;text-decoration:none;border-radius:12px;font-weight:600;font-size:15px;margin-bottom:24px;">
+        Verify email →
+      </a>
+
+      <p style="font-size:12px;color:rgba(255,255,255,0.2);margin:0;">
+        Or paste this link in your browser:
+        <br />
+        <span style="color:rgba(249,115,22,0.8);word-break:break-all;">
+          ${url}
+        </span>
+      </p>
+
+      <p style="font-size:12px;color:rgba(255,255,255,0.2);margin:20px 0 0;">
+        If you didn't create a SolStore account, you can safely ignore this email.
+      </p>
+    `),
+  )
 }
 
 //send reset email
 export async function sendPasswordResetEmail(email: string, token: string): Promise<void> {
-  const url = `${BASE}/reset-password?token=${token}`
+  const url = `${FRONTEND_BASE}/reset-password?token=${token}`
 
   await sendMail(email, 'Reset your SolStore password', template(`
     <h1 style="font-size:30px;
@@ -245,7 +251,7 @@ export async function sendWelcomeEmail(email: string): Promise<void> {
     <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin:0 0 20px;">
       Your email is confirmed. Connect your Solana wallet and send SOL to get your Cloudflare R2 bucket provisioned in under 60 seconds.
     </p>
-    <a href="${BASE}/dashboard/payment" style="display:inline-block;padding:13px 28px;background:linear-gradient(135deg,#f97316,#f59e0b);background:linear-gradient(135deg,#f97316,#f59e0b);color:#fff;text-decoration:none;border-radius:12px;font-weight:600;font-size:15px;">
+    <a href="${FRONTEND_BASE}/dashboard/payment" style="display:inline-block;padding:13px 28px;background:linear-gradient(135deg,#f97316,#f59e0b);background:linear-gradient(135deg,#f97316,#f59e0b);color:#fff;text-decoration:none;border-radius:12px;font-weight:600;font-size:15px;">
       Add funds →
     </a>
   `))
