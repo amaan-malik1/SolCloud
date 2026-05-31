@@ -1,23 +1,51 @@
 import nodemailer from "nodemailer"
 import { config } from "../config"
 
-
-const transporter = nodemailer.createTransport({
-  host: config.email.host,
-  port: config.email.port,
-  secure: false,
-  auth: {
-    user: config.email.user,
-    pass: config.email.pass,
-  },
-});
-
 const FRONTEND_BASE = config.app.frontendUrl;
 const BACKEND_BASE = process.env.BACKEND_URL || 'http://localhost:3001';
 
+function createTransporter() {
+  if (!config.email.host || !config.email.user || !config.email.pass) {
+    console.warn('[email] SMTP not configured — email disabled')
+    return null
+  }
+
+  return nodemailer.createTransport({
+    host: config.email.host,
+    port: config.email.port,
+    secure: false,
+    auth: {
+      user: config.email.user,
+      pass: config.email.pass,
+    },
+
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
+  })
+}
+const transporter = createTransporter()
+
+
 //shared email
-async function sendMail(to: string, subject: string, html: string) {
-  await transporter.sendMail({ from: config.email.from, to, subject, html })
+async function sendMail(to: string, subject: string, html: string): Promise<void> {
+  if (!transporter) {
+    console.warn(`[email] Skipped — SMTP not configured. Would send "${subject}" to ${to}`)
+    return
+  }
+
+  try {
+    const info = await transporter.sendMail({
+      from: config.email.from,
+      to,
+      subject,
+      html,
+    })
+    console.log(`[email] Sent "${subject}" to ${to} — messageId: ${info.messageId}`)
+  } catch (err: any) {
+    console.error(`[email] Failed to send "${subject}" to ${to}:`, err.message)
+    throw err  // Re-throw so caller knows
+  }
 }
 
 //email template

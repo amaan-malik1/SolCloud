@@ -75,22 +75,28 @@ router.get('/verify-email', async (req: Request, res: Response) => {
 
 router.post('/resend-verification', async (req: Request, res: Response) => {
   const { email } = req.body
+
   if (!email) {
-    res.status(400).json({
-      error: 'Email required'
-    });
+    res.status(400).json({ error: 'Email required' })
     return
   }
+
+  console.log('[auth] Resend verification requested for:', email)
+
   try {
     await resendVerification(email)
     res.json({ message: 'Verification email sent if account exists' })
-  } catch (err) {
+  } catch (err: any) {
     const msg = err instanceof Error ? err.message : 'UNKNOWN'
+    console.error('[auth/resend-verification] Error:', msg)
+
     if (msg === 'ALREADY_VERIFIED') {
-      res.status(400).json({ error: 'Email already verified' });
+      res.status(400).json({ error: 'Email already verified' })
       return
     }
-    res.status(500).json({ error: 'Failed to resend' })
+
+    // Don't 500 — email send failing shouldn't break the response
+    res.json({ message: 'Verification email sent if account exists' })
   }
 })
 
@@ -104,7 +110,6 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
     res.json({ message: 'Reset email sent if account exists' })
   }
 })
-
 
 router.post('/reset-password', async (req: Request, res: Response) => {
   const { token, password } = req.body

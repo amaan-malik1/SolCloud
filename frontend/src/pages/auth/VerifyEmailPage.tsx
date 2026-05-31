@@ -18,7 +18,7 @@ export default function VerifyEmailPage() {
         try {
             await authApi.resendVerification(email)
             setResent(true)
-        } catch { /* silent */ }
+        } catch { /* nothing */ }
         finally { setResending(false) }
     }
 
