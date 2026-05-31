@@ -6,7 +6,9 @@ import { useAuthStore } from '../../store/auth.store'
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const { isAuthenticated, user, clearAuth } = useAuthStore()
+  const { isAuthenticated, user, clearAuth } = useAuthStore();
+  const inProduction = process.env.NODE_ENV;
+
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20)
@@ -98,7 +100,8 @@ export function Navbar() {
                 Login
               </Link>
 
-              <a
+              {/* //github  */}
+              {inProduction === "production" && <a
                 href='https://github.com/amaan-malik1/solstore'
                 target='_blank'
                 rel='noreferrer'
@@ -106,7 +109,7 @@ export function Navbar() {
               >
                 <Github className='h-4 w-4' />
                 GitHub
-              </a>
+              </a>}
 
               <Link
                 to='/register'
