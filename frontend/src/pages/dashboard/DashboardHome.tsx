@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { BadgeCheck, Heading1 } from 'lucide-react';
+import { BadgeCheck, BadgeX, Heading1 } from 'lucide-react';
 import { DollarSign, HardDrive, Zap, CreditCard, Key, ArrowRight, Wifi, WifiOff } from 'lucide-react'
 import { StatCard } from '../../components/shared/StatCard'
 import { TransactionRow } from '../../components/shared/TransactionRow'
@@ -91,7 +91,7 @@ export default function DashboardHome() {
   const firstName = user?.email?.split('@')[0] ?? 'there';
   const isVerified = user?.emailVerified;
 
-  console.log(!!isVerified);
+  // console.log(!!isVerified);
 
 
   return (
@@ -104,7 +104,7 @@ export default function DashboardHome() {
             {isVerified ? (
               <BadgeCheck className='text-green-500 size-4' />
             ) : (
-              <span className='text-sm font-normal text-red-700'>(!Not verified)</span>
+              <BadgeX color='red' size={18} />
             )}
           </h1>
           <p className="text-white/40 text-sm font-body mt-1">Here's your SolStore overview</p>

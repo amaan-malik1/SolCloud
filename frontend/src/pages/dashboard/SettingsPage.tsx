@@ -32,7 +32,7 @@ function AccountCard() {
             {isVerified ? (
               <BadgeCheck className='text-green-500 size-4' />
             ) : (
-              <BadgeX size={18} />
+              <BadgeX color='red' size={18} />
             )}</p>
           <p className="text-xs text-white/35 font-body">Joined {new Date(profile.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
         </div>
