@@ -17,14 +17,20 @@ import NotFoundPage from './pages/NotFoundPage'
 import VerifyEmailPage from './pages/auth/VerifyEmailPage'
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import ResetPasswordPage from './pages/auth/ResetPasswordPage'
+import { useAuthStore } from './store/auth.store'
+import VerifyFirst from './components/shared/VerifyFirst'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { retry: 1, staleTime: 30_000, refetchOnWindowFocus: false },
   },
-})
+});
+
 
 export default function App() {
+  const { user } = useAuthStore();
+  const isVerified = user?.emailVerified;
+
   return (
     <SolanaWalletProvider>
       <QueryClientProvider client={queryClient}>
@@ -40,9 +46,16 @@ export default function App() {
             <Route element={<ProtectedRoute />}>
               <Route element={<DashboardLayout />}>
                 <Route path="/dashboard" element={<DashboardHome />} />
-                <Route path="/dashboard/storage" element={<StoragePage />} />
-                <Route path="/dashboard/payment" element={<PaymentPage />} />
-                <Route path="/dashboard/credentials" element={<CredentialsPage />} />
+
+                <Route path="/dashboard/storage"
+                  element={isVerified ? <StoragePage /> : <VerifyFirst />}
+                />
+                <Route path="/dashboard/payment"
+                  element={isVerified ? <PaymentPage /> : <VerifyFirst />}
+                />
+                <Route path="/dashboard/credentials"
+                  element={isVerified ? <CredentialsPage /> : <VerifyFirst />}
+                />
                 <Route path="/dashboard/settings" element={<SettingsPage />} />
               </Route>
             </Route>
@@ -51,7 +64,7 @@ export default function App() {
         </BrowserRouter>
 
         <Toaster
-          position="bottom-right"
+          position="top-center"
           toastOptions={{
             style: {
               background: '#13131f',

@@ -77,15 +77,19 @@ router.post('/resend-verification', async (req: Request, res: Response) => {
   const { email } = req.body
 
   if (!email) {
-    res.status(400).json({ error: 'Email required' })
-    return
+    return res.status(400).json({ error: 'Email required' })
   }
 
-  console.log('[auth] Resend verification requested for:', email)
+  // console.log('[auth] Resend verification requested for:', email)
 
   try {
-    await resendVerification(email)
-    res.json({ message: 'Verification email sent if account exists' })
+    await resendVerification(email);
+    // console.log("Mail sent to: ", email);
+
+    res.json({
+      sucess: true,
+      message: 'Verification email sent if account exists'
+    })
   } catch (err: any) {
     const msg = err instanceof Error ? err.message : 'UNKNOWN'
     console.error('[auth/resend-verification] Error:', msg)

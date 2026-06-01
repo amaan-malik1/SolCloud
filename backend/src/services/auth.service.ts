@@ -104,6 +104,8 @@ export async function verifyEmail(token: string): Promise<{ email: string }> {
 }
 
 export async function resendVerification(email: string): Promise<void> {
+  // console.log("Inside resend verification function: ", email);
+
   const user = await prisma.user.findUnique({
     where: { email: email.toLowerCase().trim() },
     select: { id: true, emailVerified: true },
@@ -119,6 +121,8 @@ export async function resendVerification(email: string): Promise<void> {
     where: { id: user.id },
     data: { verifyToken, verifyTokenExpiry },
   })
+
+  // console.log("Before sendVerification mail");
 
   await sendVerificationEmail(email, verifyToken)
 }

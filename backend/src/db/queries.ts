@@ -12,14 +12,14 @@ export async function createUser(email: string, passwordHash: string) {
 export async function findUserByEmail(email: string) {
   return prisma.user.findUnique({
     where: { email },
-    select: { id: true, email: true, passwordHash: true },
+    select: { id: true, email: true, passwordHash: true, createdAt: true, emailVerified: true, walletAddress: true },
   });
 }
 
 export async function findUserById(id: string) {
   return prisma.user.findUnique({
     where: { id },
-    select: { id: true, email: true, walletAddress: true, createdAt: true },
+    select: { id: true, email: true, walletAddress: true, createdAt: true, emailVerified: true },
   });
 }
 

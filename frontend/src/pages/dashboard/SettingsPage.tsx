@@ -1,18 +1,21 @@
 import { useState, useEffect } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
-import { User, Wallet, Lock, Bell, Trash2, AlertTriangle, CheckCircle, ExternalLink, Copy, Check } from 'lucide-react'
+import { User, Wallet, Lock, Bell, Trash2, AlertTriangle, CheckCircle, ExternalLink, Copy, Check, BadgeCheck, BadgeX } from 'lucide-react'
 import { SettingsSection } from '../../components/shared/SettingsSection'
 import { Toggle } from '../../components/shared/Toggle'
 import { FormField } from '../../components/shared/FormField'
 import { LoadingSpinner } from '../../components/shared/LoadingSpinner'
 import { useProfile, useNotificationPrefs, useUpdateWallet, useChangePassword, useUpdateNotifications, useDeleteAccount } from '../../hooks/useSettings'
 import { formatUsd, shortenAddress } from '../../lib/utils'
+import { useAuthStore } from '@/store/auth.store'
 
 function AccountCard() {
   const { data: profile, isLoading } = useProfile()
   const [copiedId, setCopiedId] = useState(false)
   const handleCopyId = async () => { if (!profile?.id) return; await navigator.clipboard.writeText(profile.id); setCopiedId(true); setTimeout(() => setCopiedId(false), 2000) }
+  const { user } = useAuthStore()
+  const isVerified = user?.emailVerified;
 
   if (isLoading) return <div className="flex items-center gap-3 p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)' }}><LoadingSpinner className="w-4 h-4" /><span className="text-sm text-white/30 font-body">Loading...</span></div>
   if (!profile) return null
@@ -20,9 +23,17 @@ function AccountCard() {
   return (
     <div className="p-4 rounded-xl space-y-3" style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)' }}>
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-display font-bold text-sol-purple flex-shrink-0" style={{ background: 'rgba(153,69,255,0.1)', border: '1px solid rgba(153,69,255,0.2)' }}>{profile.email[0].toUpperCase()}</div>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-display font-bold text-sol-purple flex-shrink-0" style={{ background: 'rgba(153,69,255,0.1)', border: '1px solid rgba(153,69,255,0.2)' }}>
+          {profile.email[0].toUpperCase()}
+        </div>
         <div className="min-w-0">
-          <p className="text-sm font-medium text-white truncate">{profile.email}</p>
+          <p className="text-sm font-medium text-white truncate flex justify-center items-center gap-2">
+            {profile.email}
+            {isVerified ? (
+              <BadgeCheck className='text-green-500 size-4' />
+            ) : (
+              <BadgeX size={18} />
+            )}</p>
           <p className="text-xs text-white/35 font-body">Joined {new Date(profile.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
         </div>
       </div>

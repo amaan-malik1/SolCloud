@@ -3,6 +3,7 @@ export interface User {
   email: string;
   walletAddress?: string;
   createdAt: string;
+  emailVerified: boolean;
 }
 export interface AuthResponse {
   token: string;

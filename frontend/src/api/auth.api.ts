@@ -19,8 +19,8 @@ export const authApi = {
   },
 
   me: async (): Promise<User> => {
-    const { data } = await apiClient.get<{ user: User }>("/auth/me");
-    return data.user;
+    const { data } = await apiClient.get<{ user: User }>('/auth/me')
+    return data.user
   },
 
   verifyEmail: async (token: string) => {
@@ -29,8 +29,10 @@ export const authApi = {
   },
 
   resendVerification: async (email: string) => {
+    console.log("Inside resend UI api");
+
     const { data } = await apiClient.post('/auth/resend-verification', { email })
-    return data
+    return data;
   },
 
   forgotPassword: async (email: string) => {

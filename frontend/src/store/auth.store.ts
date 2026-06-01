@@ -8,6 +8,7 @@ interface AuthStore {
   isAuthenticated: boolean;
   setAuth: (user: User, token: string) => void;
   clearAuth: () => void;
+  setEmailVerified: (verified: boolean) => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -23,6 +24,11 @@ export const useAuthStore = create<AuthStore>()(
       clearAuth: () => {
         localStorage.removeItem("solstore_token");
         set({ user: null, token: null, isAuthenticated: false });
+      },
+      setEmailVerified: (verified: boolean) => {
+        set(state => ({
+          user: state.user ? { ...state.user, emailVerified: verified } : null,
+        }))
       },
     }),
     {

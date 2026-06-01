@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { BadgeCheck, Heading1 } from 'lucide-react';
 import { DollarSign, HardDrive, Zap, CreditCard, Key, ArrowRight, Wifi, WifiOff } from 'lucide-react'
 import { StatCard } from '../../components/shared/StatCard'
 import { TransactionRow } from '../../components/shared/TransactionRow'
@@ -87,13 +88,25 @@ export default function DashboardHome() {
   const { data: solana } = useSolanaStatus()
   const { data: suspensionStatus } = useSuspensionStatus()
   const { data: historyData } = useUsageHistory(7)
-  const firstName = user?.email?.split('@')[0] ?? 'there'
+  const firstName = user?.email?.split('@')[0] ?? 'there';
+  const isVerified = user?.emailVerified;
+
+  console.log(!!isVerified);
+
 
   return (
     <div className="space-y-8">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="font-display font-bold text-2xl text-white tracking-tight">Hey, {firstName} </h1>
+          <h1 className="font-display font-bold text-2xl text-white tracking-tight flex justify-center items-center gap-1">Hey,
+            {" "}
+            {firstName.slice(0, 5) + "..."}
+            {isVerified ? (
+              <BadgeCheck className='text-green-500 size-4' />
+            ) : (
+              <span className='text-sm font-normal text-red-700'>(!Not verified)</span>
+            )}
+          </h1>
           <p className="text-white/40 text-sm font-body mt-1">Here's your SolStore overview</p>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-body surface-card">

@@ -4,13 +4,21 @@ import { CheckCircle, XCircle, Mail, RefreshCw } from 'lucide-react'
 import { Logo } from '@/components/shared/Logo'
 import { authApi } from '@/api/auth.api'
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner'
+import { useAuthStore } from '@/store/auth.store'
 
 export default function VerifyEmailPage() {
     const [params] = useSearchParams()
     const status = params.get('status')
     const email = params.get('email')
+    const { setEmailVerified } = useAuthStore()
     const [resending, setResending] = useState(false)
     const [resent, setResent] = useState(false)
+
+    useEffect(() => {
+        if (status === 'success') {
+            setEmailVerified(true)
+        }
+    }, [status])
 
     const handleResend = async () => {
         if (!email) return
