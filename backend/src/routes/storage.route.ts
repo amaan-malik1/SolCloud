@@ -17,7 +17,7 @@ import { isInGracePeriod } from "../services/billing/billing.engine";
 
 const router = Router();
 
-// Credentials
+// get credentials
 router.get(
   "/credentials",
   authMiddleware,
@@ -48,7 +48,7 @@ router.get(
   },
 );
 
-// ─── Status ────────────────────────────────────────────────
+// status check
 router.get("/status", authMiddleware, async (req: Request, res: Response) => {
   try {
     const bucket = await getBucket((req as any).user.userId);
@@ -66,7 +66,7 @@ router.get("/status", authMiddleware, async (req: Request, res: Response) => {
   }
 });
 
-// ─── Usage ─────────────────────────────────────────────────
+// usage check
 router.get("/usage", authMiddleware, async (req: Request, res: Response) => {
   try {
     const bucket = await getBucket((req as any).user.userId);
@@ -82,7 +82,7 @@ router.get("/usage", authMiddleware, async (req: Request, res: Response) => {
       select: { storageBytes: true, objectCount: true, recordedAt: true },
     });
 
-    const FREE_TIER_BYTES = 10 * 1024 * 1024 * 1024;
+    const FREE_TIER_BYTES = 10 * 1024 * 1024 * 1024; // in bits
     res.json({
       current: {
         storageBytes: Number(bucket.storageBytes),
@@ -103,7 +103,7 @@ router.get("/usage", authMiddleware, async (req: Request, res: Response) => {
   }
 });
 
-// ─── Usage history ─────────────────────────────────────────
+//usage history
 router.get(
   "/usage/history",
   authMiddleware,
@@ -153,7 +153,7 @@ router.get(
   },
 );
 
-// ─── Daily cost ─────────────────────────────────────────────
+// daily cost
 router.get(
   "/usage/daily-cost",
   authMiddleware,
@@ -196,7 +196,7 @@ router.get(
   },
 );
 
-// ─── Refresh usage ─────────────────────────────────────────
+// refresh usage
 router.post(
   "/refresh-usage",
   authMiddleware,
@@ -226,7 +226,7 @@ router.post(
   },
 );
 
-// ─── Balance ───────────────────────────────────────────────
+// balance
 router.get("/balance", authMiddleware, async (req: Request, res: Response) => {
   try {
     const balance = await prisma.balance.findUnique({
@@ -242,7 +242,7 @@ router.get("/balance", authMiddleware, async (req: Request, res: Response) => {
   }
 });
 
-// ─── Transactions ──────────────────────────────────────────
+// txn
 router.get(
   "/transactions",
   authMiddleware,
@@ -276,7 +276,7 @@ router.get(
   },
 );
 
-// ─── Regenerate keys ───────────────────────────────────────
+// regenerate keys
 router.post(
   "/regenerate-keys",
   authMiddleware,
@@ -315,7 +315,7 @@ router.post(
   },
 );
 
-// ─── Rotation history ──────────────────────────────────────
+// rotation history
 router.get(
   "/rotation-history",
   authMiddleware,
@@ -329,12 +329,12 @@ router.get(
   },
 );
 
-// ─── Sync status ───────────────────────────────────────────
+// sync data
 router.get("/sync-status", authMiddleware, (_req, res) => {
   res.json(getUsageSyncStatus());
 });
 
-// ─── Suspension status ─────────────────────────────────────
+// suspension status
 router.get(
   "/suspension-status",
   authMiddleware,

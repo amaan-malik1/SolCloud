@@ -42,7 +42,7 @@ export async function provisionStorage(event: {
   });
 
   console.log(
-    `✅ Storage provisioned for user ${userId} → ${credentials.bucketName}`,
+    `Storage provisioned for user ${userId} → ${credentials.bucketName}`,
   );
 }
 
@@ -63,11 +63,11 @@ export async function reactivateStorage(userId: string): Promise<void> {
     },
   });
 
-  // Clear grace period
+  // clear grace period
   await prisma.indexerState
     .deleteMany({ where: { key: `grace:${userId}` } })
-    .catch(() => {});
-  console.log(`✅ Storage reactivated for user ${userId}`);
+    .catch(() => { });
+  console.log(`Storage reactivated for user ${userId}`);
 }
 
 export async function suspendStorage(userId: string): Promise<void> {
@@ -86,5 +86,5 @@ export async function suspendStorage(userId: string): Promise<void> {
 
   await updateBucketStatus(userId, "SUSPENDED");
   await prisma.bucket.update({ where: { userId }, data: { cfTokenId: null } });
-  console.log(`⏸️  Suspended storage for user ${userId}`);
+  console.log(` Suspended storage for user ${userId}`);
 }

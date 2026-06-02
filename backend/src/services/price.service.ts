@@ -23,16 +23,16 @@ export async function getSolPriceUsd(): Promise<number> {
     if (!price || typeof price !== "number")
       throw new Error("Invalid price response");
     cache = { usd: price, fetchedAt: now };
-    console.log(`💱 SOL price updated: $${price}`);
+    console.log(`SOL price updated: $${price}`);
     return price;
   } catch (err) {
     if (cache) {
-      console.warn("⚠️  Price fetch failed, using stale cache:", cache.usd);
+      console.warn("Price fetch failed, using stale cache:", cache.usd);
       return cache.usd;
     }
     // Return a fallback price so the indexer keeps working
-    console.warn("⚠️  Price fetch failed, using fallback $150");
-    return 150;
+    console.warn("Price fetch failed, using fallback $150");
+    return 80;
   }
 }
 

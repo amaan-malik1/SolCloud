@@ -21,7 +21,7 @@ export function usePaymentConfirmation() {
     async (previousBalance: number) => {
       setStatus("waiting");
       startTimeRef.current = Date.now();
-      previousBalanceRef.current = previousBalance; // ← save in ref
+      previousBalanceRef.current = previousBalance; // save in ref
 
       console.log("[polling] Starting — previous balance:", previousBalance);
 
@@ -53,7 +53,7 @@ export function usePaymentConfirmation() {
         } catch (err) {
           console.error("[polling] Error:", err);
         }
-      }, 2500); // ← poll every 2.5s (indexer runs every 2s)
+      }, 2500); // poll every 2.5s - indexer runs every 2s
     },
     [stopPolling],
   );

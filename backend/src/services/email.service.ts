@@ -24,7 +24,7 @@ function createTransporter() {
     socketTimeout: 15_000,
   })
 }
-const transporter = createTransporter()
+const transporter = createTransporter();
 
 
 //shared email
