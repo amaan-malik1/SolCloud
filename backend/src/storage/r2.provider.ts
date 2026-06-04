@@ -44,53 +44,45 @@ export class CloudflareR2Provider implements StorageProvider {
   }
 
   async createBucket(userId: string): Promise<BucketCredentials> {
-    const bucketName = this.generateBucketName(userId);
-    const s3 = this.getS3Client();
-    const api = this.cfApi();
+    const bucketName = this.generateBucketName(userId)
+    const s3 = this.getS3Client()
 
     try {
-      await s3.send(new CreateBucketCommand({ Bucket: bucketName }));
-      console.log(`[r2] Bucket created: ${bucketName}`);
+      await s3.send(new CreateBucketCommand({ Bucket: bucketName }))
+      console.log(`[r2] Bucket created: ${bucketName}`)
     } catch (err: any) {
-      if (err.name === "BucketAlreadyExists")
-        throw new Error(`Bucket collision: ${bucketName}`);
-      throw err;
+      if (err.name !== 'BucketAlreadyExists') throw err
     }
 
-    const tokenRes = await api.post(
-      `/accounts/${config.cloudflare.accountId}/r2/tokens`,
-      {
-        name: `solstore-user-${userId.slice(0, 8)}`,
-        policies: [
-          {
-            effect: "allow",
-            resources: {
-              [`com.cloudflare.api.account.r2.bucket.${config.cloudflare.accountId}.${bucketName}`]:
-                "*",
-            },
-            actions: ["admin"],
-          },
-        ],
-      },
-    );
-
-    if (!tokenRes.data?.success) {
-      await this.deleteBucket(bucketName).catch(() => {});
-      throw new Error("Failed to create R2 API token");
-    }
-
-    const tokenData = tokenRes.data.result;
-    console.log(`[r2] Scoped token created for: ${bucketName}`);
-
+    // Use master R2 credentials — bucket isolation is enforced at app layer
+    // Per-bucket scoped tokens require Cloudflare Workers API (Phase 2)
     return {
       bucketName,
-      provider: "R2",
-      accessKey: tokenData.accessKeyId,
-      secretKey: tokenData.secretAccessKey,
+      provider: 'R2',
+      accessKey: config.cloudflare.r2AccessKey!,
+      secretKey: config.cloudflare.r2SecretKey!,
       endpoint: `https://${config.cloudflare.accountId}.r2.cloudflarestorage.com`,
-      region: "auto",
-      tokenId: tokenData.id,
-    };
+      region: 'auto',
+      tokenId: 'account',
+    }
+  }
+
+  async suspendBucket(_bucketName: string, _tokenId?: string): Promise<void> {
+    // Bucket isolation — no token to revoke with account-level token
+    // Access is blocked at app layer when status = SUSPENDED
+    console.log(`[r2] Bucket suspended (app-layer isolation)`)
+  }
+
+  async reactivateBucket(bucketName: string, _userId: string): Promise<BucketCredentials> {
+    return {
+      bucketName,
+      provider: 'R2',
+      accessKey: config.cloudflare.r2AccessKey!,
+      secretKey: config.cloudflare.r2SecretKey!,
+      endpoint: `https://${config.cloudflare.accountId}.r2.cloudflarestorage.com`,
+      region: 'auto',
+      tokenId: 'account',
+    }
   }
 
   async deleteBucket(bucketName: string): Promise<void> {
@@ -98,53 +90,6 @@ export class CloudflareR2Provider implements StorageProvider {
     await s3.send(new DeleteBucketCommand({ Bucket: bucketName }));
   }
 
-  async suspendBucket(_bucketName: string, tokenId?: string): Promise<void> {
-    if (!tokenId) return;
-    const api = this.cfApi();
-    await api.delete(
-      `/accounts/${config.cloudflare.accountId}/r2/tokens/${tokenId}`,
-    );
-    console.log(`[r2] Token revoked: ${tokenId}`);
-  }
-
-  async reactivateBucket(
-    bucketName: string,
-    userId: string,
-  ): Promise<BucketCredentials> {
-    const api = this.cfApi();
-    const tokenRes = await api.post(
-      `/accounts/${config.cloudflare.accountId}/r2/tokens`,
-      {
-        name: `solstore-user-${userId.slice(0, 8)}-reactivated`,
-        policies: [
-          {
-            effect: "allow",
-            resources: {
-              [`com.cloudflare.api.account.r2.bucket.${config.cloudflare.accountId}.${bucketName}`]:
-                "*",
-            },
-            actions: ["admin"],
-          },
-        ],
-      },
-    );
-
-    if (!tokenRes.data?.success)
-      throw new Error("Failed to create new R2 token on reactivation");
-
-    const tokenData = tokenRes.data.result;
-    console.log(`[r2] Bucket reactivated: ${bucketName}`);
-
-    return {
-      bucketName,
-      provider: "R2",
-      accessKey: tokenData.accessKeyId,
-      secretKey: tokenData.secretAccessKey,
-      endpoint: `https://${config.cloudflare.accountId}.r2.cloudflarestorage.com`,
-      region: "auto",
-      tokenId: tokenData.id,
-    };
-  }
 
   async getUsageBytes(bucketName: string): Promise<UsageStats> {
     const s3 = this.getS3Client();

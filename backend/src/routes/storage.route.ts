@@ -342,6 +342,9 @@ router.get(
     try {
       const userId = (req as any).user.userId;
       const bucket = await getBucket(userId);
+
+      console.log("Inside storage api in suspension status");
+
       if (!bucket) {
         res.json({ status: "NO_BUCKET" });
         return;

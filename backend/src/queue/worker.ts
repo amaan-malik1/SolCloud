@@ -26,9 +26,11 @@ async function processJob(job: Job): Promise<void> {
 
   switch (job.name) {
     case JOB_NAMES.PROVISION_STORAGE: {
-      const data = job.data as ProvisionStorageJob;
-      await provisionStorage(data);
-      break;
+      const data = job.data as ProvisionStorageJob
+      console.log('[worker] Calling provisionStorage for user:', data.userId)
+      await provisionStorage(data)
+      console.log('[worker] provisionStorage completed for user:', data.userId)
+      break
     }
     case JOB_NAMES.SUSPEND_STORAGE: {
       const data = job.data as SuspendStorageJob;
@@ -81,14 +83,24 @@ export function startWorker(): Worker {
   _worker.on("completed", (job) =>
     console.log(`[worker] Done: ${job.name} (${job.id})`),
   );
-  _worker.on("failed", (job, err) => {
-    console.error(
-      `[worker] Failed: ${job?.name} (${job?.id}) — ${err.message}`,
-    );
-    if (job && job.attemptsMade >= (job.opts?.attempts ?? 1)) {
-      logFailedJob(job, err).catch(console.error);
-    }
-  });
+  // _worker.on("failed", (job, err) => {
+  //   console.error(
+  //     `[worker] Failed: ${job?.name} (${job?.id}) — ${err.message}`,
+  //   );
+  //   if (job && job.attemptsMade >= (job.opts?.attempts ?? 1)) {
+  //     logFailedJob(job, err).catch(console.error);
+  //   }
+  // });
+  _worker.on('failed', (job, err) => {
+    console.error(`[worker] FAILED JOB DETAILS:`)
+    console.error(`  Name: ${job?.name}`)
+    console.error(`  ID: ${job?.id}`)
+    console.error(`  Error: ${err.message}`)
+    console.error(`  Stack: ${err.stack}`)
+    console.error(`  Data: ${JSON.stringify(job?.data)}`)
+  })
+
+
   _worker.on("error", (err) => console.error("[worker] Error:", err.message));
 
   console.log("⚙️  Queue worker started (concurrency: 3)");
@@ -118,5 +130,5 @@ async function logFailedJob(job: Job, err: Error): Promise<void> {
       },
       update: { value: "duplicate" },
     })
-    .catch(() => {});
+    .catch(() => { });
 }

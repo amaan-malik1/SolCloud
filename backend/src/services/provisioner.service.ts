@@ -10,40 +10,46 @@ export async function provisionStorage(event: {
   usdAmount: number;
   solPriceUsd: number;
 }): Promise<void> {
-  const { userId } = event;
-  const existing = await getBucket(userId);
+  const { userId } = event
+  console.log('[provisioner] Starting for user:', userId)
+
+  const existing = await getBucket(userId)
+  console.log('[provisioner] Existing bucket:', existing?.bucketName ?? 'none')
 
   if (existing) {
-    if (existing.status === "SUSPENDED") {
-      console.log(`[provisioner] Reactivating bucket for user ${userId}`);
-      await reactivateStorage(userId);
+    if (existing.status === 'SUSPENDED') {
+      await reactivateStorage(userId)
     } else {
-      console.log(`[provisioner] User ${userId} already has active storage`);
+      console.log('[provisioner] Already has active storage')
     }
-    return;
+    return
   }
 
-  console.log(`[provisioner] Creating bucket for user ${userId}`);
-  const provider = getStorageProvider();
-  let credentials;
+  const provider = getStorageProvider()
+  console.log('[provisioner] Calling provider.createBucket...')
+
+  let credentials: any
   try {
-    credentials = await provider.createBucket(userId);
+    credentials = await provider.createBucket(userId)
+    console.log('[provisioner] Bucket created:', credentials.bucketName)
   } catch (err) {
-    console.error(`[provisioner] Failed to create bucket for ${userId}:`, err);
-    throw err;
+    console.error('[provisioner] createBucket FAILED:', err)
+    throw err
   }
 
-  await createBucket({
-    userId,
-    bucketName: credentials.bucketName,
-    cfTokenId: credentials.tokenId ?? "",
-    cfAccessKey: encrypt(credentials.accessKey),
-    cfSecretKey: encrypt(credentials.secretKey),
-  });
-
-  console.log(
-    `Storage provisioned for user ${userId} → ${credentials.bucketName}`,
-  );
+  try {
+    await createBucket({
+      userId,
+      bucketName: credentials.bucketName,
+      cfTokenId: credentials.tokenId ?? '',
+      cfAccessKey: encrypt(credentials.accessKey),
+      cfSecretKey: encrypt(credentials.secretKey),
+    })
+    console.log('[provisioner] Saved to DB ✅')
+  } catch (err) {
+    console.error('[provisioner] DB save FAILED:', err)
+    throw err
+  }
 }
 
 export async function reactivateStorage(userId: string): Promise<void> {
