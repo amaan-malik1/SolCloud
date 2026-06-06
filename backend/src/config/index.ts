@@ -33,6 +33,7 @@ const envSchema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
   EMAIL_FROM: z.string().default("noreply@solstore.dev"),
+  RESEND_API_KEY: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);
@@ -76,6 +77,7 @@ export const config = {
   redis: { url: env.REDIS_URL },
   storage: { provider: env.STORAGE_PROVIDER },
   email: {
+    resendApiKey: env.RESEND_API_KEY,
     host: env.SMTP_HOST,
     port: parseInt(env.SMTP_PORT, 10),
     user: env.SMTP_USER,

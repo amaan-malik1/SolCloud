@@ -194,16 +194,16 @@ const WhySolStore = () => {
         }
       )
 
-      splitFeatureTitle.chars.forEach((char) => {
-        char.classList.add(
-          'bg-gradient-to-r',
-          'from-yellow-300',
-          'via-orange-400',
-          'to-orange-600',
-          'bg-clip-text',
-          'text-transparent'
-        )
-      })
+      // splitFeatureTitle.chars.forEach((char) => {
+      //   char.classList.add(
+      //     'bg-gradient-to-r',
+      //     'from-yellow-300',
+      //     'via-orange-400',
+      //     'to-orange-600',
+      //     'bg-clip-text',
+      //     'text-transparent'
+      //   )
+      // })
 
       gsap.from(splitFeatureTitle.chars, {
         x: -100,
@@ -224,7 +224,7 @@ const WhySolStore = () => {
 
   return (
     <section
-    id='why-solStore'
+      id='why-solStore'
       className='relative min-h-screen overflow-hidden bg-black px-6 py-24 text-white'
       ref={sectionRef}
     >
@@ -239,14 +239,23 @@ const WhySolStore = () => {
       <div className='relative mx-auto max-w-7xl'>
         {/* Badge */}
         <div className='flex items-center justify-center py-4'>
-          <h2 className='feature-title rounded-full border border-orange-500/30 bg-white/[0.02] px-5 py-2 text-center text-sm tracking-wide backdrop-blur-xl'>
+          <h2
+            style={{
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              color: '#f97316',
+              marginBottom: 18,
+            }}
+            className='feature-title text-orange-600 '>
             Why SolStore
           </h2>
         </div>
 
         {/* Heading */}
         <div className='mx-auto mb-16 max-w-3xl text-center'>
-          <h2 className='main-heading font-serif text-4xl font-black tracking-tight text-white md:text-4xl'>
+          <h2 className='main-heading text-4xl font-black tracking-tight text-white md:text-4xl'>
             Everything You Need
             <br />
             to Deploy Faster

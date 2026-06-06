@@ -31,7 +31,7 @@ export async function queueProvisionStorage(
   data: ProvisionStorageJob,
 ): Promise<void> {
   await getStorageQueue().add(JOB_NAMES.PROVISION_STORAGE, data, {
-    jobId: `provision_${data.userId}`,
+    jobId: `provision_${data.userId}_${Date.now()}`,
     ...DEFAULT_JOB_OPTIONS,
   });
   console.log(`[queue] Queued provision for user ${data.userId.slice(0, 8)}`);
