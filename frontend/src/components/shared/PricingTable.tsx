@@ -42,7 +42,7 @@ const bentoCards = [
 
 const PricingSection = () => {
     return (
-        <section className="relative overflow-hidden px-6 py-32 bg-black">
+        <section id='pricing' className="relative overflow-hidden px-6 py-32 bg-black">
             <div className="relative z-10 mx-auto max-w-7xl">
                 {/* Heading */}
                 <div className="mx-auto mb-24 max-w-4xl text-center">
@@ -55,11 +55,10 @@ const PricingSection = () => {
                             Start free.
                         </span>
                         <br />
-                        <span className="text-white/40 text-6xl tracking-normal">
+                        <span className="text-white/40">
                             Scale when you need it.
                         </span>
                     </h2>
-
                     <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-zinc-500">
                         No subscriptions. No hidden bandwidth fees.
                         Just simple usage-based pricing powered by Solana.
@@ -68,30 +67,49 @@ const PricingSection = () => {
                 {/* Grid */}
                 <div className="grid auto-rows-[240px] gap-6 md:grid-cols-4">
                     {/* Large */}
-                    <div className="group relative overflow-hidden rounded-[36px] border border-purple-500/20 bg-gradient-to-b from-[#1a1328] to-[#0d0d12] p-8 md:col-span-2">
+                    <div className="relative overflow-hidden rounded-[36px] border border-purple-500/20 bg-gradient-to-br from-[#140c22] via-[#0d0918] to-[#08080c] p-8 md:col-span-2">
 
-                        <div className="absolute right-0 top-0 h-60 w-60 rounded-full bg-purple-500/20 blur-[100px]" />
+                        {/* Glow */}
+                        <div className="absolute right-0 top-0 h-60 w-60 rounded-full bg-purple-500/10 blur-[120px]" />
 
-                        <div className="relative z-10">
+                        {/* Noise texture */}
+                        <div
+                            className="absolute inset-0 opacity-[0.03]"
+                            style={{
+                                backgroundImage:
+                                    'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)',
+                                backgroundSize: '14px 14px',
+                            }}
+                        />
 
-                            <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-purple-500/10">
-                                <HardDrive className="h-7 w-7 text-purple-300" />
+                        <div className="relative z-10 flex h-full flex-col justify-between">
+
+                            <div>
+                                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-purple-500/20 bg-purple-500/10">
+                                    <HardDrive className="h-6 w-6 text-purple-300" />
+                                </div>
+
+                                <h3 className="text-5xl md:text-6xl font-black tracking-[-0.08em] text-white">
+                                    10GB
+                                </h3>
+
+                                <p className="mt-2 text-lg font-semibold text-purple-300">
+                                    Free storage included
+                                </p>
+
+                                <p className="mt-3 max-w-md text-sm leading-relaxed text-zinc-400">
+                                    Every account starts with 10GB of Cloudflare R2 storage.
+                                </p>
                             </div>
-
-                            <div className="text-3xl font-black tracking-[-0.08em] text-white">
-                                10GB
-                            </div>
-
-                            <div className="mt-2 text-xl font-semibold text-purple-300">
-                                Free Forever
-                            </div>
-
-                            <p className="mt-6 max-w-md text-zinc-400">
-                                Every account starts with free storage.
-                                Most indie projects never pay anything.
-                            </p>
+                            {/* 
+                            <div className="border-t border-white/5 pt-4">
+                                <span className="text-sm text-zinc-500">
+                                    No credit card required
+                                </span>
+                            </div> */}
 
                         </div>
+
                     </div>
 
                     {/* Card */}
