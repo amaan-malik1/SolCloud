@@ -91,9 +91,6 @@ export default function DashboardHome() {
   const firstName = user?.email?.split('@')[0] ?? 'there';
   const isVerified = user?.emailVerified;
 
-  // console.log(!!isVerified);
-
-
   return (
     <div className="space-y-8">
       <div className="flex items-start justify-between">

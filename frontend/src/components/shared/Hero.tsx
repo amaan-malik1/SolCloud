@@ -131,11 +131,6 @@ const Hero = () => {
         <div className='absolute right-[15%] top-[30%] h-[350px] w-[350px] rounded-full bg-violet-500/5 blur-[120px]' />
       </div>
 
-      {/* Watermark */}
-      <div className='pointer-events-none absolute bottom-[-40px] left-1/2 -translate-x-1/2 select-none text-[240px] font-black tracking-tight text-white/[0.02]'>
-        SOLSTORE
-      </div>
-
       {/* Floating Cards */}
       {floatingCards.map((card, index) => {
         const Icon = card.icon

@@ -72,9 +72,9 @@ export function Navbar() {
         <div className='flex items-center gap-3'>
           {isAuthenticated ? (
             <>
-              <span className='hidden text-sm text-zinc-500 lg:block'>
+              {/* <span className='hidden text-sm text-zinc-500 lg:block'>
                 {user?.email}
-              </span>
+              </span> */}
 
               <Link
                 to='/dashboard'

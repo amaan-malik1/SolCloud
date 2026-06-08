@@ -297,7 +297,7 @@ const HowItWorks = () => {
                     </p>
 
                     <h2
-                        className='font-serif space-y-[-3] text-5xl'
+                        className='space-y-[-3] text-5xl'
                     >
                         Pay with SOL.
                         <br />
@@ -316,21 +316,7 @@ const HowItWorks = () => {
                         </span>
                     </h2>
 
-                    <p
-                        style={{
-                            maxWidth: 640,
-                            margin: '0 auto',
-                            fontSize: 18,
-                            lineHeight: 1.8,
-                            color:
-                                'rgba(255,255,255,0.45)',
-                        }}
-                    >
-                        Automated infrastructure powered
-                        by Solana payments and Cloudflare
-                        R2 provisioning — designed for
-                        developers who want zero friction.
-                    </p>
+
                 </div>
 
                 {/* Timeline */}

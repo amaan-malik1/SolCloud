@@ -1,7 +1,8 @@
 import { NavLink } from 'react-router-dom'
 import { cn } from '../../lib/utils'
 import { Logo } from '../shared/Logo'
-import { LayoutDashboard, HardDrive, CreditCard, Key, Settings, ExternalLink } from 'lucide-react'
+import { LayoutDashboard, HardDrive, CreditCard, Key, Settings, ExternalLink, BadgeCheck } from 'lucide-react'
+import { useAuthStore } from '@/store/auth.store'
 
 const NAV_ITEMS = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Overview' },
@@ -12,6 +13,7 @@ const NAV_ITEMS = [
 ]
 
 export function Sidebar() {
+  const { user } = useAuthStore();
   return (
     <aside className="fixed left-0 top-0 bottom-0 w-56 flex flex-col z-40"
       style={{ background: 'rgba(10,10,16,0.95)', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
@@ -30,12 +32,9 @@ export function Sidebar() {
           </NavLink>
         ))}
       </nav>
-      {/* <div className="p-3 border-t border-white/5">
-        <a href="https://earn.superteam.fun" target="_blank" rel="noreferrer"
-          className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-white/30 hover:text-white/50 transition-colors">
-          <ExternalLink className="w-3 h-3" />Superteam Grant
-        </a>
-      </div> */}
+      <div className=' absolute text-sm flex justify-center items-center gap-1'>
+        <span className='fixed bottom-5 left-2'> {user?.email}</span>
+      </div>
     </aside>
   )
 }
