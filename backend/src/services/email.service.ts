@@ -39,7 +39,7 @@ function template(body: string): string {
 }
 
 export async function sendVerificationEmail(email: string, token: string): Promise<void> {
-  const url = `${process.env.BACKEND_URL}/verify-email?token=${token}`;
+  const url = `${process.env.BACKEND_URL}/api/auth/verify-email?token=${token}`;
 
   await sendMail(email, 'Verify your SolStore email', template(`
     <h1 style="font-size:24px;font-weight:700;color:#fff;margin:0 0 12px;letter-spacing:-0.5px;">Verify your email</h1>
@@ -56,7 +56,7 @@ export async function sendVerificationEmail(email: string, token: string): Promi
 }
 
 export async function sendPasswordResetEmail(email: string, token: string): Promise<void> {
-  const url = `${BASE}/reset-password?token=${token}`
+  const url = `${BASE}/api/auth/reset-password?token=${token}`
   await sendMail(email, 'Reset your SolStore password', template(`
     <h1 style="font-size:24px;font-weight:700;color:#fff;margin:0 0 12px;">Reset your password</h1>
     <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin:0 0 28px;">

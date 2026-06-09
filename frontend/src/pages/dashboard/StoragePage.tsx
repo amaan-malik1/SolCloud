@@ -150,7 +150,7 @@ export default function StoragePage() {
         {costLoading ? <div className="flex items-center justify-center h-40"><LoadingSpinner className="w-5 h-5" /></div> : <CostChart data={costData?.chart ?? []} height={160} />}
         {costData?.chart.length === 0 && (
           <div className="rounded-xl p-4 mt-2" style={{ background: 'rgba(20,241,149,0.04)', border: '1px solid rgba(20,241,149,0.1)' }}>
-            <p className="text-xs text-sol-green/70 font-body text-center">🎉 No charges yet — you're within the 10 GB free tier</p>
+            <p className="text-xs text-sol-green/70 font-body text-center">No charges yet — you're within the 10 GB free tier</p>
           </div>
         )}
       </div>
