@@ -8,7 +8,7 @@ export function useBalance() {
   return useQuery({
     queryKey: ["balance"],
     queryFn: storageApi.getBalance,
-    refetchInterval: 30_000,
+    refetchInterval: 15_000,
   });
 }
 
@@ -16,7 +16,7 @@ export function useStorageStatus() {
   return useQuery({
     queryKey: ["storage-status"],
     queryFn: storageApi.getStatus,
-    refetchInterval: 10_000,
+    refetchInterval: 30_000,
   });
 }
 
@@ -33,6 +33,7 @@ export function useTransactions() {
   return useQuery({
     queryKey: ["transactions"],
     queryFn: storageApi.getTransactions,
+    refetchInterval: 10_000
   });
 }
 

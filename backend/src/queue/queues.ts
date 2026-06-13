@@ -1,4 +1,5 @@
 import { Queue } from "bullmq";
+import type { ConnectionOptions } from 'bullmq'
 import { getProducerConnection } from "./redis.connection";
 import { JOB_NAMES } from "./queue.types";
 import type {
@@ -21,7 +22,7 @@ let _storageQueue: Queue | null = null;
 export function getStorageQueue(): Queue {
   if (_storageQueue) return _storageQueue;
   _storageQueue = new Queue("storage", {
-    connection: getProducerConnection(),
+    connection: getProducerConnection() as unknown as ConnectionOptions,
     defaultJobOptions: DEFAULT_JOB_OPTIONS,
   });
   return _storageQueue;

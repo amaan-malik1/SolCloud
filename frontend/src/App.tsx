@@ -19,22 +19,45 @@ import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import ResetPasswordPage from './pages/auth/ResetPasswordPage'
 import { useAuthStore } from './store/auth.store'
 import VerifyFirst from './components/shared/VerifyFirst'
+import WaitlistPage from './pages/WaitlistPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { retry: 1, staleTime: 30_000, refetchOnWindowFocus: false },
   },
-});
+})
 
+const WAITLIST_MODE = import.meta.env.VITE_WAITLIST_MODE === 'true'
 
-export default function App() {
-  const { user } = useAuthStore();
-  const isVerified = user?.emailVerified;
+const toastStyle = {
+  style: {
+    background: '#13131f',
+    color: '#f0f0f8',
+    border: '1px solid rgba(255,255,255,0.07)',
+    fontFamily: 'DM Sans, sans-serif',
+    fontSize: '14px',
+  },
+}
+
+function WaitlistApp() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="*" element={<WaitlistPage />} />
+      </Routes>
+      <Toaster position="top-center" toastOptions={toastStyle} />
+    </BrowserRouter>
+  )
+}
+
+function FullApp() {
+  const { user } = useAuthStore()
+  const isVerified = user?.emailVerified
 
   return (
-    <SolanaWalletProvider>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+    <BrowserRouter>
+      <SolanaWalletProvider>
+        <QueryClientProvider client={queryClient}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -46,36 +69,32 @@ export default function App() {
             <Route element={<ProtectedRoute />}>
               <Route element={<DashboardLayout />}>
                 <Route path="/dashboard" element={<DashboardHome />} />
-
-                <Route path="/dashboard/storage"
+                <Route
+                  path="/dashboard/storage"
                   element={isVerified ? <StoragePage /> : <VerifyFirst />}
                 />
-                <Route path="/dashboard/payment"
+                <Route
+                  path="/dashboard/payment"
                   element={isVerified ? <PaymentPage /> : <VerifyFirst />}
                 />
-                <Route path="/dashboard/credentials"
+                <Route
+                  path="/dashboard/credentials"
                   element={isVerified ? <CredentialsPage /> : <VerifyFirst />}
                 />
                 <Route path="/dashboard/settings" element={<SettingsPage />} />
               </Route>
             </Route>
+
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        </BrowserRouter>
 
-        <Toaster
-          position="top-center"
-          toastOptions={{
-            style: {
-              background: '#13131f',
-              color: '#f0f0f8',
-              border: '1px solid rgba(255,255,255,0.07)',
-              fontFamily: 'DM Sans, sans-serif',
-              fontSize: '14px',
-            },
-          }}
-        />
-      </QueryClientProvider>
-    </SolanaWalletProvider>
+          <Toaster position="top-center" toastOptions={toastStyle} />
+        </QueryClientProvider>
+      </SolanaWalletProvider>
+    </BrowserRouter>
   )
+}
+
+export default function App() {
+  return WAITLIST_MODE ? <WaitlistApp /> : <FullApp />
 }

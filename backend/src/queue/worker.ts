@@ -1,4 +1,5 @@
 import { Worker, type Job } from "bullmq";
+import type { ConnectionOptions } from 'bullmq'
 import { getWorkerConnection } from "./redis.connection";
 import { JOB_NAMES } from "./queue.types";
 import type {
@@ -76,7 +77,7 @@ export function startWorker(): Worker {
   if (_worker) return _worker;
 
   _worker = new Worker("storage", processJob, {
-    connection: getWorkerConnection(),
+    connection: getWorkerConnection() as unknown as ConnectionOptions,
     concurrency: 3,
   });
 

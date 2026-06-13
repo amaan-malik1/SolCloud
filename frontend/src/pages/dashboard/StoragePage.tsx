@@ -19,7 +19,11 @@ const FREE_TIER = 10 * 1024 * 1024 * 1024
 export default function StoragePage() {
   const queryClient = useQueryClient()
   const [historyDays, setHistoryDays] = useState(30)
-  const { data: storage, isLoading } = useQuery({ queryKey: ['storage-status'], queryFn: storageApi.getStatus })
+  const { data: storage, isLoading } = useQuery({
+    queryKey: ['storage-status'],
+    queryFn: storageApi.getStatus,
+    refetchInterval: 30_000,
+  })
   const { data: details } = useQuery({ queryKey: ['storage-credentials'], queryFn: storageApi.getCredentials, enabled: storage?.hasStorage && storage?.status === 'ACTIVE', retry: false })
   const { data: suspensionStatus } = useSuspensionStatus()
   const { data: historyData, isLoading: historyLoading } = useUsageHistory(historyDays)
@@ -77,7 +81,13 @@ export default function StoragePage() {
             <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-white/5">
               {[
                 { label: 'Used', value: formatBytes(storage?.storageBytes ?? 0), color: 'text-white' },
-                { label: 'Available', value: formatBytes(FREE_TIER - (storage?.storageBytes ?? 0)), color: 'text-sol-green' },
+                {
+                  label: 'Available',
+                  value: Math.max(0, FREE_TIER - (storage?.storageBytes ?? 0)) > 0
+                    ? formatBytes(FREE_TIER - (storage?.storageBytes ?? 0))
+                    : 'Over limit',
+                  color: (storage?.storageBytes ?? 0) > FREE_TIER ? 'text-red-400' : 'text-sol-green'
+                },
                 { label: 'Limit', value: formatBytes(FREE_TIER), color: 'text-white/50' },
               ].map(stat => (
                 <div key={stat.label} className="text-center">

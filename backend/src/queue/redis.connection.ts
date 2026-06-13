@@ -1,4 +1,4 @@
-import { Redis } from "ioredis";
+import IORedis from 'ioredis'
 import { config } from "../config";
 
 const REDIS_OPTIONS = {
@@ -10,12 +10,12 @@ const REDIS_OPTIONS = {
   }),
 };
 
-let _producerConnection: Redis | null = null;
-let _workerConnection: Redis | null = null;
+let _producerConnection: IORedis | null = null;
+let _workerConnection: IORedis | null = null;
 
-export function getProducerConnection(): Redis {
+export function getProducerConnection(): IORedis {
   if (_producerConnection) return _producerConnection;
-  _producerConnection = new Redis(config.redis.url, REDIS_OPTIONS);
+  _producerConnection = new IORedis(config.redis.url, REDIS_OPTIONS);
   _producerConnection.on("connect", () =>
     console.log("✅ Redis producer connected"),
   );
@@ -25,9 +25,9 @@ export function getProducerConnection(): Redis {
   return _producerConnection;
 }
 
-export function getWorkerConnection(): Redis {
+export function getWorkerConnection(): IORedis {
   if (_workerConnection) return _workerConnection;
-  _workerConnection = new Redis(config.redis.url, REDIS_OPTIONS);
+  _workerConnection = new IORedis(config.redis.url, REDIS_OPTIONS);
   _workerConnection.on("connect", () =>
     console.log("✅ Redis worker connected"),
   );

@@ -21,17 +21,21 @@ import solanaRouter from "./routes/solana.route";
 import storageRouter from "./routes/storage.route";
 import billingRouter from "./routes/billing.route";
 import settingsRouter from "./routes/settings.route";
+import waitlistRouter from './routes/waitlist.route'
+
 
 const app = express();
 
 app.use(helmet());
 app.use(
   cors({
-    origin: [config.app.frontendUrl,"https://solstore.pro", "http://localhost:5173"],
+    origin: [config.app.frontendUrl, "https://solstore.pro", "http://localhost:5173"],
     credentials: true,
   }),
 );
 app.use(express.json({ limit: "10kb" }));
+
+app.use('/api/waitlist', waitlistRouter)
 
 // health check route
 app.get("/health", (_req, res) => {

@@ -155,3 +155,11 @@ model CredentialRotation {
   @@index([userId])
   @@map("credential_rotations")
 }
+
+model Waitlist {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("waitlist")
+}
