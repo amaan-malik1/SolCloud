@@ -12,7 +12,12 @@ import { getNodeSnippet, getPythonSnippet, getCliSnippet, getEnvSnippet } from '
 import { useRotationHistory } from '../../hooks/useDashboard'
 
 type SnippetTab = 'node' | 'python' | 'cli' | 'env'
-const TABS: { id: SnippetTab; label: string }[] = [{ id: 'node', label: 'Node.js' }, { id: 'python', label: 'Python' }, { id: 'cli', label: 'AWS CLI' }, { id: 'env', label: '.env' }]
+const TABS = [
+  { id: 'node', label: 'Node.js' },
+  { id: 'python', label: 'Python' },
+  { id: 'cli', label: 'AWS CLI' },
+  { id: 'env', label: '.env' },
+]
 
 export default function CredentialsPage() {
   const queryClient = useQueryClient()
@@ -49,11 +54,35 @@ export default function CredentialsPage() {
     )
   }
 
-  const { bucket, credentials } = data
-  const snippetParams = { endpoint: credentials.endpoint, accessKeyId: credentials.accessKeyId, secretAccessKey: credentials.secretAccessKey, bucketName: bucket.name, region: credentials.region }
-  const snippetMap: Record<SnippetTab, string> = { node: getNodeSnippet(snippetParams), python: getPythonSnippet(snippetParams), cli: getCliSnippet(snippetParams), env: getEnvSnippet(snippetParams) }
-  const labelMap: Record<SnippetTab, string> = { node: 'storage.ts', python: 'storage.py', cli: 'terminal', env: '.env' }
-  const installMap: Record<string, string | null> = { node: 'npm install @aws-sdk/client-s3', python: 'pip install boto3', cli: 'pip install awscli', env: null }
+  const { bucket, credentials } = data;
+
+  const snippetParams = {
+    endpoint: credentials.endpoint,
+    accessKeyId: credentials.accessKeyId,
+    secretAccessKey: credentials.secretAccessKey,
+    bucketName: bucket.name,
+    region: credentials.region
+  }
+
+  const snippetMap: Record<SnippetTab, string> = {
+    node: getNodeSnippet(snippetParams),
+    python: getPythonSnippet(snippetParams),
+    cli: getCliSnippet(snippetParams),
+    env: getEnvSnippet(snippetParams)
+  }
+
+  const labelMap: Record<SnippetTab, string> = {
+    node: 'storage.ts',
+    python: 'storage.py',
+    cli: 'terminal',
+    env: '.env'
+  }
+  const installMap: Record<string, string | null> = {
+    node: 'npm install @aws-sdk/client-s3  # Works with Cloudflare R2',
+    python: 'pip install boto3  # Works with Cloudflare R2',
+    cli: 'pip install awscli  # Works with Cloudflare R2',
+    env: null,
+  }
 
   return (
     <div className="space-y-6 max-w-3xl">
