@@ -12,7 +12,7 @@ import { getNodeSnippet, getPythonSnippet, getCliSnippet, getEnvSnippet } from '
 import { useRotationHistory } from '../../hooks/useDashboard'
 
 type SnippetTab = 'node' | 'python' | 'cli' | 'env'
-const TABS = [
+const TABS: { id: SnippetTab; label: string }[] = [
   { id: 'node', label: 'Node.js' },
   { id: 'python', label: 'Python' },
   { id: 'cli', label: 'AWS CLI' },
@@ -117,7 +117,7 @@ export default function CredentialsPage() {
         <div className="flex items-center gap-2 mb-5"><Terminal className="w-4 h-4 text-white/40" /><h2 className="font-display font-semibold text-base text-white">SDK quickstart</h2></div>
         <div className="flex gap-1 p-1 rounded-xl mb-5 w-fit" style={{ background: 'rgba(0,0,0,0.3)' }}>
           {TABS.map(tab => (
-            <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+            <button key={tab.id} onClick={() => setActiveTab(tab.id as SnippetTab)}
               className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all font-body ${activeTab === tab.id ? 'bg-sol-purple/20 text-sol-purple border border-sol-purple/30' : 'text-white/40 hover:text-white/60'}`}>
               {tab.label}
             </button>
