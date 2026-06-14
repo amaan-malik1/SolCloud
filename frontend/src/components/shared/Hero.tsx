@@ -164,16 +164,19 @@ const Hero = () => {
 
       {/* Main Content */}
       <div className='relative z-10 mx-auto mt-10 max-w-6xl text-center'>
-        <h1
-          className='hero-title font-black leading-[0.95] tracking-[-0.06em]'
-          style={{
-            fontSize: 'clamp(72px,10vw,140px)',
-          }}
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="mt-10 max-w-5xl text-center text-5xl font-semibold leading-[0.95] tracking-[-0.05em] md:text-7xl lg:text-[92px]"
         >
-          Cloud storage.
+          Cloud Storage
           <br />
-          No card required.
-        </h1>
+
+          <span className="text-white/90">
+            for the Solana Era.
+          </span>
+        </motion.h1>
 
         <p className='hero-subtitle mx-auto mt-10 max-w-3xl text-xl leading-relaxed text-zinc-500'>
           Pay with SOL. Get instant access to production-grade
@@ -259,6 +262,35 @@ const Hero = () => {
           <ChevronDown className='h-5 w-5' />
         </motion.div>
       </div>
+
+      {/* PLANET HORIZON */}
+      <motion.div
+        animate={{
+          opacity: [0.75, 1, 0.75],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+        }}
+        className="pointer-events-none absolute bottom-[-380px] left-1/2 h-[700px] w-[200vw] -translate-x-1/2 rounded-[100%]"
+        style={{
+          boxShadow: `
+            0 0 35px rgba(255,255,255,0.4),
+            0 0 90px rgba(153,69,255,0.35),
+            0 0 140px rgba(20,241,149,0.15)
+          `,
+          borderTop: "2px solid rgba(255,255,255,.55)",
+        }}
+      />
+
+      {/* VIGNETTE */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at center, transparent 20%, rgba(0,0,0,.75) 100%)",
+        }}
+      />
     </section>
   )
 }
