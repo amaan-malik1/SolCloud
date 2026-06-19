@@ -47,7 +47,8 @@ export async function register(email: string, password: string): Promise<AuthRes
     console.error('[email] Verification send failed:', err.message)
   )
 
-  const token = signToken({ userId: user.id, email: normalizedEmail })
+  // tokenVersion starts at 0 for new users
+  const token = signToken({ userId: user.id, email: normalizedEmail, tokenVersion: 0 })
   return {
     token,
     user: { id: user.id, email: normalizedEmail, createdAt: new Date().toISOString() },
@@ -64,13 +65,18 @@ export async function login(email: string, password: string): Promise<AuthRespon
 
   if (!user || !passwordMatch) throw new Error('INVALID_CREDENTIALS')
 
-  // Check email verified
+  // Check email verified + get current tokenVersion
   const fullUser = await prisma.user.findUnique({
     where: { id: user.id },
-    select: { emailVerified: true },
+    select: { emailVerified: true, tokenVersion: true },
   })
 
-  const token = signToken({ userId: user.id, email: user.email })
+  const token = signToken({
+    userId: user.id,
+    email: user.email,
+    tokenVersion: fullUser?.tokenVersion ?? 0,
+  })
+
   return {
     token,
     user: { id: user.id, email: user.email, createdAt: new Date().toISOString() },
@@ -104,8 +110,6 @@ export async function verifyEmail(token: string): Promise<{ email: string }> {
 }
 
 export async function resendVerification(email: string): Promise<void> {
-  // console.log("Inside resend verification function: ", email);
-
   const user = await prisma.user.findUnique({
     where: { email: email.toLowerCase().trim() },
     select: { id: true, emailVerified: true },
@@ -121,8 +125,6 @@ export async function resendVerification(email: string): Promise<void> {
     where: { id: user.id },
     data: { verifyToken, verifyTokenExpiry },
   })
-
-  // console.log("Before sendVerification mail");
 
   await sendVerificationEmail(email, verifyToken)
 }
@@ -160,13 +162,28 @@ export async function resetPassword(token: string, newPassword: string): Promise
 
   const passwordHash = await bcrypt.hash(newPassword, SALT_ROUNDS)
 
+  // Increment tokenVersion — invalidates ALL existing sessions (security: 
+  // if password was changed because of compromise, old stolen tokens stop working)
   await prisma.user.update({
     where: { id: user.id },
     data: {
       passwordHash,
       resetToken: null,
       resetTokenExpiry: null,
+      tokenVersion: { increment: 1 },
     },
+  })
+}
+
+/**
+ * Invalidates all active sessions for a user by bumping tokenVersion.
+ * Use this for: "Log out everywhere" feature, suspected account compromise,
+ * or admin-forced logout.
+ */
+export async function invalidateAllSessions(userId: string): Promise<void> {
+  await prisma.user.update({
+    where: { id: userId },
+    data: { tokenVersion: { increment: 1 } },
   })
 }
 

@@ -1,19 +1,21 @@
-import { PrismaClient } from "@prisma/client";
-import { config } from "../config";
+import { PrismaClient } from '@prisma/client'
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: config.app.isDev ? ["warn", "error"] : ["error"],
-  });
-
-if (config.app.isDev) globalForPrisma.prisma = prisma;
+export const prisma = new PrismaClient()
 
 export async function testConnection(): Promise<void> {
-  await prisma.$queryRaw`SELECT 1`;
-  console.log("Postgres connected via Prisma");
+  let attempts = 0
+  const MAX_ATTEMPTS = 5
+
+  while (attempts < MAX_ATTEMPTS) {
+    try {
+      await prisma.$queryRaw`SELECT 1`
+      console.log('Postgres connected via Prisma')
+      return
+    } catch (err: any) {
+      attempts++
+      if (attempts >= MAX_ATTEMPTS) throw err
+      console.warn(`[db] Connection attempt ${attempts} failed — retrying in 3s...`)
+      await new Promise(resolve => setTimeout(resolve, 3000))
+    }
+  }
 }

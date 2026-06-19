@@ -185,3 +185,34 @@ export async function sendProvisionFailureEmail(email: string): Promise<void> {
     </p>
   `))
 }
+
+// send subscription
+export async function sendSubscriptionDowngradedEmail(
+  email: string,
+  previousTierName: string
+): Promise<void> {
+  await sendMail(email, 'Your SolStore subscription has changed', template(`
+    <h1 style="font-size:24px;font-weight:700;color:#fff;margin:0 0 12px;letter-spacing:-0.5px;">
+      Subscription renewal didn't go through
+    </h1>
+
+    <p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.75;margin:0 0 20px;">
+      Your <strong style="color:#fff;">${previousTierName}</strong> plan renewal was due,
+      but your balance wasn't enough to cover it. You've been moved to the
+      <strong style="color:#fff;">Free</strong> plan automatically.
+    </p>
+
+    <div style="background:rgba(249,115,22,0.06);border:1px solid rgba(249,115,22,0.18);border-radius:12px;padding:16px 20px;margin-bottom:28px;">
+      <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;">
+        Don't worry — your bucket and data are safe. You're now on
+        pay-as-you-go billing for usage beyond 10 GB. Top up your balance
+        anytime to upgrade back to ${previousTierName}.
+      </p>
+    </div>
+
+    <a href="${FRONTEND}/dashboard/settings"
+      style="display:inline-block;padding:13px 28px;background:linear-gradient(135deg,#9945FF,#7233cc);color:#fff;text-decoration:none;border-radius:12px;font-weight:600;font-size:15px;">
+      Manage subscription →
+    </a>
+  `))
+}

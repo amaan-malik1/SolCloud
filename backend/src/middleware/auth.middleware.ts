@@ -1,25 +1,45 @@
-import type { Request, Response, NextFunction } from "express";
-import { verifyToken } from "../services/auth.service";
+import { type Request, type Response, type NextFunction } from 'express'
+import { verifyToken } from '../services/auth.service'
+import { prisma } from '../db/client'
 
-export function authMiddleware(
+export async function authMiddleware(
   req: Request,
   res: Response,
-  next: NextFunction,
-): void {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ error: "No token provided" });
-    return;
+  next: NextFunction
+): Promise<void> {
+  const header = req.headers.authorization
+  if (!header || !header.startsWith('Bearer ')) {
+    res.status(401).json({ error: 'No token provided' })
+    return
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = header.slice(7)
 
   try {
-    const payload = verifyToken(token);
-    (req as any).user = payload;
-    next();
-  } catch {
-    res.status(401).json({ error: "Invalid or expired token" });
+    const payload = verifyToken(token)
+
+    // Check tokenVersion matches current DB value.
+    // If user changed password / logged out everywhere / was suspended,
+    // tokenVersion increments and old tokens become invalid even
+    // though the JWT signature itself is still valid.
+    const user = await prisma.user.findUnique({
+      where: { id: payload.userId },
+      select: { tokenVersion: true },
+    })
+
+    if (!user) {
+      res.status(401).json({ error: 'User not found' })
+      return
+    }
+
+    if (user.tokenVersion !== payload.tokenVersion) {
+      res.status(401).json({ error: 'Session expired, please log in again' })
+      return
+    }
+
+    ; (req as any).user = payload
+    next()
+  } catch (err) {
+    res.status(401).json({ error: 'Invalid or expired token' })
   }
 }

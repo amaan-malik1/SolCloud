@@ -1,15 +1,16 @@
 export interface JwtPayload {
-  userId: string;
-  email: string;
-  iat?: number;
-  exp?: number;
+  userId: string
+  email: string
+  tokenVersion: number
+}
+
+export interface AuthUser {
+  id: string
+  email: string
+  createdAt: string
 }
 
 export interface AuthResponse {
-  token: string;
-  user: {
-    id: string;
-    email: string;
-    createdAt: string;
-  };
+  token: string
+  user: AuthUser
 }

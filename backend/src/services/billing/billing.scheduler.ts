@@ -1,63 +1,76 @@
-import { runBillingCycle, type BillingRunResult } from "./billing.engine";
+import { runBillingCycle as runPaygBillingCycle } from './billing.engine'
+import { processSubscriptionRenewals } from './subscription.service'
 
-let schedulerHandle: NodeJS.Timeout | null = null;
-let isRunning = false;
-let lastRunAt: Date | null = null;
-let lastRunResult: BillingRunResult | null = null;
+let _schedulerStarted = false
+let _lastRunAt: Date | null = null
+let _nextRunAt: Date | null = null
+let _timer: ReturnType<typeof setTimeout> | null = null  // ← fixes NodeJS.Timeout error
 
-function msUntilMidnightUTC(): number {
-  const midnight = new Date();
-  midnight.setUTCHours(24, 0, 0, 0);
-  return midnight.getTime() - Date.now();
+function msUntilNextMidnightUtc(): number {
+  const now = new Date()
+  const next = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate() + 1,
+    0, 0, 0, 0
+  ))
+  return next.getTime() - now.getTime()
 }
 
-async function runAndReschedule(): Promise<void> {
-  if (isRunning) return;
-  isRunning = true;
-  try {
-    lastRunResult = await runBillingCycle();
-    lastRunAt = new Date();
-  } catch (err) {
-    console.error("[billing-scheduler] Billing cycle failed:", err);
-  } finally {
-    isRunning = false;
-  }
-  const msUntilNext = msUntilMidnightUTC();
+async function runDailyCycle(): Promise<{
+  paygResult: any
+  subscriptionResult: { processed: number; charged: number; downgraded: number }
+}> {
+  console.log('[billing] Running daily billing cycle...')
+
+  // 1. Subscription renewals first
+  const subscriptionResult = await processSubscriptionRenewals()
   console.log(
-    `[billing-scheduler] Next run in ${Math.round(msUntilNext / 1000 / 60)} minutes`,
-  );
-  schedulerHandle = setTimeout(runAndReschedule, msUntilNext);
+    `[billing] Subscription renewals — processed: ${subscriptionResult.processed}, ` +
+    `charged: ${subscriptionResult.charged}, downgraded: ${subscriptionResult.downgraded}`
+  )
+
+  // 2. PAYG usage billing
+  const paygResult = await runPaygBillingCycle()  // ← correct export name
+  console.log(`[billing] PAYG billing complete`)
+
+  _lastRunAt = new Date()
+  return { paygResult, subscriptionResult }
+}
+
+function scheduleNext(): void {
+  const delay = msUntilNextMidnightUtc()
+  _nextRunAt = new Date(Date.now() + delay)
+
+  _timer = setTimeout(async () => {
+    try {
+      await runDailyCycle()
+    } catch (err: any) {
+      console.error('[billing] Scheduled run failed:', err.message)
+    }
+    scheduleNext()
+  }, delay)
 }
 
 export function startBillingScheduler(): void {
-  if (schedulerHandle) return;
-  const hoursUntil = (msUntilMidnightUTC() / 1000 / 60 / 60).toFixed(1);
-  console.log(
-    `💰 Billing scheduler started — first run in ${hoursUntil} hours`,
-  );
-  schedulerHandle = setTimeout(runAndReschedule, msUntilMidnightUTC());
-}
+  if (_schedulerStarted) return
+  _schedulerStarted = true
 
-export function stopBillingScheduler(): void {
-  if (schedulerHandle) {
-    clearTimeout(schedulerHandle);
-    schedulerHandle = null;
-  }
+  const delay = msUntilNextMidnightUtc()
+  const hours = (delay / (1000 * 60 * 60)).toFixed(1)
+  console.log(`💰 Billing scheduler started — first run in ${hours} hours`)
+
+  scheduleNext()
 }
 
 export function getBillingSchedulerStatus() {
   return {
-    running: !!schedulerHandle,
-    isProcessing: isRunning,
-    lastRunAt: lastRunAt?.toISOString() ?? null,
-    nextRunAt: schedulerHandle
-      ? new Date(Date.now() + msUntilMidnightUTC()).toISOString()
-      : null,
-    lastRunResult,
-  };
+    started: _schedulerStarted,
+    lastRunAt: _lastRunAt,
+    nextRunAt: _nextRunAt,
+  }
 }
 
 export async function triggerBillingNow() {
-  if (isRunning) throw new Error("Billing cycle already in progress");
-  return runBillingCycle();
+  return runDailyCycle()
 }

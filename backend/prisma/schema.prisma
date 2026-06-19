@@ -21,12 +21,22 @@ model User {
   resetToken        String?   @unique @map("reset_token")
   resetTokenExpiry  DateTime? @map("reset_token_expiry")
 
+  // Security additions 
+  // Incremented on password reset / logout-all — invalidates old JWTs
+  tokenVersion Int @default(0) @map("token_version")
+
+  // Subscription additions 
+  subscriptionTier     SubscriptionTier @default(FREE) @map("subscription_tier")
+  subscriptionRenewsAt DateTime?        @map("subscription_renews_at")
+
+  // Relations 
   balance             Balance?
   transactions        Transaction[]
   bucket              Bucket?
   billingRecords      BillingRecord[]
   usageSnapshots      UsageSnapshot[]
   credentialRotations CredentialRotation[]
+  subscriptionRecords SubscriptionRecord[]
 
   @@map("users")
 }
@@ -43,7 +53,7 @@ model Balance {
   @@map("balances")
 }
 
-// Transactions 
+//  Transactions 
 model Transaction {
   id          String            @id @default(uuid())
   userId      String            @map("user_id")
@@ -56,7 +66,7 @@ model Transaction {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userId, createdAt])
   @@index([txSignature])
   @@map("transactions")
 }
@@ -109,7 +119,7 @@ model IndexerState {
   @@map("indexer_state")
 }
 
-// Billing records 
+// Billing records (PAYG usage) 
 model BillingRecord {
   id           String   @id @default(uuid())
   userId       String   @map("user_id")
@@ -122,7 +132,7 @@ model BillingRecord {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userId, periodStart])
   @@index([createdAt])
   @@map("billing_records")
 }
@@ -137,8 +147,7 @@ model UsageSnapshot {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
-  @@index([recordedAt])
+  @@index([userId, recordedAt])
   @@map("usage_snapshots")
 }
 
@@ -156,6 +165,37 @@ model CredentialRotation {
   @@map("credential_rotations")
 }
 
+//  Subscription records — tracks monthly tier charges 
+model SubscriptionRecord {
+  id          String           @id @default(uuid())
+  userId      String           @map("user_id")
+  tier        SubscriptionTier
+  amountUsd   Decimal          @map("amount_usd") @db.Decimal(12, 6)
+  periodStart DateTime         @map("period_start")
+  periodEnd   DateTime         @map("period_end")
+  status      String           @default("CHARGED")
+  createdAt   DateTime         @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, periodStart])
+  @@index([createdAt])
+  @@map("subscription_records")
+}
+
+// Subscription tier enum 
+// FREE  → 10 GB included, $0/month
+// PRO   → 100 GB included, $5/month,
+// TEAM  → 500 GB included, $20/month,
+enum SubscriptionTier {
+  FREE
+  PRO
+  TEAM
+
+  @@map("subscription_tier")
+}
+
+//  Waitlist 
 model Waitlist {
   id        String   @id @default(uuid())
   email     String   @unique
