@@ -11,7 +11,7 @@ const MIN_SOL_AMOUNT = 0.001
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 const POLL_INTERVAL_MS = config.solana.pollIntervalMs ?? 2000
-const STARTUP_RECOVERY_LIMIT = 100
+const STARTUP_RECOVERY_LIMIT = 30
 
 // ── RPC failover ─────────────────────────────────────────────────────────
 const RPC_ENDPOINTS = config.solana.network === 'mainnet-beta'
@@ -121,7 +121,7 @@ export async function processTransaction(signature: string): Promise<void> {
     console.warn(`[indexer] Unrecognized memo format, skipping: "${memo}"`)
     return
   }
-  
+
   const user = await findUserById(userId)
   if (!user) {
     console.warn(`[indexer] No user found for userId: ${userId} — possible spoofed memo`)
@@ -159,6 +159,7 @@ export async function recoverMissedTransactions(): Promise<void> {
       if (!existed) {
         await processTransaction(sigInfo.signature)
         recovered++
+        await new Promise(resolve => setTimeout(resolve, 250))
       }
     }
 

@@ -113,7 +113,8 @@ async function start() {
           process.exit(1)
         }
         await initIndexerState()
-        await startIndexer() // includes startup recovery scan internally
+        startIndexer().catch(err => console.error('[indexer] Failed to start:', err.message))
+
       } catch (err) {
         console.warn('Wallet not configured — indexer disabled')
       }
