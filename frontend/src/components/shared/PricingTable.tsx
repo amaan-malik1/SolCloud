@@ -178,7 +178,7 @@ const PricingSection = () => {
                             </div>
 
                             <div className="text-6xl font-black tracking-[-0.08em] text-white">
-                                $0.015
+                                $0.02
                             </div>
 
                             <div className="mt-2 text-lg text-zinc-400">

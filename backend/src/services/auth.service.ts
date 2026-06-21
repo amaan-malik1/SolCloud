@@ -175,11 +175,7 @@ export async function resetPassword(token: string, newPassword: string): Promise
   })
 }
 
-/**
- * Invalidates all active sessions for a user by bumping tokenVersion.
- * Use this for: "Log out everywhere" feature, suspected account compromise,
- * or admin-forced logout.
- */
+
 export async function invalidateAllSessions(userId: string): Promise<void> {
   await prisma.user.update({
     where: { id: userId },

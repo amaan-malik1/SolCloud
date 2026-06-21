@@ -4,18 +4,6 @@ const ALGORITHM = 'aes-256-gcm'
 const IV_LENGTH = 16
 const AUTH_TAG_LENGTH = 16
 
-// ── Key registry ──────────────────────────────────────────────────────────
-// Support multiple key versions for rotation.
-// Current key is always the highest version number.
-// Old keys are kept ONLY for decrypting existing data — never for new encryption.
-//
-// To rotate:
-//   1. Set ENCRYPTION_KEY_V2 in .env with a new 64-hex-char key
-//   2. Bump CURRENT_KEY_VERSION to 2
-//   3. Deploy — new encryptions use v2, old v1 data still decrypts fine
-//   4. (Optional) run a migration script to re-encrypt old data with v2,
-//      then remove ENCRYPTION_KEY_V1 once done
-
 const CURRENT_KEY_VERSION = 1
 
 function getKey(version: number): Buffer {
@@ -26,10 +14,6 @@ function getKey(version: number): Buffer {
   return Buffer.from(key, 'hex')
 }
 
-/**
- * Encrypts plaintext using the CURRENT key version.
- * Output format: v{version}:{iv}:{authTag}:{ciphertext} (all hex, colon-separated)
- */
 export function encrypt(text: string): string {
   const key = getKey(CURRENT_KEY_VERSION)
   const iv = crypto.randomBytes(IV_LENGTH)
@@ -41,11 +25,6 @@ export function encrypt(text: string): string {
   return `v${CURRENT_KEY_VERSION}:${iv.toString('hex')}:${authTag.toString('hex')}:${encrypted.toString('hex')}`
 }
 
-/**
- * Decrypts data, automatically detecting key version from the prefix.
- * Falls back to legacy format (no version prefix, assumes v1) for
- * data encrypted before this versioning system was introduced.
- */
 export function decrypt(data: string): string {
   const parts = data.split(':')
 

@@ -24,7 +24,7 @@ import waitlistRouter from './routes/waitlist.route'
 
 const app = express()
 
-// ── CORS — restrict origins in production ──────────────────────────────────
+//  CORS — restrict origins in production 
 const allowedOrigins = config.app.nodeEnv === 'production'
   ? [config.app.frontendUrl]
   : [config.app.frontendUrl, 'http://localhost:5173']
@@ -34,7 +34,7 @@ app.use(cors({
   credentials: true,
 }))
 
-// ── Helmet with CSP ──────────────────────────────────────────────────────
+//  Helmet with CSP 
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -57,10 +57,10 @@ app.use(helmet({
 
 app.use(express.json({ limit: '10kb' }))
 
-// ── General rate limit on all API routes ────────────────────────────────────
+//  General rate limit on all API routes 
 app.use('/api', generalApiRateLimit)
 
-// ── Health check ─────────────────────────────────────────────────────────
+//  Health check ─
 app.get('/health', (_req, res) => {
   res.json({
     status: 'ok',
@@ -69,7 +69,7 @@ app.get('/health', (_req, res) => {
   })
 })
 
-// ── Routes ───────────────────────────────────────────────────────────────
+//  Routes ─
 app.use('/api/auth', authRouter)
 app.use('/api/solana', solanaRouter)
 app.use('/api/storage', storageRouter)
@@ -82,9 +82,7 @@ app.use((_req, res) => {
 })
 app.use(errorHandler)
 
-// ═══════════════════════════════════════════════════════════════════════════
 // Startup
-// ═══════════════════════════════════════════════════════════════════════════
 async function start() {
   console.log('Starting SolStore backend...\n')
 

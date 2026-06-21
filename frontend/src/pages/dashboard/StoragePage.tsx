@@ -113,7 +113,7 @@ export default function StoragePage() {
           <div className="p-5 rounded-2xl surface-card">
             <h3 className="font-display font-semibold text-sm text-white mb-4">Pricing</h3>
             <div className="space-y-3">
-              {[{ label: 'Storage', value: '$0.015 / GB·mo' }, { label: 'Reads', value: '$0.36 / million' }, { label: 'Writes', value: '$4.50 / million' }, { label: 'Egress', value: 'FREE' }].map(item => (
+              {[{ label: 'Storage', value: '$0.02 / GB·mo' }, { label: 'Reads', value: '$0.36 / million' }, { label: 'Writes', value: '$4.50 / million' }, { label: 'Egress', value: 'FREE' }].map(item => (
                 <div key={item.label} className="flex items-center justify-between">
                   <span className="text-xs text-white/40 font-body">{item.label}</span>
                   <span className={`text-xs font-mono font-medium ${item.value === 'FREE' ? 'text-sol-green' : 'text-white'}`}>{item.value}</span>

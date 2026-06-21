@@ -4,14 +4,14 @@ import {
   verifyEmail, resendVerification,
   forgotPassword, resetPassword,
   invalidateAllSessions,
-} from '../services/auth.service'
-import { authMiddleware } from '../middleware/auth.middleware'
-import { authRateLimit, emailRateLimit, registerRateLimit } from '../middleware/rate.limit'
-import { healSingleUser } from '../services/heal.service'
+} from '../services/auth.service';
+import { authMiddleware } from '../middleware/auth.middleware';
+import { authRateLimit, emailRateLimit, registerRateLimit } from '../middleware/rate.limit';
+import { healSingleUser } from '../services/heal.service';
 
-const router = Router()
+const router = Router();
 
-// ── POST /api/auth/register ────────────────────────────────────────────────
+//  POST /api/auth/register 
 router.post('/register', registerRateLimit, async (req: Request, res: Response) => {
   const { email, password } = req.body
   if (!email || !password) {
@@ -30,7 +30,7 @@ router.post('/register', registerRateLimit, async (req: Request, res: Response) 
   }
 })
 
-// ── POST /api/auth/login ───────────────────────────────────────────────────
+//  POST /api/auth/login 
 router.post('/login', authRateLimit, async (req: Request, res: Response) => {
   const { email, password } = req.body
   if (!email || !password) {
@@ -48,7 +48,7 @@ router.post('/login', authRateLimit, async (req: Request, res: Response) => {
   }
 })
 
-// ── GET /api/auth/me ───────────────────────────────────────────────────────
+//  GET /api/auth/me 
 router.get('/me', authMiddleware, async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user!.userId
@@ -64,7 +64,7 @@ router.get('/me', authMiddleware, async (req: Request, res: Response) => {
   }
 })
 
-// ── POST /api/auth/logout-all — invalidate all sessions ────────────────────
+//  POST /api/auth/logout-all — invalidate all sessions 
 router.post('/logout-all', authMiddleware, async (req: Request, res: Response) => {
   try {
     await invalidateAllSessions((req as any).user!.userId)
@@ -74,7 +74,7 @@ router.post('/logout-all', authMiddleware, async (req: Request, res: Response) =
   }
 })
 
-// ── GET /api/auth/verify-email?token=xxx ──────────────────────────────────
+//  GET /api/auth/verify-email?token=xxx 
 router.get('/verify-email', async (req: Request, res: Response) => {
   const { token } = req.query
 
@@ -96,7 +96,7 @@ router.get('/verify-email', async (req: Request, res: Response) => {
   }
 })
 
-// ── POST /api/auth/resend-verification ────────────────────────────────────
+//  POST /api/auth/resend-verification 
 router.post('/resend-verification', emailRateLimit, async (req: Request, res: Response) => {
   const { email } = req.body
 
@@ -123,7 +123,7 @@ router.post('/resend-verification', emailRateLimit, async (req: Request, res: Re
   }
 })
 
-// ── POST /api/auth/forgot-password ────────────────────────────────────────
+//  POST /api/auth/forgot-password 
 router.post('/forgot-password', emailRateLimit, async (req: Request, res: Response) => {
   const { email } = req.body
 
@@ -140,7 +140,7 @@ router.post('/forgot-password', emailRateLimit, async (req: Request, res: Respon
   }
 })
 
-// ── POST /api/auth/reset-password ─────────────────────────────────────────
+//  POST /api/auth/reset-password 
 router.post('/reset-password', authRateLimit, async (req: Request, res: Response) => {
   const { token, password } = req.body
 

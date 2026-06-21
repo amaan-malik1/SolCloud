@@ -1,16 +1,6 @@
 import { prisma } from '../db/client'
 import { queueProvisionStorage } from '../queue/queues'
 
-/**
- * Finds users who have a positive balance but no provisioned bucket
- * (e.g. worker failed permanently, or job was lost during a Redis flush)
- * and re-queues provisioning for them.
- *
- * Called:
- *   1. On backend startup (with a short delay for worker to be ready)
- *   2. On every /api/auth/me call (cheap per-user check, catches issues
- *      fast for the specific user currently active)
- */
 export async function healUnprovisionedUsers(): Promise<{ healed: number }> {
     const balances = await prisma.balance.findMany({
         where: { amountUsd: { gt: 0 } },
@@ -45,10 +35,7 @@ export async function healUnprovisionedUsers(): Promise<{ healed: number }> {
     return { healed }
 }
 
-/**
- * Single-user heal check — used in /api/auth/me to catch issues
- * for the currently logged-in user without scanning everyone.
- */
+
 export async function healSingleUser(userId: string): Promise<boolean> {
     const [balance, bucket] = await Promise.all([
         prisma.balance.findUnique({ where: { userId }, select: { amountUsd: true } }),

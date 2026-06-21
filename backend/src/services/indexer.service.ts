@@ -13,19 +13,23 @@ const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12
 const POLL_INTERVAL_MS = config.solana.pollIntervalMs ?? 2000
 const STARTUP_RECOVERY_LIMIT = 30
 
-// ── RPC failover ─────────────────────────────────────────────────────────
+// ── RPC failover 
+
 const RPC_ENDPOINTS = config.solana.network === 'mainnet-beta'
   ? [
+    process.env.HELIUS_RPC_URL || 'https://api.mainnet-beta.solana.com',
     'https://api.mainnet-beta.solana.com',
-    'https://solana-api.projectserum.com',
     'https://rpc.ankr.com/solana',
   ]
-  : ['https://api.devnet.solana.com']
+  : [
+    process.env.HELIUS_RPC_URL || 'https://api.devnet.solana.com',
+    'https://api.devnet.solana.com',
+  ]
 
 let _connection: Connection | null = null
 let _currentRpcIndex = 0
 
-// ── Internal status tracking ───────────────────────────────────────────────
+// ── Internal status tracking 
 let _started = false
 let _pollTimer: NodeJS.Timeout | null = null
 let _consecutiveErrors = 0
@@ -225,10 +229,6 @@ export function stopIndexer(): void {
   _started = false
 }
 
-/**
- * Returns current indexer health and runtime stats.
- * Used by /api/solana/status and admin health checks.
- */
 export function getIndexerStatus() {
   return {
     started: _started,

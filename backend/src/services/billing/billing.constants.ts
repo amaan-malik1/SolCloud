@@ -1,9 +1,24 @@
+const MARKUP_MULTIPLIER = 1.35 // 35% markup over Cloudflare's wholesale rate
+
+// ── Cloudflare's actual wholesale rates (what SolStore pays) ───────────────
+const CF_STORAGE_COST_PER_GB_PER_MONTH = 0.015
+const CF_CLASS_A_PER_MILLION = 4.5   // write operations (PUT, POST, LIST)
+const CF_CLASS_B_PER_MILLION = 0.36  // read operations (GET, HEAD)
+
 export const BILLING = {
-  STORAGE_COST_PER_GB_PER_DAY: 0.015 / 30,
-  CLASS_A_PER_MILLION: 4.5,
-  CLASS_B_PER_MILLION: 0.36,
+  // Retail rate charged to users
+  STORAGE_COST_PER_GB_PER_DAY: (CF_STORAGE_COST_PER_GB_PER_MONTH * MARKUP_MULTIPLIER) / 30,
+
+  CLASS_A_PER_MILLION: CF_CLASS_A_PER_MILLION * MARKUP_MULTIPLIER,
+  CLASS_B_PER_MILLION: CF_CLASS_B_PER_MILLION * MARKUP_MULTIPLIER,
+
+  // Reference only what you actually pay Cloudflare 
+  COST_STORAGE_PER_GB_PER_DAY: CF_STORAGE_COST_PER_GB_PER_MONTH / 30,
+  COST_CLASS_A_PER_MILLION: CF_CLASS_A_PER_MILLION,
+  COST_CLASS_B_PER_MILLION: CF_CLASS_B_PER_MILLION,
+
   MIN_BILLABLE_AMOUNT: 0.000001,
   FREE_TIER_STORAGE_BYTES: 10 * 1024 * 1024 * 1024,
   SUSPENSION_THRESHOLD: 0,
   BYTES_PER_GB: 1024 * 1024 * 1024,
-} as const;
+} as const

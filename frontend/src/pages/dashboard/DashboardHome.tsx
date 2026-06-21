@@ -97,9 +97,9 @@ export default function DashboardHome() {
         <div>
           <h1 className="font-display font-bold text-2xl text-white tracking-tight flex justify-center items-center gap-1">Hey,
             {" "}
-            {firstName.slice(0, 5) + "..."}
+            {firstName.slice(0, 5) + ".."}
             {isVerified ? (
-              <BadgeCheck className='text-green-500 size-4' />
+              <BadgeCheck className='text-blue-500 size-4' />
             ) : (
               <BadgeX color='red' size={18} />
             )}

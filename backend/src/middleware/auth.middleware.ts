@@ -18,10 +18,6 @@ export async function authMiddleware(
   try {
     const payload = verifyToken(token)
 
-    // Check tokenVersion matches current DB value.
-    // If user changed password / logged out everywhere / was suspended,
-    // tokenVersion increments and old tokens become invalid even
-    // though the JWT signature itself is still valid.
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },
       select: { tokenVersion: true },

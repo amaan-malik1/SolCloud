@@ -26,7 +26,7 @@ function isAdmin(req: Request): boolean {
   return !!email && ADMIN_EMAILS.includes(email)
 }
 
-// ── GET /api/billing/history ────────────────────────────────────────────
+//  GET /api/billing/history 
 router.get('/history', authMiddleware, async (req: Request, res: Response) => {
   try {
     const [history, totalBilled] = await Promise.all([
@@ -50,12 +50,12 @@ router.get('/history', authMiddleware, async (req: Request, res: Response) => {
   }
 })
 
-// ── GET /api/billing/status ─────────────────────────────────────────────
+//  GET /api/billing/status ─
 router.get('/status', authMiddleware, (_req, res) => {
   res.json(getBillingSchedulerStatus())
 })
 
-// ── GET /api/billing/queue ──────────────────────────────────────────────
+//  GET /api/billing/queue 
 router.get('/queue', authMiddleware, async (_req, res) => {
   try {
     const stats = await getQueueStats()
@@ -65,7 +65,7 @@ router.get('/queue', authMiddleware, async (_req, res) => {
   }
 })
 
-// ── POST /api/billing/run — admin-only, dev-only ────────────────────────
+//  POST /api/billing/run — admin-only, dev-only 
 router.post('/run', authMiddleware, async (req: Request, res: Response) => {
   if (process.env.NODE_ENV === 'production') {
     res.status(403).json({ error: 'Manual billing disabled in production' })
@@ -85,16 +85,14 @@ router.post('/run', authMiddleware, async (req: Request, res: Response) => {
   }
 })
 
-// ═══════════════════════════════════════════════════════════════════════════
 // SUBSCRIPTION ENDPOINTS
-// ═══════════════════════════════════════════════════════════════════════════
 
-// ── GET /api/billing/tiers — list available subscription tiers ──────────
+//  GET /api/billing/tiers — list available subscription tiers 
 router.get('/tiers', async (_req: Request, res: Response) => {
   res.json({ tiers: TIER_DEFINITIONS })
 })
 
-// ── GET /api/billing/subscription — current user's tier + status ────────
+//  GET /api/billing/subscription — current user's tier + status 
 router.get('/subscription', authMiddleware, async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user.userId
@@ -128,7 +126,7 @@ router.get('/subscription', authMiddleware, async (req: Request, res: Response) 
   }
 })
 
-// ── POST /api/billing/subscription — change tier ─────────────────────────
+//  POST /api/billing/subscription — change tier ─
 router.post('/subscription', authMiddleware, async (req: Request, res: Response) => {
   const { tier } = req.body
   const validTiers = TIER_DEFINITIONS.map(t => t.id)
@@ -152,7 +150,7 @@ router.post('/subscription', authMiddleware, async (req: Request, res: Response)
   }
 })
 
-// ── GET /api/billing/subscription/history ─────────────────────────────────
+//  GET /api/billing/subscription/history ─
 router.get('/subscription/history', authMiddleware, async (req: Request, res: Response) => {
   try {
     const history = await getSubscriptionHistory((req as any).user.userId)

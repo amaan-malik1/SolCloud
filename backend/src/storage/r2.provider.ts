@@ -55,7 +55,6 @@ export class CloudflareR2Provider implements StorageProvider {
     }
 
     // Use master R2 credentials — bucket isolation is enforced at app layer
-    // Per-bucket scoped tokens require Cloudflare Workers API (Phase 2)
     return {
       bucketName,
       provider: 'R2',
