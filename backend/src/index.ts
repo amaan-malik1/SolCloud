@@ -13,7 +13,8 @@ import { checkRedisConnection } from './queue/redis.connection'
 import { startWorker } from './queue/worker'
 import { errorHandler } from './middleware/error.middleware'
 import { generalApiRateLimit } from './middleware/rate.limit'
-import { healUnprovisionedUsers } from './services/heal.service'
+import { healUnprovisionedUsers } from './services/heal.service';
+import filebrowserRouter from './routes/filebrowser.route'
 
 import authRouter from './routes/auth.route'
 import solanaRouter from './routes/solana.route'
@@ -76,6 +77,7 @@ app.use('/api/storage', storageRouter)
 app.use('/api/billing', billingRouter)
 app.use('/api/settings', settingsRouter)
 app.use('/api/waitlist', waitlistRouter)
+app.use('/api/files', filebrowserRouter)
 
 app.use((_req, res) => {
   res.status(404).json({ error: 'Route not found' })

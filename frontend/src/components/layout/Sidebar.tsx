@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { cn } from '../../lib/utils'
 import { Logo } from '../shared/Logo'
-import { LayoutDashboard, HardDrive, CreditCard, Key, Settings, ExternalLink, BadgeCheck } from 'lucide-react'
+import { LayoutDashboard, HardDrive, CreditCard, Key, Settings, ExternalLink, BadgeCheck, Files } from 'lucide-react'
 import { useAuthStore } from '@/store/auth.store'
 
 const NAV_ITEMS = [
@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { to: '/dashboard/storage', icon: HardDrive, label: 'Storage' },
   { to: '/dashboard/payment', icon: CreditCard, label: 'Add Funds' },
   { to: '/dashboard/credentials', icon: Key, label: 'Credentials' },
+  { to: '/dashboard/files', icon: Files, label: 'Files' },
   { to: '/dashboard/settings', icon: Settings, label: 'Settings' },
 ]
 

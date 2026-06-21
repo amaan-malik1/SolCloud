@@ -20,6 +20,8 @@ import ResetPasswordPage from './pages/auth/ResetPasswordPage'
 import { useAuthStore } from './store/auth.store'
 import VerifyFirst from './components/shared/VerifyFirst'
 import WaitlistPage from './pages/WaitlistPage'
+import FilesPage from './pages/dashboard/FilePage'
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -81,6 +83,7 @@ function FullApp() {
                   path="/dashboard/credentials"
                   element={isVerified ? <CredentialsPage /> : <VerifyFirst />}
                 />
+                <Route path="/dashboard/files" element={isVerified ? <FilesPage /> : <VerifyFirst />} />
                 <Route path="/dashboard/settings" element={<SettingsPage />} />
               </Route>
             </Route>
