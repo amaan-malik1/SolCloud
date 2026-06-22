@@ -22,6 +22,8 @@ import storageRouter from './routes/storage.route'
 import billingRouter from './routes/billing.route'
 import settingsRouter from './routes/settings.route'
 import waitlistRouter from './routes/waitlist.route'
+import webhookRouter from './routes/webhook.route'
+
 
 const app = express()
 
@@ -71,6 +73,7 @@ app.get('/health', (_req, res) => {
 })
 
 //  Routes ─
+app.use('/api/solana', webhookRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/solana', solanaRouter)
 app.use('/api/storage', storageRouter)

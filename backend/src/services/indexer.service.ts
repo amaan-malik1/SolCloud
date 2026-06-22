@@ -9,12 +9,12 @@ import { getSolPriceUsd } from './price.service'
 // ── Constants ────────────────────────────────────────────────────────────
 const MIN_SOL_AMOUNT = 0.001
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-
-const POLL_INTERVAL_MS = config.solana.pollIntervalMs ?? 2000
 const STARTUP_RECOVERY_LIMIT = 30
 
-// ── RPC failover 
+const POLLING_ENABLED = process.env.INDEXER_POLLING_ENABLED === 'true'
+const POLL_INTERVAL_MS = config.solana.pollIntervalMs ?? 8000
 
+// ── RPC ──────────────────────────────────────────────────────────────────
 const RPC_ENDPOINTS = config.solana.network === 'mainnet-beta'
   ? [
     process.env.HELIUS_RPC_URL || 'https://api.mainnet-beta.solana.com',
@@ -29,14 +29,15 @@ const RPC_ENDPOINTS = config.solana.network === 'mainnet-beta'
 let _connection: Connection | null = null
 let _currentRpcIndex = 0
 
-// ── Internal status tracking 
+// ── Internal status tracking ───────────────────────────────────────────────
 let _started = false
-let _pollTimer: NodeJS.Timeout | null = null
+let _pollTimer: ReturnType<typeof setInterval> | null = null
 let _consecutiveErrors = 0
 let _totalProcessed = 0
 let _lastProcessedAt: Date | null = null
 let _lastError: string | null = null
 let _startedAt: Date | null = null
+let _mode: 'webhook' | 'polling' = POLLING_ENABLED ? 'polling' : 'webhook'
 
 function getConnection(): Connection {
   if (_connection) return _connection
@@ -52,13 +53,9 @@ function rotateRpc(): Connection {
 }
 
 function extractUserId(memo: string): string | null {
-  // Format 1: plain UUID (new format)
   if (UUID_REGEX.test(memo)) return memo
-
-  // Format 2: solstore:{uuid}:v1 (legacy format from older transactions)
   const legacyMatch = memo.match(/^solstore:([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}):v\d+$/i)
   if (legacyMatch) return legacyMatch[1]
-
   return null
 }
 
@@ -80,6 +77,7 @@ function extractSolAmount(tx: ParsedTransactionWithMeta, platformAddress: string
   const postBalance = tx.meta?.postBalances?.[platformIndex] ?? 0
   return (postBalance - preBalance) / 1e9
 }
+
 
 export async function processTransaction(signature: string): Promise<void> {
   if (await txExists(signature)) {
@@ -147,6 +145,7 @@ export async function processTransaction(signature: string): Promise<void> {
   console.log(`[queue] Queued provision for user ${userId.slice(0, 8)}`)
 }
 
+
 export async function recoverMissedTransactions(): Promise<void> {
   console.log(`[indexer] Running startup recovery (last ${STARTUP_RECOVERY_LIMIT} txs)...`)
   const connection = getConnection()
@@ -213,12 +212,23 @@ async function poll(): Promise<void> {
   }
 }
 
+
 export async function startIndexer(): Promise<void> {
-  console.log(`🔍 Indexer starting — polling every ${POLL_INTERVAL_MS}ms`)
   _started = true
   _startedAt = new Date()
+
+  // Always run recovery once on boot — catches anything missed while offline
   await recoverMissedTransactions()
-  _pollTimer = setInterval(poll, POLL_INTERVAL_MS)
+
+  if (POLLING_ENABLED) {
+    console.log(`🔍 Indexer in POLLING mode — every ${POLL_INTERVAL_MS}ms`)
+    _mode = 'polling'
+    _pollTimer = setInterval(poll, POLL_INTERVAL_MS)
+  } else {
+    console.log(`🔍 Indexer in WEBHOOK mode — waiting for Helius push events`)
+    _mode = 'webhook'
+    // No interval timer — transactions arrive via POST /api/solana/webhook
+  }
 }
 
 export function stopIndexer(): void {
@@ -233,9 +243,10 @@ export function getIndexerStatus() {
   return {
     started: _started,
     startedAt: _startedAt,
+    mode: _mode,
     network: config.solana.network,
     currentRpc: RPC_ENDPOINTS[_currentRpcIndex],
-    pollIntervalMs: POLL_INTERVAL_MS,
+    pollIntervalMs: POLLING_ENABLED ? POLL_INTERVAL_MS : null,
     consecutiveErrors: _consecutiveErrors,
     lastError: _lastError,
     totalProcessed: _totalProcessed,
