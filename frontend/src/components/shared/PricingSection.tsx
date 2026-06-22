@@ -39,26 +39,35 @@ export default function PricingSection() {
                     <div style={{
                         display: 'inline-flex', alignItems: 'center', gap: 6,
                         padding: '5px 14px', borderRadius: 100,
-                        background: 'rgba(153,69,255,0.08)',
-                        border: '1px solid rgba(153,69,255,0.2)',
-                        fontSize: 12, color: '#9945FF',
+                        background: 'rgba(168,85,247,0.06)',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        fontSize: 12, color: '#A855F7',
                         fontFamily: 'DM Sans, sans-serif', marginBottom: 20,
                     }}>
                         <Zap size={12} /> Pricing
                     </div>
 
-                    <h2 style={{
-                        fontFamily: 'Syne, sans-serif', fontWeight: 800,
-                        fontSize: 36, letterSpacing: '-1.5px',
-                        color: '#fff', marginBottom: 14,
-                    }}>
-                        Start free. Scale when you need it.
+                    <h2
+                        style={{
+                            fontFamily: 'Syne, sans-serif',
+                            fontWeight: 600,
+                            fontSize: 'clamp(42px, 8vw, 80px)',
+                            lineHeight: 1,
+                            letterSpacing: '-0.08em',
+                            color: '#fff',
+                            marginBottom: 20,
+                        }}
+                    >
+                        Pricing that scales
+                        <br />
+                        with your storage.
                     </h2>
 
                     <p style={{
-                        fontSize: 15, color: 'rgba(255,255,255,0.45)',
-                        maxWidth: 480, margin: '0 auto', lineHeight: 1.7,
-                        fontFamily: 'DM Sans, sans-serif',
+                        maxWidth: 560,
+                        fontSize: 16,
+                        color: 'rgba(255,255,255,0.55)',
+                        lineHeight: 1.8,
                     }}>
                         No hidden bandwidth fees. Simple usage-based pricing,
                         powered by Solana.
@@ -104,78 +113,212 @@ export default function PricingSection() {
 
 function TierCard({ tier }: { tier: Tier }) {
     return (
-        <div style={{
-            position: 'relative',
-            background: tier.recommended ? 'rgba(153,69,255,0.04)' : 'rgba(255,255,255,0.02)',
-            border: tier.recommended ? '1px solid rgba(153,69,255,0.35)' : '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 20,
-            padding: '32px 28px',
-        }}>
+        <div
+            style={{
+                position: 'relative',
+                overflow: 'hidden',
+                background: 'rgba(255,255,255,0.02)',
+                border: tier.recommended
+                    ? '1px solid rgba(168,85,247,0.28)'
+                    : '1px solid rgba(255,255,255,0.06)',
+                borderRadius: 28,
+                padding: 36,
+                backdropFilter: 'blur(20px)',
+                minHeight: 520,
+                display: 'flex',
+                flexDirection: 'column',
+            }}
+        >
+            {/* Glow */}
             {tier.recommended && (
-                <div style={{
-                    position: 'absolute', top: -12, left: 28,
-                    padding: '4px 14px', borderRadius: 100,
-                    background: 'linear-gradient(135deg,#9945FF,#7233cc)',
-                    fontSize: 11, fontWeight: 700, color: '#fff',
-                    fontFamily: 'DM Sans, sans-serif', letterSpacing: '0.3px',
-                }}>
-                    MOST POPULAR
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: -120,
+                        right: -120,
+                        width: 260,
+                        height: 260,
+                        borderRadius: '50%',
+                        background:
+                            'radial-gradient(circle, rgba(168,85,247,0.18), transparent 70%)',
+                        pointerEvents: 'none',
+                    }}
+                />
+            )}
+
+            {/* Badge */}
+            {tier.recommended && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 24,
+                        right: 24,
+                        padding: '6px 12px',
+                        borderRadius: 999,
+                        background: 'rgba(168,85,247,0.12)',
+                        border: '1px solid rgba(168,85,247,0.25)',
+                        color: '#A855F7',
+                        fontSize: 11,
+                        fontWeight: 700,
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                        fontFamily: 'DM Sans, sans-serif',
+                    }}
+                >
+                    Most Popular
                 </div>
             )}
 
-            <p style={{
-                fontSize: 14, color: 'rgba(255,255,255,0.5)',
-                fontFamily: 'DM Sans, sans-serif', marginBottom: 12,
-            }}>
+            {/* Plan Name */}
+            <div
+                style={{
+                    fontSize: 13,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(255,255,255,0.45)',
+                    marginBottom: 20,
+                    fontFamily: 'DM Sans, sans-serif',
+                    position: 'relative',
+                    zIndex: 1,
+                }}
+            >
                 {tier.name}
-            </p>
+            </div>
 
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 6 }}>
-                <span style={{
-                    fontFamily: 'Syne, sans-serif', fontWeight: 800,
-                    fontSize: 38, color: '#fff', letterSpacing: '-1.5px',
-                }}>
+            {/* Price */}
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    gap: 8,
+                    marginBottom: 8,
+                    position: 'relative',
+                    zIndex: 1,
+                }}
+            >
+                <span
+                    style={{
+                        fontFamily: 'Syne, sans-serif',
+                        fontWeight: 800,
+                        fontSize: 64,
+                        lineHeight: 1,
+                        letterSpacing: '-0.08em',
+                        color: '#fff',
+                    }}
+                >
                     ${tier.monthlyPriceUsd}
                 </span>
-                <span style={{
-                    fontSize: 13, color: 'rgba(255,255,255,0.4)',
-                    fontFamily: 'DM Sans, sans-serif',
-                }}>
+
+                <span
+                    style={{
+                        fontSize: 14,
+                        color: 'rgba(255,255,255,0.35)',
+                        marginBottom: 10,
+                        fontFamily: 'DM Sans, sans-serif',
+                    }}
+                >
                     /month
                 </span>
             </div>
 
-            <p style={{
-                fontSize: 13, color: '#14F195',
-                fontFamily: 'DM Sans, sans-serif', marginBottom: 24, fontWeight: 600,
-            }}>
-                {tier.includedStorageGb} GB included
-            </p>
+            {/* Storage */}
+            <div
+                style={{
+                    color: '#A855F7',
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    marginBottom: 28,
+                    fontFamily: 'DM Sans, sans-serif',
+                    position: 'relative',
+                    zIndex: 1,
+                }}
+            >
+                {tier.includedStorageGb} GB Included
+            </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
-                {tier.features.map(f => (
-                    <div key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                        <Check size={15} style={{ color: '#9945FF', flexShrink: 0, marginTop: 1 }} />
-                        <span style={{
-                            fontSize: 13.5, color: 'rgba(255,255,255,0.65)',
-                            fontFamily: 'DM Sans, sans-serif', lineHeight: 1.5,
-                        }}>
-                            {f}
+            {/* Divider */}
+            <div
+                style={{
+                    height: 1,
+                    background: 'rgba(255,255,255,0.06)',
+                    marginBottom: 28,
+                }}
+            />
+
+            {/* Features */}
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 16,
+                    flex: 1,
+                    marginBottom: 36,
+                    position: 'relative',
+                    zIndex: 1,
+                }}
+            >
+                {tier.features.map((feature) => (
+                    <div
+                        key={feature}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            gap: 12,
+                        }}
+                    >
+                        <Check
+                            size={14}
+                            style={{
+                                color: '#A855F7',
+                                flexShrink: 0,
+                                marginTop: 3,
+                            }}
+                        />
+
+                        <span
+                            style={{
+                                fontSize: 14,
+                                lineHeight: 1.7,
+                                color: 'rgba(255,255,255,0.72)',
+                                fontFamily: 'DM Sans, sans-serif',
+                            }}
+                        >
+                            {feature}
                         </span>
                     </div>
                 ))}
             </div>
 
-            <button style={{
-                width: '100%', padding: '12px', borderRadius: 12,
-                background: tier.recommended
-                    ? 'linear-gradient(135deg,#9945FF,#7233cc)'
-                    : 'rgba(255,255,255,0.06)',
-                border: tier.recommended ? 'none' : '1px solid rgba(255,255,255,0.12)',
-                color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-                fontFamily: 'DM Sans, sans-serif',
-            }}>
-                {tier.monthlyPriceUsd === 0 ? 'Start free' : `Choose ${tier.name}`}
+            {/* CTA */}
+            <button
+                style={{
+                    width: '100%',
+                    padding: '14px 18px',
+                    borderRadius: 16,
+                    border: tier.recommended
+                        ? 'none'
+                        : '1px solid rgba(255,255,255,0.08)',
+                    background: tier.recommended
+                        ? 'linear-gradient(135deg,#A855F7,#7C3AED,#5B21B6)'
+                        : 'rgba(255,255,255,0.04)',
+                    color: '#fff',
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    fontFamily: 'DM Sans, sans-serif',
+                    boxShadow: tier.recommended
+                        ? '0 12px 40px rgba(124,58,237,0.30)'
+                        : 'none',
+                    transition: 'all 0.2s ease',
+                    position: 'relative',
+                    zIndex: 1,
+                }}
+            >
+                {tier.monthlyPriceUsd === 0
+                    ? 'Start Free'
+                    : `Choose ${tier.name}`}
             </button>
         </div>
     )
@@ -194,6 +337,8 @@ function UsageRateStrip() {
             .then(data => setRatePerGb(data.retailPerGbMonth))
             .catch(() => setRatePerGb(null))
     }, [])
+
+    // const RETAIL_RATE = 0.020
 
     return (
         <div style={{
@@ -228,7 +373,7 @@ function UsageRateStrip() {
                     fontFamily: 'Syne, sans-serif', fontWeight: 800,
                     fontSize: 32, color: '#fff', letterSpacing: '-1px',
                 }}>
-                    {ratePerGb !== null ? `$${ratePerGb.toFixed(2)}` : '—'}
+                    {ratePerGb !== null ? `$${ratePerGb != null ? ratePerGb.toFixed(2) : '0.0200'}` : '—'}
                 </span>
                 <span style={{
                     fontSize: 13, color: 'rgba(255,255,255,0.4)',

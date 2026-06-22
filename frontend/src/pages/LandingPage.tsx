@@ -6,7 +6,7 @@ import HowItWorks from '@/components/shared/HowItWork'
 import WhySolStore from '@/components/shared/WhySolStore'
 import Solution from '@/components/shared/Solution'
 import PricingTable from '@/components/shared/PricingTable'
-import PricingSection from '../components/shared/PricingSection'
+// import PricingSection from '../components/shared/PricingSection'
 
 export default function LandingPage() {
   return (
@@ -16,7 +16,7 @@ export default function LandingPage() {
       <WhySolStore />
       <HowItWorks />
       <PricingTable />
-      <PricingSection />
+      {/* <PricingSection /> */}
       <Footer />
     </div>
   )

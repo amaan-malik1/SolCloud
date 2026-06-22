@@ -170,4 +170,14 @@ router.get('/subscription/history', authMiddleware, async (req: Request, res: Re
   }
 })
 
+// No auth required — public endpoint for landing page display
+router.get('/rate', async (_req: Request, res: Response) => {
+  res.json({
+    ratePerGbMonth: 0.020,
+    costPerGbMonth: 0.015,
+    currency: 'USD',
+    freeTierGb: 10,
+  })
+})
+
 export default router

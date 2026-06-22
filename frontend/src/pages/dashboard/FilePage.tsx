@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import {
     Folder, File, Image, Upload, Trash2, Edit2, Copy, ExternalLink,
     Globe, Lock, ChevronRight, Home, X, Loader2, FolderPlus,
@@ -17,6 +17,10 @@ function formatBytes(bytes: number): string {
 function isImageFile(name: string): boolean {
     return /\.(jpg|jpeg|png|gif|webp|svg|bmp)$/i.test(name)
 }
+
+const MAX_FILE_SIZE_MB = 100
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
+const MAX_FILES_AT_ONCE = 10
 
 export default function FilesPage() {
     const [currentPrefix, setCurrentPrefix] = useState('')
@@ -44,21 +48,38 @@ export default function FilesPage() {
         setCurrentPrefix(folder.prefix)
     }
 
-    // ── Drag and drop upload ──────────────────────────────────────────────
+    //  Drag and drop upload 
     const handleDrop = useCallback((e: React.DragEvent) => {
         e.preventDefault()
         setDragOver(false)
         const files = Array.from(e.dataTransfer.files)
-        files.forEach(f => upload(f))
+        validateAndUpload(files)
     }, [upload])
 
     function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
         const files = Array.from(e.target.files ?? [])
-        files.forEach(f => upload(f))
+        validateAndUpload(files)
         if (fileInputRef.current) fileInputRef.current.value = ''
     }
 
-    // ── View / get URL ──────────────────────────────────────────────────────
+    function validateAndUpload(files: File[]) {
+        if (files.length > MAX_FILES_AT_ONCE) {
+            toast.error(`Max ${MAX_FILES_AT_ONCE} files at once`)
+            return
+        }
+        for (const file of files) {
+            if (file.size === 0) {
+                toast.error(`"${file.name}" is empty, skipping`)
+                continue
+            }
+            if (file.size > MAX_FILE_SIZE_BYTES) {
+                toast.error(`"${file.name}" exceeds ${MAX_FILE_SIZE_MB}MB limit`)
+                continue
+            }
+            upload(file)
+        }
+    }
+    //  View / get URL 
     async function handleView(file: FileEntry) {
         setViewModalFile(file)
     }
@@ -73,7 +94,7 @@ export default function FilesPage() {
         }
     }
 
-    // ── Rename ──────────────────────────────────────────────────────────────
+    //  Rename 
     function openRename(key: string, name: string, isFolder: boolean) {
         setRenameTarget({ key, name, isFolder })
         setRenameValue(name)
@@ -94,7 +115,7 @@ export default function FilesPage() {
         setRenameTarget(null)
     }
 
-    // ── Delete ──────────────────────────────────────────────────────────────
+    //  Delete 
     function confirmDelete() {
         if (!deleteTarget) return
         if (deleteTarget.isFolder) {
@@ -282,7 +303,7 @@ export default function FilesPage() {
     )
 }
 
-// ── Folder card ───────────────────────────────────────────────────────────
+//  Folder card
 function FolderCard({ folder, onOpen, onRename, onDelete }: {
     folder: FolderEntry; onOpen: () => void; onRename: () => void; onDelete: () => void
 }) {
@@ -316,7 +337,7 @@ function FolderCard({ folder, onOpen, onRename, onDelete }: {
     )
 }
 
-// ── File card ─────────────────────────────────────────────────────────────
+//  File card
 function FileCard({ file, onView, onCopyUrl, onRename, onDelete, onTogglePublic }: {
     file: FileEntry
     onView: () => void
@@ -326,7 +347,8 @@ function FileCard({ file, onView, onCopyUrl, onRename, onDelete, onTogglePublic 
     onTogglePublic: (isPublic: boolean) => void
 }) {
     const [hover, setHover] = useState(false)
-    const isImage = isImageFile(file.name)
+    const isImage = isImageFile(file.name);
+
 
     return (
         <div
@@ -391,7 +413,7 @@ function IconBtn({ onClick, icon, danger }: { onClick: (e: React.MouseEvent) => 
     )
 }
 
-// ── Bucket-level public toggle ───────────────────────────────────────────
+//  Bucket-level public toggle
 function PublicToggle({ isPublic }: { isPublic: boolean }) {
     const [loading, setLoading] = useState(false)
     const [enabled, setEnabled] = useState(isPublic)
@@ -428,7 +450,7 @@ function PublicToggle({ isPublic }: { isPublic: boolean }) {
     )
 }
 
-// ── Generic modal shell ───────────────────────────────────────────────────
+//  Generic modal shell
 function Modal({ children, title, onClose }: { children: React.ReactNode; title: string; onClose: () => void }) {
     return (
         <div
@@ -478,18 +500,18 @@ function ModalActions({ onCancel, onConfirm, confirmLabel, danger }: {
     )
 }
 
-// ── View file modal ────────────────────────────────────────────────────────
+//  View file modal
 function ViewModal({ file, onClose, onCopyUrl }: {
     file: FileEntry; onClose: () => void; onCopyUrl: (file: FileEntry, mode: 'auto' | 'public' | 'presigned') => void
 }) {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
     const isImage = isImageFile(file.name)
 
-    useState(() => {
+    useEffect(() => {
         if (isImage) {
             filesApi.getViewUrl(file.key, 'auto').then(r => setPreviewUrl(r.url)).catch(() => { })
         }
-    })
+    }, [file.key, isImage])
 
     return (
         <Modal onClose={onClose} title={file.name}>
