@@ -41,12 +41,12 @@ export default function CredentialsPage() {
       <div className="space-y-6">
         <div><h1 className="font-display font-bold text-2xl text-white tracking-tight">Credentials</h1><p className="text-white/40 text-sm font-body mt-1">Your R2 access keys</p></div>
         <div className="p-12 rounded-2xl text-center surface-card">
-          <div className="w-14 h-14 rounded-2xl mx-auto mb-5 flex items-center justify-center" style={{ background: isSuspended ? 'rgba(239,68,68,0.1)' : 'rgba(153,69,255,0.1)', border: isSuspended ? '1px solid rgba(239,68,68,0.2)' : '1px solid rgba(153,69,255,0.2)' }}>
-            <Key className="w-6 h-6" style={{ color: isSuspended ? '#f87171' : '#9945FF' }} />
+          <div className="w-14 h-14 rounded-2xl mx-auto mb-5 flex items-center justify-center" style={{ background: isSuspended ? 'rgba(239,68,68,0.1)' : 'rgba(52,211,153,0.1)', border: isSuspended ? '1px solid rgba(239,68,68,0.2)' : '1px solid rgba(52,211,153,0.2)' }}>
+            <Key className="w-6 h-6" style={{ color: isSuspended ? '#f87171' : '#34d399' }} />
           </div>
           <h2 className="font-display font-semibold text-lg text-white mb-2">{isSuspended ? 'Storage suspended' : 'No credentials yet'}</h2>
           <p className="text-sm text-white/40 font-body max-w-xs mx-auto mb-8 leading-relaxed">{isSuspended ? 'Top up your balance to reactivate your bucket and access credentials.' : 'Send SOL to provision your R2 bucket. Credentials will appear here instantly.'}</p>
-          <Link to="/dashboard/payment" className="glow-purple inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-sol-purple to-[#7233cc]">
+          <Link to="/dashboard/payment" className="glow-purple inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-medium text-accent-ink bg-accent">
             <CreditCard className="w-4 h-4" />{isSuspended ? 'Add funds to reactivate' : 'Add funds to get started'}
           </Link>
         </div>
@@ -166,7 +166,7 @@ export default function CredentialsPage() {
             {rotationData.history.map(event => (
               <div key={event.id} className="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#9945FF' }} />
+                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#34d399' }} />
                   <div>
                     <p className="text-sm text-white capitalize font-body">{event.reason} rotation</p>
                     <p className="text-xs text-white/30 font-body">{event.ipAddress ? `from ${event.ipAddress}` : 'IP not recorded'}</p>

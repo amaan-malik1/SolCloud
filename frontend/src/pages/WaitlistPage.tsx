@@ -59,7 +59,7 @@ export default function WaitlistPage() {
     };
 
     return (
-        <main className="relative min-h-screen overflow-hidden bg-black text-white">
+        <main className="relative min-h-screen overflow-hidden bg-dark-bg text-white">
 
             {/* STARS */}
 
@@ -97,7 +97,7 @@ export default function WaitlistPage() {
                     repeat: Infinity,
                     ease: "easeInOut",
                 }}
-                className="absolute left-1/2 top-1/2 h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#9945FF]/20 blur-[180px]"
+                className="absolute left-1/2 top-1/2 h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#34d399]/20 blur-[180px]"
             />
 
             {/* GREEN GLOW */}
@@ -111,7 +111,7 @@ export default function WaitlistPage() {
                     repeat: Infinity,
                     ease: "easeInOut",
                 }}
-                className="absolute left-[45%] top-[55%] h-[500px] w-[500px] rounded-full bg-[#14F195]/10 blur-[150px]"
+                className="absolute left-[45%] top-[55%] h-[500px] w-[500px] rounded-full bg-[#34d399]/10 blur-[150px]"
             />
 
             {/* CENTER BLUR */}
@@ -276,7 +276,7 @@ export default function WaitlistPage() {
                 style={{
                     boxShadow: `
             0 0 35px rgba(255,255,255,0.4),
-            0 0 90px rgba(153,69,255,0.35),
+            0 0 90px rgba(52,211,153,0.35),
             0 0 140px rgba(20,241,149,0.15)
           `,
                     borderTop: "2px solid rgba(255,255,255,.55)",

@@ -1,6 +1,6 @@
 interface SparklineProps { data: number[]; width?: number; height?: number; color?: string }
 
-export function Sparkline({ data, width = 120, height = 32, color = '#9945FF' }: SparklineProps) {
+export function Sparkline({ data, width = 120, height = 32, color = '#34d399' }: SparklineProps) {
   if (!data || data.length < 2) return <div style={{ width, height }} className="flex items-center justify-center"><span className="text-xs text-white/20">—</span></div>
 
   const max = Math.max(...data, 1), min = Math.min(...data), range = max - min || 1

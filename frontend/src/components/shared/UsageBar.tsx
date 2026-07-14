@@ -4,7 +4,7 @@ import { formatBytes } from '../../lib/utils'
 interface UsageBarProps { usedBytes: number; limitBytes: number; className?: string }
 
 function getColor(pct: number): string {
-  if (pct < 60) return '#14F195'
+  if (pct < 60) return '#34d399'
   if (pct < 85) return '#EF9F27'
   return '#E24B4A'
 }

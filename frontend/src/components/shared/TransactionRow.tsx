@@ -11,7 +11,7 @@ export function TransactionRow({ tx }: { tx: Transaction }) {
   return (
     <div className="flex items-center justify-between py-3 border-b border-white/5 last:border-0 group">
       <div className="flex items-center gap-3">
-        <div className={`w-2 h-2 rounded-full flex-shrink-0 ${tx.status === 'CONFIRMED' ? 'bg-sol-green' : 'bg-red-400'}`} style={tx.status === 'CONFIRMED' ? { boxShadow: '0 0 6px #14F195' } : undefined} />
+        <div className={`w-2 h-2 rounded-full flex-shrink-0 ${tx.status === 'CONFIRMED' ? 'bg-sol-green' : 'bg-red-400'}`} style={tx.status === 'CONFIRMED' ? { boxShadow: '0 0 6px #34d399' } : undefined} />
         <div>
           <p className="text-sm text-white font-body">+{solAmount.toFixed(4)} SOL</p>
           <p className="text-xs text-white/35 font-body">{new Date(tx.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>

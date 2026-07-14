@@ -23,7 +23,7 @@ function AccountCard() {
   return (
     <div className="p-4 rounded-xl space-y-3" style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)' }}>
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-display font-bold text-sol-purple flex-shrink-0" style={{ background: 'rgba(153,69,255,0.1)', border: '1px solid rgba(153,69,255,0.2)' }}>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-display font-bold text-sol-purple flex-shrink-0" style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.2)' }}>
           {profile.email[0].toUpperCase()}
         </div>
         <div className="min-w-0">
@@ -149,7 +149,7 @@ function PasswordSection() {
       <FormField label="New password" id="new-password" type="password" value={newPass} onChange={setNewPass} error={errors.newPass} placeholder="At least 8 characters" autoComplete="new-password" />
       <FormField label="Confirm new password" id="confirm-password" type="password" value={confirm} onChange={setConfirm} error={errors.confirm} placeholder="Repeat new password" autoComplete="new-password" />
       <button type="submit" disabled={changePassword.isPending}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-sol-purple to-[#7233cc] disabled:opacity-50 transition-all" style={{ boxShadow: '0 0 16px rgba(153,69,255,0.25)' }}>
+        className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-accent-ink bg-accent disabled:opacity-50 transition-all" style={{ boxShadow: '0 0 16px rgba(52,211,153,0.25)' }}>
         {changePassword.isPending ? <><LoadingSpinner className="w-4 h-4" />Updating...</> : <><Lock className="w-4 h-4" />Update password</>}
       </button>
     </form>
@@ -256,7 +256,7 @@ export default function SettingsPage() {
 
       <SettingsSection title="Account" description="Your profile and account information">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(153,69,255,0.1)', border: '1px solid rgba(153,69,255,0.2)' }}><User className="w-4 h-4 text-sol-purple" /></div>
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.2)' }}><User className="w-4 h-4 text-sol-purple" /></div>
           <p className="text-sm text-white/60 font-body">Account overview</p>
         </div>
         <AccountCard />

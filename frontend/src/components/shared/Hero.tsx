@@ -1,296 +1,127 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { useEffect, useRef } from 'react'
+import { ArrowUpRight } from 'lucide-react'
+import VaultScene from './VaultScene'
 
-import gsap from 'gsap'
-import { SplitText } from 'gsap/SplitText'
+const EASE = [0.16, 1, 0.3, 1] as const
 
-import {
-  Database,
-  ShieldCheck,
-  Wallet,
-  ArrowRight,
-  ChevronDown,
-} from 'lucide-react'
-
-gsap.registerPlugin(SplitText)
-
-const floatingCards = [
-  {
-    icon: Database,
-    title: 'Storage Active',
-    value: '12.4 TB',
-    position: 'top-[18%] left-[2%] rotate-[-8deg]',
-  },
-
-  {
-    icon: Wallet,
-    title: 'SOL Payment',
-    value: 'Confirmed',
-    position: 'top-[22%] right-[2%] rotate-[8deg]',
-  },
-
-  {
-    icon: ShieldCheck,
-    title: 'Global Edge',
-    value: '99.99%',
-    position: 'bottom-[18%] left-[8%] rotate-[-6deg]',
-  },
+const stats = [
+  { value: '10 GB', label: 'free storage' },
+  { value: '<60 s', label: 'to provision' },
+  { value: '$0', label: 'egress fees' },
 ]
 
 const Hero = () => {
-  const heroRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const heroSplit = new SplitText('.hero-title', {
-        type: 'chars, words',
-      })
-
-      heroSplit.chars.forEach((char) => {
-        char.classList.add(
-          'bg-gradient-to-b',
-          'from-white',
-          'via-zinc-200',
-          'to-zinc-500',
-          'bg-clip-text',
-          'text-transparent'
-        )
-      })
-
-      const subSplit = new SplitText('.hero-subtitle', {
-        type: 'lines, words',
-      })
-
-      gsap.from(heroSplit.chars, {
-        y: 120,
-        opacity: 0,
-        stagger: 0.03,
-        duration: 1.2,
-        ease: 'expo.out',
-      })
-
-      gsap.from(subSplit.lines, {
-        y: 80,
-        opacity: 0,
-        stagger: 0.08,
-        duration: 1,
-        delay: 0.5,
-        ease: 'power4.out',
-      })
-
-      gsap.from('.hero-btn', {
-        y: 40,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.8,
-        delay: 0.8,
-        ease: 'power3.out',
-      })
-
-      gsap.from('.floating-card', {
-        y: 40,
-        opacity: 0,
-        stagger: 0.12,
-        duration: 1,
-        delay: 1,
-        ease: 'power4.out',
-      })
-
-      gsap.from('.hero-stat', {
-        y: 20,
-        opacity: 0,
-        stagger: 0.08,
-        duration: 0.8,
-        delay: 1.1,
-      })
-    }, heroRef)
-
-    return () => ctx.revert()
-  }, [])
-
   return (
-    <section
-      ref={heroRef}
-      className='relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-24 text-white'
-    >
-      {/* Background */}
-      <div className='absolute inset-0 bg-black' />
-
-      {/* Grid */}
-      <div className='absolute inset-0 opacity-[0.03]'>
-        <div className='h-full w-full bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:85px_85px]' />
+    <section className='relative flex min-h-[100dvh] items-center overflow-hidden px-6 pb-16 pt-32 text-white lg:pt-24'>
+      {/* Ambient background: single mint glow + faint grid */}
+      <div className='pointer-events-none absolute inset-0'>
+        <div className='absolute right-[-10%] top-[-20%] h-[700px] w-[700px] rounded-full bg-accent/[0.07] blur-[160px]' />
+        <div className='absolute bottom-[-30%] left-[-15%] h-[500px] w-[500px] rounded-full bg-accent/[0.04] blur-[140px]' />
+        <div className='grid-bg absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]' />
       </div>
 
-      {/* Distributed Glow */}
-      <div className='absolute inset-0 overflow-hidden'>
-        <div className='absolute left-1/2 top-[5%] h-[900px] w-[900px] -translate-x-1/2 rounded-full bg-purple-500/8 blur-[180px]' />
-
-        <div className='absolute left-[15%] top-[35%] h-[400px] w-[400px] rounded-full bg-purple-500/5 blur-[140px]' />
-
-        <div className='absolute right-[15%] top-[30%] h-[350px] w-[350px] rounded-full bg-violet-500/5 blur-[120px]' />
-      </div>
-
-      {/* Floating Cards */}
-      {floatingCards.map((card, index) => {
-        const Icon = card.icon
-
-        return (
+      <div className='relative z-10 mx-auto grid w-full max-w-7xl items-center gap-16 lg:grid-cols-[1.05fr_1fr] lg:gap-8'>
+        {/* Copy */}
+        <div className='max-w-2xl'>
           <motion.div
-            key={index}
-            drag
-            dragElastic={0.12}
-            whileDrag={{ scale: 1.08 }}
-            className={`floating-card absolute hidden w-[200px] overflow-hidden rounded-[28px] border border-white/10 bg-black/60 p-5 backdrop-blur-xl lg:block ${card.position}`}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: EASE }}
+            className='inline-flex items-center gap-2.5 rounded-full border border-accent/20 bg-accent/[0.06] px-4 py-1.5'
           >
-            <div className='flex items-center gap-4'>
-              <div className='flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04]'>
-                <Icon className='h-5 w-5 text-zinc-200' />
-              </div>
-
-              <div>
-                <p className='text-sm text-zinc-500'>
-                  {card.title}
-                </p>
-
-                <h3 className='mt-1 text-xl font-bold text-white'>
-                  {card.value}
-                </h3>
-              </div>
-            </div>
+            <span className='relative flex h-2 w-2'>
+              <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60' />
+              <span className='relative inline-flex h-2 w-2 rounded-full bg-accent' />
+            </span>
+            <span className='text-[13px] font-medium text-accent'>
+              Live on Solana mainnet
+            </span>
           </motion.div>
-        )
-      })}
 
-      {/* Main Content */}
-      <div className='relative z-10 mx-auto mt-10 max-w-6xl text-center'>
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-          className="mt-10 max-w-5xl text-center text-5xl font-semibold leading-[0.95] tracking-[-0.05em] md:text-7xl lg:text-[92px]"
-        >
-          Cloud Storage
-          <br />
-
-          <span className="text-white/90">
-            for the Solana Era.
-          </span>
-        </motion.h1>
-
-        <p className='hero-subtitle mx-auto mt-10 max-w-3xl text-xl leading-relaxed text-zinc-500'>
-          Pay with SOL. Get instant access to production-grade
-          Cloudflare R2 storage with zero friction,
-          zero banking headaches, and instant provisioning.
-        </p>
-
-        {/* CTA */}
-        <div className='mt-12 flex flex-wrap items-center justify-center gap-4'>
-          <Link
-            to='/register'
-            className='hero-btn group flex items-center gap-2 rounded-2xl bg-white px-8 py-4 text-sm font-semibold text-black transition-all duration-300 hover:scale-[1.03]'
+          <motion.h1
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.08, ease: EASE }}
+            className='mt-7 text-[clamp(2.75rem,6vw,5.25rem)] font-semibold leading-[1.02] tracking-[-0.035em]'
           >
-            Get started free
+            Object storage
+            <br />
+            you pay for{' '}
+            <span className='text-accent'>in SOL.</span>
+          </motion.h1>
 
-            <ArrowRight className='h-4 w-4 transition-transform duration-300 group-hover:translate-x-1' />
-          </Link>
-
-          <Link
-            to='/login'
-            className='hero-btn rounded-2xl border border-white/10 bg-white/[0.03] px-8 py-4 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/[0.05]'
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.18, ease: EASE }}
+            className='mt-7 max-w-lg text-lg leading-relaxed text-white/60'
+            style={{ textWrap: 'pretty' }}
           >
-            Log in
-          </Link>
+            SolStore provisions a dedicated Cloudflare R2 bucket the moment your
+            Solana payment lands. S3-compatible credentials in under a minute —
+            no card, no KYC, no egress bills.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.28, ease: EASE }}
+            className='mt-10 flex flex-wrap items-center gap-4'
+          >
+            <Link
+              to='/register'
+              className='group flex items-center gap-3 rounded-full bg-accent py-2.5 pl-7 pr-2.5 text-[15px] font-semibold text-accent-ink transition-all duration-500 ease-out-expo hover:shadow-[0_0_36px_rgba(52,211,153,0.4)] active:scale-[0.98]'
+            >
+              Start with 10 GB free
+              <span className='flex h-9 w-9 items-center justify-center rounded-full bg-accent-ink/15 transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5'>
+                <ArrowUpRight className='h-4 w-4' />
+              </span>
+            </Link>
+
+            <a
+              href='#pricing'
+              className='rounded-full border border-white/10 bg-white/[0.03] px-7 py-3 text-[15px] font-medium text-white/80 transition-all duration-500 ease-out-expo hover:border-white/25 hover:text-white active:scale-[0.98]'
+            >
+              See pricing
+            </a>
+          </motion.div>
+
+          {/* Stats */}
+          <motion.dl
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
+            className='mt-14 flex items-center gap-8 sm:gap-12'
+          >
+            {stats.map((stat, i) => (
+              <div key={stat.label} className='flex items-center gap-8 sm:gap-12'>
+                {i > 0 && <span className='h-10 w-px bg-white/10' />}
+                <div>
+                  <dt className='sr-only'>{stat.label}</dt>
+                  <dd className='tabular text-3xl font-semibold tracking-tight text-white'>
+                    {stat.value}
+                  </dd>
+                  <p className='mt-1 text-sm text-white/45'>{stat.label}</p>
+                </div>
+              </div>
+            ))}
+          </motion.dl>
         </div>
 
-        {/* Stats */}
-        <div className='mt-14 flex flex-wrap items-center justify-center gap-12'>
-          <div className='hero-stat'>
-            <p className='text-4xl font-black text-white'>
-              10GB
-            </p>
-            <p className='mt-2 text-sm text-zinc-500'>
-              Free Storage
-            </p>
-          </div>
-
-          <div className='hero-stat'>
-            <p className='text-4xl font-black text-white'>
-              &lt;60s
-            </p>
-            <p className='mt-2 text-sm text-zinc-500'>
-              Provision Time
-            </p>
-          </div>
-
-          <div className='hero-stat'>
-            <p className='text-4xl font-black text-white'>
-              $0
-            </p>
-            <p className='mt-2 text-sm text-zinc-500'>
-              Egress Fees
-            </p>
-          </div>
-        </div>
-
-        {/* Trust Strip */}
-        <div className='mt-14 flex flex-wrap items-center justify-center gap-6 text-sm text-zinc-500'>
-          <span>Powered by Cloudflare R2</span>
-
-          <span className='h-1 w-1 rounded-full bg-zinc-700' />
-
-          <span>Solana Payments</span>
-
-          <span className='h-1 w-1 rounded-full bg-zinc-700' />
-
-          <span>Global Edge Network</span>
-        </div>
-
-        {/* Scroll Indicator */}
+        {/* Interactive 3D vault */}
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{
-            repeat: Infinity,
-            duration: 2,
-          }}
-          className='mt-20 flex flex-col items-center justify-center text-zinc-500'
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, delay: 0.3, ease: EASE }}
+          className='hidden sm:block'
         >
-          <span className='mb-2 text-xs uppercase tracking-[0.3em]'>
-            Scroll
-          </span>
-
-          <ChevronDown className='h-5 w-5' />
+          <VaultScene />
         </motion.div>
       </div>
 
-      {/* PLANET HORIZON */}
-      <motion.div
-        animate={{
-          opacity: [0.75, 1, 0.75],
-        }}
-        transition={{
-          duration: 5,
-          repeat: Infinity,
-        }}
-        className="pointer-events-none absolute bottom-[-380px] left-1/2 h-[700px] w-[200vw] -translate-x-1/2 rounded-[100%]"
-        style={{
-          boxShadow: `
-            0 0 35px rgba(255,255,255,0.4),
-            0 0 90px rgba(153,69,255,0.35),
-            0 0 140px rgba(20,241,149,0.15)
-          `,
-          borderTop: "2px solid rgba(255,255,255,.55)",
-        }}
-      />
-
-      {/* VIGNETTE */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(circle at center, transparent 20%, rgba(0,0,0,.75) 100%)",
-        }}
-      />
+      {/* Horizon line */}
+      <div className='pointer-events-none absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent' />
     </section>
   )
 }

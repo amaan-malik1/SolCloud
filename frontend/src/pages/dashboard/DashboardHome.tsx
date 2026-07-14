@@ -128,7 +128,7 @@ export default function DashboardHome() {
       </div>
 
       {!storageLoading && !storage?.hasStorage && (
-        <div className="p-5 rounded-xl flex items-center justify-between" style={{ background: 'rgba(153,69,255,0.06)', border: '1px solid rgba(153,69,255,0.2)' }}>
+        <div className="p-5 rounded-xl flex items-center justify-between" style={{ background: 'rgba(52,211,153,0.06)', border: '1px solid rgba(52,211,153,0.2)' }}>
           <div>
             <p className="text-sm font-medium text-white mb-1">Your storage isn't set up yet</p>
             <p className="text-xs text-white/45 font-body">Send SOL to your account to instantly provision a Cloudflare R2 bucket.</p>

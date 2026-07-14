@@ -115,8 +115,8 @@ export default function PaymentPage() {
           )}
 
           {status === 'waiting' && (
-            <div className="p-8 rounded-2xl text-center" style={{ background: 'rgba(153,69,255,0.05)', border: '1px solid rgba(153,69,255,0.2)' }}>
-              <div className="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: 'rgba(153,69,255,0.1)', border: '1px solid rgba(153,69,255,0.3)' }}>
+            <div className="p-8 rounded-2xl text-center" style={{ background: 'rgba(52,211,153,0.05)', border: '1px solid rgba(52,211,153,0.2)' }}>
+              <div className="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.3)' }}>
                 <Clock className="w-7 h-7 text-sol-purple animate-pulse" />
               </div>
               <h2 className="font-display font-bold text-xl text-white mb-2">Waiting for confirmation</h2>
@@ -146,19 +146,19 @@ export default function PaymentPage() {
               {!wallet.connected ? (
                 <div className="p-6 rounded-2xl surface-card">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(153,69,255,0.1)', border: '1px solid rgba(153,69,255,0.2)' }}>
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.2)' }}>
                       <Wallet className="w-4 h-4 text-sol-purple" />
                     </div>
                     <div><p className="text-sm font-medium text-white">Connect your wallet</p><p className="text-xs text-white/40 font-body">Phantom or Solflare supported</p></div>
                   </div>
-                  <button onClick={() => setVisible(true)} className="w-full py-3 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-sol-purple to-[#7233cc] glow-purple">Connect wallet</button>
+                  <button onClick={() => setVisible(true)} className="w-full py-3 rounded-xl text-sm font-medium text-accent-ink bg-accent glow-purple">Connect wallet</button>
                   <p className="text-xs text-white/25 text-center mt-3 font-body">We never request approval to spend your funds — you control every transaction</p>
                 </div>
               ) : (
                 <div className="p-6 rounded-2xl surface-card space-y-5">
                   <div className="flex items-center justify-between p-3 rounded-xl" style={{ background: 'rgba(20,241,149,0.05)', border: '1px solid rgba(20,241,149,0.15)' }}>
                     <div className="flex items-center gap-2.5">
-                      <div className="w-2 h-2 rounded-full bg-sol-green" style={{ boxShadow: '0 0 6px #14F195' }} />
+                      <div className="w-2 h-2 rounded-full bg-sol-green" style={{ boxShadow: '0 0 6px #34d399' }} />
                       <span className="text-xs font-mono text-white/60">{shortenAddress(wallet.publicKey?.toBase58() ?? '')}</span>
                     </div>
                     <div className="flex items-center gap-3">
@@ -198,14 +198,14 @@ export default function PaymentPage() {
                     <p className="text-xs text-white/20 font-body">SolStore platform wallet · {NETWORK}</p>
                   </div>
 
-                  <div className="flex items-start gap-2.5 p-3 rounded-xl" style={{ background: 'rgba(153,69,255,0.05)', border: '1px solid rgba(153,69,255,0.12)' }}>
+                  <div className="flex items-start gap-2.5 p-3 rounded-xl" style={{ background: 'rgba(52,211,153,0.05)', border: '1px solid rgba(52,211,153,0.12)' }}>
                     <Zap className="w-3.5 h-3.5 text-sol-purple/60 flex-shrink-0 mt-0.5" />
                     <p className="text-xs text-white/35 font-body leading-relaxed">Your user ID is automatically embedded in the transaction memo. The indexer uses this to credit your account — no manual step needed.</p>
                   </div>
 
                   <button onClick={handleSend} disabled={!isValidAmount || isSending}
-                    className="w-full py-3.5 rounded-xl font-medium text-sm text-white bg-gradient-to-r from-sol-purple to-[#7233cc] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
-                    style={isValidAmount ? { boxShadow: '0 0 20px rgba(153,69,255,0.3)' } : {}}>
+                    className="w-full py-3.5 rounded-xl font-medium text-sm text-accent-ink bg-accent disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
+                    style={isValidAmount ? { boxShadow: '0 0 20px rgba(52,211,153,0.3)' } : {}}>
                     {isSending ? <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Sending...</> : <><Send className="w-4 h-4" />Send {parsedSol > 0 ? `${parsedSol} SOL` : 'SOL'}<ChevronRight className="w-4 h-4" /></>}
                   </button>
                 </div>

@@ -1,22 +1,20 @@
 import { Navbar } from '../components/layout/Navbar'
 import Hero from '@/components/shared/Hero'
 import Footer from '@/components/shared/Footer'
-import TrustedBy from '@/components/shared/Solution'
 import HowItWorks from '@/components/shared/HowItWork'
 import WhySolStore from '@/components/shared/WhySolStore'
-import Solution from '@/components/shared/Solution'
 import PricingTable from '@/components/shared/PricingTable'
-// import PricingSection from '../components/shared/PricingSection'
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-dark-bg grid-bg">
+    <div className='min-h-[100dvh] bg-dark-bg'>
       <Navbar />
-      <Hero />
-      <WhySolStore />
-      <HowItWorks />
-      <PricingTable />
-      {/* <PricingSection /> */}
+      <main>
+        <Hero />
+        <WhySolStore />
+        <HowItWorks />
+        <PricingTable />
+      </main>
       <Footer />
     </div>
   )

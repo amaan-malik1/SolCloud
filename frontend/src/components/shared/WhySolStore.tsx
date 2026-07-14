@@ -1,363 +1,194 @@
-import {
-  Cloud,
-  Wallet,
-  Zap,
-  ShieldCheck,
-  Database,
-  Globe,
-} from 'lucide-react'
-
 import { motion } from 'framer-motion'
-import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { SplitText } from 'gsap/all'
+import { Check } from 'lucide-react'
+import { Tilt } from './Tilt'
 
-const features = [
-  {
-    icon: Cloud,
-    title: 'Instant R2 Provisioning',
-    description:
-      'Create production-grade Cloudflare R2 buckets instantly.',
+const EASE = [0.16, 1, 0.3, 1] as const
 
-    cardBg:
-      'bg-gradient-to-br from-emerald-500/20 via-black to-black',
-
-    border: 'border-emerald-400/30',
-
-    iconBg:
-      'bg-emerald-400/10 border border-emerald-400/20',
-
-    iconColor: 'text-emerald-300',
-
-    glow: 'bg-emerald-400/20',
-  },
-
-  {
-    icon: Wallet,
-    title: 'Pay with SOL',
-    description:
-      'No credit cards or banking friction required.',
-
-    cardBg:
-      'bg-gradient-to-br from-yellow-400/20 via-orange-500/10 to-black',
-
-    border: 'border-yellow-400/30',
-
-    iconBg:
-      'bg-yellow-400/10 border border-yellow-400/20',
-
-    iconColor: 'text-yellow-200',
-
-    glow: 'bg-yellow-400/20',
-  },
-
-  {
-    icon: Zap,
-    title: 'Ultra Fast Finality',
-    description:
-      'Transactions finalize in under 400ms.',
-
-    cardBg:
-      'bg-gradient-to-br from-orange-500/20 via-red-500/10 to-black',
-
-    border: 'border-orange-400/30',
-
-    iconBg:
-      'bg-orange-400/10 border border-orange-400/20',
-
-    iconColor: 'text-orange-300',
-
-    glow: 'bg-orange-400/20',
-  },
-
-  {
-    icon: ShieldCheck,
-    title: 'Secure Infrastructure',
-    description:
-      'Enterprise-grade security and reliability.',
-
-    cardBg:
-      'bg-gradient-to-br from-slate-400/10 via-zinc-800 to-black',
-
-    border: 'border-slate-300/20',
-
-    iconBg:
-      'bg-slate-300/10 border border-slate-300/20',
-
-    iconColor: 'text-slate-200',
-
-    glow: 'bg-slate-300/10',
-  },
-
-  {
-    icon: Database,
-    title: 'Zero Egress Fees',
-    description:
-      'No hidden charges or surprise bandwidth costs.',
-
-    cardBg:
-      'bg-gradient-to-br from-zinc-200/10 via-zinc-800 to-black',
-
-    border: 'border-zinc-300/20',
-
-    iconBg:
-      'bg-zinc-200/10 border border-zinc-200/20',
-
-    iconColor: 'text-zinc-100',
-
-    glow: 'bg-zinc-200/10',
-  },
-
-  {
-    icon: Globe,
-    title: 'Built for Global Devs',
-    description:
-      'Perfect for startups and indie hackers.',
-
-    cardBg:
-      'bg-gradient-to-br from-lime-400/20 via-black to-black',
-
-    border: 'border-lime-300/30',
-
-    iconBg:
-      'bg-lime-300/10 border border-lime-300/20',
-
-    iconColor: 'text-lime-200',
-
-    glow: 'bg-lime-300/20',
-  },
+const provisionLog = [
+  { text: 'payment received · 0.42 SOL', done: true },
+  { text: 'verifying signature on-chain', done: true },
+  { text: 'creating R2 bucket · solstore-8f2c', done: true },
+  { text: 'scoping access token', done: true },
+  { text: 'encrypting credentials · AES-256-GCM', done: false },
 ]
 
 const WhySolStore = () => {
-  const sectionRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Main heading split
-      const splitHeading = new SplitText(
-        '.main-heading',
-        {
-          type: 'chars, words',
-        }
-      )
-
-      splitHeading.chars.forEach((char) => {
-        char.classList.add(
-          'bg-gradient-to-b',
-          'from-white',
-          'via-zinc-200',
-          'to-zinc-500',
-          'bg-clip-text',
-          'text-transparent'
-        )
-      })
-
-      gsap.from(splitHeading.chars, {
-        y: 100,
-        opacity: 0,
-        stagger: 0.035,
-        duration: 1.2,
-        ease: 'expo.out',
-
-        scrollTrigger: {
-          trigger: '.main-heading',
-          start: 'top 85%',
-        },
-      })
-
-      // Sub heading
-      const splitSubHeading = new SplitText(
-        '.sub-heading',
-        {
-          type: 'chars, words',
-        }
-      )
-
-      gsap.from(splitSubHeading.chars, {
-        y: 90,
-        opacity: 0,
-        stagger: 0.01,
-        duration: 1,
-        ease: 'power4.out',
-
-        scrollTrigger: {
-          trigger: '.sub-heading',
-          start: 'top 90%',
-        },
-      })
-
-      // Badge title
-      const splitFeatureTitle = new SplitText(
-        '.feature-title',
-        {
-          type: 'chars, words',
-        }
-      )
-
-      // splitFeatureTitle.chars.forEach((char) => {
-      //   char.classList.add(
-      //     'bg-gradient-to-r',
-      //     'from-yellow-300',
-      //     'via-orange-400',
-      //     'to-orange-600',
-      //     'bg-clip-text',
-      //     'text-transparent'
-      //   )
-      // })
-
-      gsap.from(splitFeatureTitle.chars, {
-        x: -100,
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.03,
-        ease: 'expo.out',
-
-        scrollTrigger: {
-          trigger: '.feature-title',
-          start: 'top 90%',
-        },
-      })
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [])
-
   return (
     <section
       id='why-solStore'
-      className='relative min-h-screen overflow-hidden bg-black px-6 py-24 text-white'
-      ref={sectionRef}
+      className='relative overflow-hidden px-6 py-28 text-white md:py-36'
     >
-      {/* Global Background Texture */}
-      <div className='absolute inset-0 opacity-[0.04]'>
-        <div className='h-full w-full bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:40px_40px]' />
-      </div>
-
-      {/* Ambient Glow */}
-      {/* <div className='absolute left-1/2 top-20 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-orange-500/10 blur-[140px]' /> */}
-
-      <div className='relative mx-auto max-w-7xl'>
-        {/* Badge */}
-        <div className='flex items-center justify-center py-4'>
-          <h2
-            style={{
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: '3px',
-              textTransform: 'uppercase',
-              color: '#f97316',
-              marginBottom: 18,
-            }}
-            className='feature-title text-orange-600 '>
-            Why SolStore
+      <div className='relative mx-auto max-w-6xl'>
+        {/* Left-aligned header */}
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.9, ease: EASE }}
+          className='max-w-2xl'
+        >
+          <h2 className='text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[1.05] tracking-[-0.03em]'>
+            Everything between your wallet
+            <br className='hidden sm:block' />
+            <span className='text-white/40'> and your first upload.</span>
           </h2>
-        </div>
+          <p className='mt-5 max-w-xl text-lg leading-relaxed text-white/55'>
+            One payment kicks off the whole chain — detection, provisioning,
+            credentials. You never talk to a billing form.
+          </p>
+        </motion.div>
 
-        {/* Heading */}
-        <div className='mx-auto mb-16 max-w-3xl text-center'>
-          <h2 className='main-heading text-4xl font-black tracking-tight text-white md:text-4xl'>
-            Everything You Need
-            <br />
-            to Deploy Faster
-          </h2>
-
-          {/* <p className='sub-heading mt-6 text-lg leading-relaxed text-zinc-500'>
-            Modern infrastructure tooling designed
-            for developers who want speed,
-            simplicity, and beautiful cloud
-            infrastructure.
-          </p> */}
-        </div>
-
-        {/* Cards */}
-        <div className='relative flex min-h-[680px] flex-wrap items-start justify-center gap-7 overflow-hidden rounded-[42px] border border-white/10 bg-white/[0.02] p-8 backdrop-blur-xl'>
-          {features.map((feature, index) => {
-            const Icon = feature.icon
-
-            return (
-              <motion.div
-                key={index}
-                drag
-                dragConstraints={{
-                  left: -40,
-                  right: 40,
-                  top: -40,
-                  bottom: 20,
-                }}
-                whileDrag={{
-                  scale: 1.04,
-                }}
-                whileHover={{
-                  y: -6,
-                  scale: 1.02,
-                }}
-                className={`
-                  group relative h-[300px] w-[270px]
-                  overflow-hidden rounded-[36px]
-                  border backdrop-blur-2xl
-                  ${feature.cardBg}
-                  ${feature.border}
-                `}
-              >
-                {/* Card Glow */}
-                <div
-                  className={`absolute -right-10 -top-10 h-40 w-40 rounded-full blur-3xl ${feature.glow}`}
-                />
-
-                {/* Texture */}
-                <div className='absolute inset-0 opacity-[0.05]'>
-                  <div className='h-full w-full bg-[radial-gradient(circle_at_center,white_1px,transparent_1px)] bg-[size:18px_18px]' />
-                </div>
-
-                {/* Gradient Border Top */}
-                <div className='absolute left-0 top-0 h-[1px] w-full bg-gradient-to-r from-transparent via-white/30 to-transparent' />
-
-                {/* Content */}
-                <div className='relative z-10 flex h-full flex-col justify-between p-7'>
-                  {/* Top */}
+        {/* Asymmetric bento */}
+        <div className='mt-16 grid gap-4 md:grid-cols-6'>
+          {/* Large: provisioning sequence */}
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.9, ease: EASE }}
+            className='md:col-span-4 md:row-span-2'
+          >
+            <Tilt strength={3} className='h-full'>
+              <div className='shell h-full'>
+                <div className='shell-core flex h-full flex-col justify-between overflow-hidden p-8'>
                   <div>
-                    {/* Icon */}
-                    <div
-                      className={`
-                        mb-7 flex h-14 w-14
-                        items-center justify-center
-                        rounded-2xl backdrop-blur-xl
-                        ${feature.iconBg}
-                      `}
-                    >
-                      <Icon
-                        className={`h-6 w-6 ${feature.iconColor}`}
-                      />
-                    </div>
-
-                    {/* Title */}
-                    <h3 className='text-3xl font-black leading-tight tracking-tight text-white'>
-                      {feature.title}
+                    <h3 className='text-2xl font-semibold tracking-tight'>
+                      Provisioned in under a minute
                     </h3>
-
-                    {/* Desc */}
-                    <p className='mt-5 text-[15px] leading-relaxed text-zinc-400'>
-                      {feature.description}
+                    <p className='mt-3 max-w-md text-[15px] leading-relaxed text-white/55'>
+                      The indexer watches the chain, credits your balance, and a
+                      dedicated bucket with scoped credentials appears in your
+                      dashboard. No ticket, no wait.
                     </p>
                   </div>
 
-                  {/* Bottom */}
-                  <div className='flex items-center justify-between'>
-                    <div className='h-[5px] w-20 rounded-full bg-white/10'>
-                      <div className='h-full w-10 rounded-full bg-white/40' />
-                    </div>
-
-                    <span className='text-xs font-semibold tracking-[0.3em] text-zinc-600'>
-                      0{index + 1}
-                    </span>
+                  {/* Live provisioning log */}
+                  <div className='mt-8 rounded-xl border border-white/[0.07] bg-black/40 p-5 font-mono text-[13px]'>
+                    {provisionLog.map((line, i) => (
+                      <motion.div
+                        key={line.text}
+                        initial={{ opacity: 0, x: -8 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.3 + i * 0.18, ease: EASE }}
+                        className='flex items-center gap-3 py-1.5'
+                      >
+                        {line.done ? (
+                          <Check className='h-3.5 w-3.5 shrink-0 text-accent' />
+                        ) : (
+                          <span className='h-3.5 w-3.5 shrink-0 animate-spin rounded-full border border-white/20 border-t-accent' />
+                        )}
+                        <span className={line.done ? 'text-white/70' : 'text-accent'}>
+                          {line.text}
+                        </span>
+                      </motion.div>
+                    ))}
                   </div>
                 </div>
-              </motion.div>
-            )
-          })}
+              </div>
+            </Tilt>
+          </motion.div>
+
+          {/* Pay with SOL */}
+          <BentoCard
+            delay={0.08}
+            className='md:col-span-2'
+            title='Pay with SOL'
+            body='Phantom or Solflare, one signature. Finality in ~400 ms — faster than a card authorization.'
+            figure='~400 ms'
+          />
+
+          {/* Zero egress */}
+          <BentoCard
+            delay={0.16}
+            className='md:col-span-2'
+            title='Zero egress fees'
+            body='Built on Cloudflare R2. Serve as much traffic as you want; the download bill stays at zero.'
+            figure='$0.00'
+          />
+
+          {/* Encrypted credentials */}
+          <BentoCard
+            delay={0.1}
+            className='md:col-span-2'
+            title='Credentials, encrypted'
+            body='Every access key is AES-256-GCM encrypted before it touches the database, with rotation built in.'
+            figure='AES-256'
+          />
+
+          {/* S3-compatible wide card */}
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.9, delay: 0.18, ease: EASE }}
+            className='min-w-0 md:col-span-4'
+          >
+            <Tilt strength={3} className='h-full'>
+              <div className='shell h-full'>
+                <div className='shell-core flex h-full flex-col gap-6 p-8 sm:flex-row sm:items-center sm:justify-between'>
+                  <div className='max-w-xs'>
+                    <h3 className='text-xl font-semibold tracking-tight'>
+                      Works with the S3 SDK you already use
+                    </h3>
+                    <p className='mt-2.5 text-[15px] leading-relaxed text-white/55'>
+                      Point your existing tooling at the R2 endpoint and keep
+                      shipping.
+                    </p>
+                  </div>
+                  <pre className='min-w-0 max-w-full overflow-x-auto rounded-xl border border-white/[0.07] bg-black/40 p-4 font-mono text-[12.5px] leading-relaxed text-white/70'>
+{`new S3Client({
+  endpoint: "https://…r2.cloudflarestorage.com",
+  credentials: { /* from your dashboard */ },
+})`}
+                  </pre>
+                </div>
+              </div>
+            </Tilt>
+          </motion.div>
         </div>
       </div>
     </section>
+  )
+}
+
+function BentoCard({
+  title,
+  body,
+  figure,
+  className,
+  delay = 0,
+}: {
+  title: string
+  body: string
+  figure: string
+  className?: string
+  delay?: number
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.9, delay, ease: EASE }}
+      className={className}
+    >
+      <Tilt strength={5} className='h-full'>
+        <div className='shell h-full'>
+          <div className='shell-core flex h-full flex-col justify-between p-7'>
+            <div>
+              <h3 className='text-xl font-semibold tracking-tight'>{title}</h3>
+              <p className='mt-2.5 text-[14.5px] leading-relaxed text-white/55'>
+                {body}
+              </p>
+            </div>
+            <p className='tabular mt-6 font-mono text-2xl font-medium text-accent'>
+              {figure}
+            </p>
+          </div>
+        </div>
+      </Tilt>
+    </motion.div>
   )
 }
 

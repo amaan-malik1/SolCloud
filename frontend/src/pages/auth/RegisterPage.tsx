@@ -68,7 +68,7 @@ export default function RegisterPage() {
         <FormField label="Confirm password" id="confirm" type="password" value={confirm} onChange={setConfirm}
           onBlur={() => handleBlur('confirm')} error={touched.confirm ? errors.confirm : undefined} placeholder="Repeat your password" autoComplete="new-password" />
         <button type="submit" disabled={isLoading}
-          className="w-full py-3 rounded-xl font-medium text-sm text-white bg-gradient-to-r from-sol-purple to-[#7233cc] glow-purple disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+          className="w-full py-3 rounded-xl font-medium text-sm text-accent-ink bg-accent glow-purple disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
           {isLoading ? <><LoadingSpinner className="w-4 h-4" />Creating account...</> : 'Create account →'}
         </button>
         <Link to="/login" className="w-full py-3 rounded-xl text-sm text-white/50 text-center border border-white/8 hover:border-white/15 hover:text-white/70 transition-all font-body">

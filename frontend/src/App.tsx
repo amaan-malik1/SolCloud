@@ -33,10 +33,10 @@ const WAITLIST_MODE = import.meta.env.VITE_WAITLIST_MODE === 'true'
 
 const toastStyle = {
   style: {
-    background: '#13131f',
-    color: '#f0f0f8',
-    border: '1px solid rgba(255,255,255,0.07)',
-    fontFamily: 'DM Sans, sans-serif',
+    background: '#0c1311',
+    color: '#eef4f1',
+    border: '1px solid rgba(255,255,255,0.08)',
+    fontFamily: '"Geist Variable", system-ui, sans-serif',
     fontSize: '14px',
   },
 }

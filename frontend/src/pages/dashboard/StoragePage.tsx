@@ -36,12 +36,12 @@ export default function StoragePage() {
     <div className="space-y-6">
       <div><h1 className="font-display font-bold text-2xl text-white tracking-tight">Storage</h1><p className="text-white/40 text-sm font-body mt-1">Your Cloudflare R2 bucket</p></div>
       <div className="rounded-2xl p-12 text-center surface-card">
-        <div className="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center" style={{ background: 'rgba(153,69,255,0.1)', border: '1px solid rgba(153,69,255,0.2)' }}>
+        <div className="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center" style={{ background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.2)' }}>
           <HardDrive className="w-7 h-7 text-sol-purple" />
         </div>
         <h2 className="font-display font-semibold text-lg text-white mb-2">No storage provisioned yet</h2>
         <p className="text-sm text-white/40 font-body max-w-sm mx-auto mb-8 leading-relaxed">Send SOL to your account and a dedicated Cloudflare R2 bucket will be created automatically within seconds.</p>
-        <Link to="/dashboard/payment" className="glow-purple px-6 py-2.5 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-sol-purple to-[#7233cc] inline-flex items-center gap-2">
+        <Link to="/dashboard/payment" className="glow-purple px-6 py-2.5 rounded-xl text-sm font-medium text-accent-ink bg-accent inline-flex items-center gap-2">
           <CreditCard className="w-4 h-4" />Add funds to activate
         </Link>
         <div className="mt-10 grid grid-cols-3 gap-4 max-w-sm mx-auto">

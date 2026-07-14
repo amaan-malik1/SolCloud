@@ -133,10 +133,10 @@ export default function FilesPage() {
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
                 <div>
-                    <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: 24, fontWeight: 700, color: '#fff', margin: 0 }}>
+                    <h1 style={{ fontFamily: '"Geist Variable", system-ui, sans-serif', fontSize: 24, fontWeight: 700, color: '#fff', margin: 0 }}>
                         Files
                     </h1>
-                    <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', margin: '4px 0 0', fontFamily: 'DM Sans, sans-serif' }}>
+                    <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', margin: '4px 0 0', fontFamily: '"Geist Variable", system-ui, sans-serif' }}>
                         Browse, upload, and manage your R2 storage
                     </p>
                 </div>
@@ -158,10 +158,10 @@ export default function FilesPage() {
                         style={{
                             display: 'flex', alignItems: 'center', gap: 6,
                             padding: '9px 16px', borderRadius: 10,
-                            background: 'linear-gradient(135deg,#9945FF,#7233cc)',
-                            color: '#fff', border: 'none', fontSize: 13, fontWeight: 600,
+                            background: '#34d399',
+                            color: '#052e21', border: 'none', fontSize: 13, fontWeight: 600,
                             cursor: uploading ? 'not-allowed' : 'pointer', opacity: uploading ? 0.6 : 1,
-                            fontFamily: 'DM Sans, sans-serif',
+                            fontFamily: '"Geist Variable", system-ui, sans-serif',
                         }}
                     >
                         {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
@@ -171,7 +171,7 @@ export default function FilesPage() {
             </div>
 
             {/* Breadcrumbs */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 20, fontSize: 13, fontFamily: 'DM Sans, sans-serif' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 20, fontSize: 13, fontFamily: '"Geist Variable", system-ui, sans-serif' }}>
                 <button
                     onClick={() => navigateToPrefix([])}
                     style={{
@@ -203,9 +203,9 @@ export default function FilesPage() {
                 onDragLeave={() => setDragOver(false)}
                 onDrop={handleDrop}
                 style={{
-                    border: dragOver ? '2px dashed #9945FF' : '2px dashed transparent',
+                    border: dragOver ? '2px dashed #34d399' : '2px dashed transparent',
                     borderRadius: 16, transition: 'border-color 0.15s', minHeight: 300,
-                    background: dragOver ? 'rgba(153,69,255,0.04)' : 'transparent',
+                    background: dragOver ? 'rgba(52,211,153,0.04)' : 'transparent',
                 }}
             >
                 {isLoading && (
@@ -219,7 +219,7 @@ export default function FilesPage() {
                         textAlign: 'center', padding: '60px 24px', borderRadius: 16,
                         background: 'rgba(239,68,68,0.05)', border: '1px solid rgba(239,68,68,0.15)',
                     }}>
-                        <p style={{ color: '#f87171', fontSize: 14, fontFamily: 'DM Sans, sans-serif' }}>
+                        <p style={{ color: '#f87171', fontSize: 14, fontFamily: '"Geist Variable", system-ui, sans-serif' }}>
                             {(error as Error).message === 'No storage provisioned yet'
                                 ? 'No storage provisioned yet. Send SOL to get started.'
                                 : 'Failed to load files'}
@@ -230,10 +230,10 @@ export default function FilesPage() {
                 {isEmpty && !error && (
                     <div style={{ textAlign: 'center', padding: '80px 24px' }}>
                         <Folder size={40} style={{ color: 'rgba(255,255,255,0.15)', margin: '0 auto 16px' }} />
-                        <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)', fontFamily: 'DM Sans, sans-serif', marginBottom: 4 }}>
+                        <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)', fontFamily: '"Geist Variable", system-ui, sans-serif', marginBottom: 4 }}>
                             This folder is empty
                         </p>
-                        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.25)', fontFamily: 'DM Sans, sans-serif' }}>
+                        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.25)', fontFamily: '"Geist Variable", system-ui, sans-serif' }}>
                             Drag files here or click Upload
                         </p>
                     </div>
@@ -276,7 +276,7 @@ export default function FilesPage() {
                         style={{
                             width: '100%', padding: '10px 14px', borderRadius: 10,
                             background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-                            color: '#fff', fontSize: 14, marginBottom: 16, fontFamily: 'DM Sans, sans-serif',
+                            color: '#fff', fontSize: 14, marginBottom: 16, fontFamily: '"Geist Variable", system-ui, sans-serif',
                         }}
                     />
                     <ModalActions onCancel={() => setRenameTarget(null)} onConfirm={submitRename} confirmLabel="Rename" />
@@ -286,7 +286,7 @@ export default function FilesPage() {
             {/* Delete confirm modal */}
             {deleteTarget && (
                 <Modal onClose={() => setDeleteTarget(null)} title={`Delete ${deleteTarget.isFolder ? 'folder' : 'file'}?`}>
-                    <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginBottom: 20, fontFamily: 'DM Sans, sans-serif' }}>
+                    <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginBottom: 20, fontFamily: '"Geist Variable", system-ui, sans-serif' }}>
                         {deleteTarget.isFolder
                             ? `This will permanently delete "${deleteTarget.name}" and everything inside it. This cannot be undone.`
                             : `"${deleteTarget.name}" will be permanently deleted. This cannot be undone.`}
@@ -319,9 +319,9 @@ function FolderCard({ folder, onOpen, onRename, onDelete }: {
             }}
             onClick={onOpen}
         >
-            <Folder size={28} style={{ color: '#9945FF', marginBottom: 10 }} />
+            <Folder size={28} style={{ color: '#34d399', marginBottom: 10 }} />
             <p style={{
-                fontSize: 12.5, color: '#fff', fontFamily: 'DM Sans, sans-serif', margin: 0,
+                fontSize: 12.5, color: '#fff', fontFamily: '"Geist Variable", system-ui, sans-serif', margin: 0,
                 whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
             }}>
                 {folder.name}
@@ -365,22 +365,22 @@ function FileCard({ file, onView, onCopyUrl, onRename, onDelete, onTogglePublic 
                 height: 90, display: 'flex', alignItems: 'center', justifyContent: 'center',
                 background: 'rgba(255,255,255,0.02)',
             }}>
-                {isImage ? <Image size={26} style={{ color: '#14F195' }} /> : <File size={26} style={{ color: 'rgba(255,255,255,0.3)' }} />}
+                {isImage ? <Image size={26} style={{ color: '#34d399' }} /> : <File size={26} style={{ color: 'rgba(255,255,255,0.3)' }} />}
             </div>
 
             <div style={{ padding: '10px 12px' }}>
                 <p style={{
-                    fontSize: 12.5, color: '#fff', fontFamily: 'DM Sans, sans-serif', margin: '0 0 2px',
+                    fontSize: 12.5, color: '#fff', fontFamily: '"Geist Variable", system-ui, sans-serif', margin: '0 0 2px',
                     whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                 }}>
                     {file.name}
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontFamily: 'DM Sans, sans-serif' }}>
+                    <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontFamily: '"Geist Variable", system-ui, sans-serif' }}>
                         {formatBytes(file.size)}
                     </span>
                     {file.isPublic
-                        ? <Globe size={11} style={{ color: '#14F195' }} />
+                        ? <Globe size={11} style={{ color: '#34d399' }} />
                         : <Lock size={11} style={{ color: 'rgba(255,255,255,0.25)' }} />}
                 </div>
             </div>
@@ -440,8 +440,8 @@ function PublicToggle({ isPublic }: { isPublic: boolean }) {
                 padding: '9px 14px', borderRadius: 10,
                 background: enabled ? 'rgba(20,241,149,0.08)' : 'rgba(255,255,255,0.04)',
                 border: `1px solid ${enabled ? 'rgba(20,241,149,0.25)' : 'rgba(255,255,255,0.08)'}`,
-                color: enabled ? '#14F195' : 'rgba(255,255,255,0.5)',
-                fontSize: 12.5, fontWeight: 600, cursor: 'pointer', fontFamily: 'DM Sans, sans-serif',
+                color: enabled ? '#34d399' : 'rgba(255,255,255,0.5)',
+                fontSize: 12.5, fontWeight: 600, cursor: 'pointer', fontFamily: '"Geist Variable", system-ui, sans-serif',
             }}
         >
             {enabled ? <Globe size={13} /> : <Lock size={13} />}
@@ -461,11 +461,11 @@ function Modal({ children, title, onClose }: { children: React.ReactNode; title:
             }}
         >
             <div onClick={e => e.stopPropagation()} style={{
-                background: '#13131f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 18,
+                background: '#0c1311', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 18,
                 padding: 24, width: '100%', maxWidth: 380,
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                    <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', margin: 0, fontFamily: 'Syne, sans-serif' }}>{title}</h3>
+                    <h3 style={{ fontSize: 15, fontWeight: 700, color: '#fff', margin: 0, fontFamily: '"Geist Variable", system-ui, sans-serif' }}>{title}</h3>
                     <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer' }}>
                         <X size={18} />
                     </button>
@@ -484,15 +484,15 @@ function ModalActions({ onCancel, onConfirm, confirmLabel, danger }: {
             <button onClick={onCancel} style={{
                 padding: '9px 16px', borderRadius: 10, background: 'rgba(255,255,255,0.05)',
                 border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)',
-                fontSize: 13, cursor: 'pointer', fontFamily: 'DM Sans, sans-serif',
+                fontSize: 13, cursor: 'pointer', fontFamily: '"Geist Variable", system-ui, sans-serif',
             }}>
                 Cancel
             </button>
             <button onClick={onConfirm} style={{
                 padding: '9px 16px', borderRadius: 10,
-                background: danger ? '#dc2626' : 'linear-gradient(135deg,#9945FF,#7233cc)',
-                border: 'none', color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer',
-                fontFamily: 'DM Sans, sans-serif',
+                background: danger ? '#dc2626' : '#34d399',
+                border: 'none', color: danger ? '#fff' : '#052e21', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                fontFamily: '"Geist Variable", system-ui, sans-serif',
             }}>
                 {confirmLabel}
             </button>
@@ -522,16 +522,16 @@ function ViewModal({ file, onClose, onCopyUrl }: {
                 }} />
             )}
 
-            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 16, fontFamily: 'DM Sans, sans-serif' }}>
+            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 16, fontFamily: '"Geist Variable", system-ui, sans-serif' }}>
                 {formatBytes(file.size)} · {file.isPublic ? 'Public' : 'Private'}
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <button onClick={() => onCopyUrl(file, 'auto')} style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                    padding: '10px', borderRadius: 10, background: 'rgba(153,69,255,0.1)',
-                    border: '1px solid rgba(153,69,255,0.25)', color: '#9945FF', fontSize: 13, fontWeight: 600,
-                    cursor: 'pointer', fontFamily: 'DM Sans, sans-serif',
+                    padding: '10px', borderRadius: 10, background: 'rgba(52,211,153,0.1)',
+                    border: '1px solid rgba(52,211,153,0.25)', color: '#34d399', fontSize: 13, fontWeight: 600,
+                    cursor: 'pointer', fontFamily: '"Geist Variable", system-ui, sans-serif',
                 }}>
                     <Copy size={14} /> Copy URL
                 </button>
@@ -540,7 +540,7 @@ function ViewModal({ file, onClose, onCopyUrl }: {
                         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                         padding: '10px', borderRadius: 10, background: 'rgba(255,255,255,0.04)',
                         border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', fontSize: 13,
-                        textDecoration: 'none', fontFamily: 'DM Sans, sans-serif',
+                        textDecoration: 'none', fontFamily: '"Geist Variable", system-ui, sans-serif',
                     }}>
                         <ExternalLink size={14} /> Open in new tab
                     </a>

@@ -114,7 +114,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={isLoading}
-          className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-sol-purple to-[#7233cc] py-3 text-sm font-medium text-white glow-purple transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50"
+          className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-accent py-3 text-sm font-medium text-accent-ink glow-purple transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isLoading ? (
             <>

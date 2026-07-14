@@ -25,7 +25,7 @@ export function CostChart({ data, height = 160 }: { data: DailyCostDataPoint[]; 
         <YAxis tickFormatter={(v) => `$${v.toFixed(4)}`} tick={{ fill: 'rgba(255,255,255,0.25)', fontSize: 10 }} axisLine={false} tickLine={false} width={52} />
         <Tooltip content={<CostTooltip />} />
         <Bar dataKey="cost" radius={[3, 3, 0, 0]}>
-          {chartData.map((entry, i) => <Cell key={i} fill={entry.isLast ? '#14F195' : 'rgba(20,241,149,0.35)'} />)}
+          {chartData.map((entry, i) => <Cell key={i} fill={entry.isLast ? '#34d399' : 'rgba(20,241,149,0.35)'} />)}
         </Bar>
       </BarChart>
     </ResponsiveContainer>

@@ -1,139 +1,94 @@
-import React from 'react'
-import { Twitter, Linkedin } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Logo } from './Logo'
 
 const Footer = () => {
-    return (
-        <footer className='relative overflow-hidden bg-black text-white'>
+  return (
+    <footer className='relative overflow-hidden text-white'>
+      <div className='relative z-10 mx-auto max-w-6xl px-6 pb-44 pt-10'>
+        <div className='mb-16 border-t border-white/[0.08]' />
 
-            {/* Container */}
-            <div className='relative z-10 mx-auto max-w-7xl px-10 pt-10 pb-52'>
+        <div className='flex flex-col justify-between gap-12 md:flex-row'>
+          {/* Brand */}
+          <div className='max-w-sm'>
+            <Link to='/' className='inline-block'>
+              <Logo size='md' />
+            </Link>
+            <p className='mt-5 text-[15px] leading-relaxed text-white/45'>
+              Dedicated Cloudflare R2 object storage, paid for in SOL. Built for
+              developers the banking system left waiting.
+            </p>
+            <p className='mt-6 text-sm text-white/30'>
+              © 2026 SolStore. All rights reserved.
+            </p>
+          </div>
 
-                {/* Top Border */}
-                <div className='mb-24 border-t border-white/10' />
-
-                {/* Grid */}
-                <div className='grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-5'>
-
-                    {/* Brand */}
-                    <div className='lg:col-span-2'>
-                        <div className='mb-8 flex items-center gap-3'>
-
-                            {/* Logo */}
-                            <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-white'>
-                                <span className='text-lg font-black text-black'>
-                                    S
-                                </span>
-                            </div>
-
-                            <h2 className='text-3xl font-bold tracking-tight'>
-                                SolStore
-                            </h2>
-                        </div>
-
-                        <p className='max-w-sm text-[15px] leading-8 text-zinc-500'>
-                            © copyright SolStore 2026.
-                            <br />
-                            All rights reserved.
-                        </p>
-                    </div>
-
-                    {/* Pages */}
-                    <div>
-                        <h3 className='mb-7 text-xl font-semibold'>
-                            Links
-                        </h3>
-
-                        <ul className='space-y-5 text-[14px] text-white'>
-
-                            <li>
-                                <a href='#why-solStore' className='transition hover:text-orange-300'>
-                                    Why SolStore
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href='#how-it-work' className='transition hover:text-orange-300'>
-                                    How it works?
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href='#solution' className='transition hover:text-orange-300'>
-                                    Solution
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href='#' className='transition hover:text-orange-300'>
-                                    Pricing
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* Socials */}
-                    <div>
-                        <h3 className='mb-7 text-xl font-semibold'>
-                            Socials
-                        </h3>
-
-                        <ul className='space-y-5 text-[14px] text-white'>
-                            <li>
-                                <a
-                                    href='https://x.com/amaaan_malik'
-                                    target='_blank'
-                                    className='flex items-center gap-2 transition hover:text-orange-300'
-                                >
-                                    Twitter
-                                </a>
-                            </li>
-
-                            <li>
-                                <a
-                                    href='https://github.com/amaan-malik1/solstore'
-                                    className='flex items-center gap-2 transition hover:text-orange-300'
-                                >
-                                    Github
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* Legal */}
-                    <div>
-                        <h3 className='mb-7 text-xl font-semibold'>
-                            Legal
-                        </h3>
-
-                        <ul className='space-y-5 text-[14px] text-white'>
-                            <li>
-                                <a href='#' className='transition hover:text-orange-300'>
-                                    Privacy Policy
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href='#' className='transition hover:text-orange-300'>
-                                    Terms of Service
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href='#' className='transition hover:text-orange-300'>
-                                    Cookie Policy
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+          <div className='flex gap-16 sm:gap-24'>
+            {/* Product */}
+            <div>
+              <h3 className='text-sm font-semibold text-white/80'>Product</h3>
+              <ul className='mt-5 space-y-3.5 text-sm text-white/50'>
+                <li>
+                  <a href='#why-solStore' className='transition-colors duration-300 hover:text-accent'>
+                    Features
+                  </a>
+                </li>
+                <li>
+                  <a href='#how-it-work' className='transition-colors duration-300 hover:text-accent'>
+                    How it works
+                  </a>
+                </li>
+                <li>
+                  <a href='#pricing' className='transition-colors duration-300 hover:text-accent'>
+                    Pricing
+                  </a>
+                </li>
+                <li>
+                  <Link to='/register' className='transition-colors duration-300 hover:text-accent'>
+                    Get started
+                  </Link>
+                </li>
+              </ul>
             </div>
 
-            {/* BIG SolStore in bg */}
-            <div className='pointer-events-none absolute bottom-[-100px] left-1/2 z-0 -translate-x-1/2 select-none whitespace-nowrap text-[220px] font-black leading-none tracking-tight text-white/[0.03] md:text-[340px]'>
-                SolStore
+            {/* Elsewhere */}
+            <div>
+              <h3 className='text-sm font-semibold text-white/80'>Elsewhere</h3>
+              <ul className='mt-5 space-y-3.5 text-sm text-white/50'>
+                <li>
+                  <a
+                    href='https://x.com/amaaan_malik'
+                    target='_blank'
+                    rel='noreferrer'
+                    className='transition-colors duration-300 hover:text-accent'
+                  >
+                    Twitter / X
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href='https://github.com/amaan-malik1/solstore'
+                    target='_blank'
+                    rel='noreferrer'
+                    className='transition-colors duration-300 hover:text-accent'
+                  >
+                    GitHub
+                  </a>
+                </li>
+              </ul>
             </div>
-        </footer>
-    )
+          </div>
+        </div>
+      </div>
+
+      {/* Watermark */}
+      <div
+        aria-hidden
+        className='pointer-events-none absolute bottom-[-60px] left-1/2 z-0 -translate-x-1/2 select-none whitespace-nowrap text-[160px] font-semibold leading-none tracking-[-0.04em] text-white/[0.025] md:bottom-[-110px] md:text-[300px]'
+      >
+        SolStore
+      </div>
+    </footer>
+  )
 }
 
 export default Footer

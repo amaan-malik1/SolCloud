@@ -1,250 +1,133 @@
-import {
-    HardDrive,
-    Wallet,
-    Globe,
-    Shield,
-    ArrowRight,
-    Cloud,
-    Zap,
-} from 'lucide-react'
+import { motion } from 'framer-motion'
+import { ArrowUpRight, Check } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-const bentoCards = [
-    {
-        icon: HardDrive,
-        title: '10GB Free',
-        description:
-            'Every account includes 10GB of Cloudflare R2 storage at no cost.',
-        size: 'large',
-    },
-    {
-        icon: Globe,
-        title: '$0 Egress',
-        description:
-            'No bandwidth fees. No surprise invoices. Ever.',
-        size: 'small',
-    },
-    {
-        icon: Wallet,
-        title: 'Pay with SOL',
-        description:
-            'No credit cards. No banking restrictions.',
-        size: 'small',
-    },
-    {
-        icon: Cloud,
-        title: 'Cloudflare R2',
-        description:
-            'Production-grade object storage with S3 compatibility.',
-        size: 'wide',
-    },
+const EASE = [0.16, 1, 0.3, 1] as const
+
+const included = [
+  '10 GB storage included forever',
+  'Dedicated Cloudflare R2 bucket',
+  'S3-compatible credentials',
+  'Zero egress fees, no bandwidth caps',
+  'Billed daily from your SOL balance',
+  'Top up any time, auto-reactivation',
 ]
 
 const PricingSection = () => {
-    return (
-        <section id='pricing' className="relative overflow-hidden px-6 py-32 bg-black">
-            <div className="relative z-10 mx-auto max-w-7xl">
-                {/* Heading */}
-                <div className="mx-auto mb-24 max-w-4xl text-center">
-                    <div className="mb-8 inline-flex items-center rounded-full border px-5 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-orange-500">
-                        Pricing
-                    </div>
+  return (
+    <section id='pricing' className='relative overflow-hidden px-6 py-28 md:py-36'>
+      <div className='pointer-events-none absolute right-[-10%] top-[-10%] h-[500px] w-[500px] rounded-full bg-accent/[0.05] blur-[150px]' />
 
-                    <h2 className="font-display text-5xl tracking-[-0.06em] text-white md:text-8xl">
-                        <span>
-                            Start free.
-                        </span>
-                        <br />
-                        <span className="text-white/40">
-                            Scale when you need it.
-                        </span>
-                    </h2>
-                    <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-zinc-500">
-                        No subscriptions. No hidden bandwidth fees.
-                        Just simple usage-based pricing powered by Solana.
-                    </p>
-                </div>
-                {/* Grid */}
-                <div className="grid auto-rows-[240px] gap-6 md:grid-cols-4">
-                    {/* Large */}
-                    <div className="relative overflow-hidden rounded-[36px] border border-purple-500/20 bg-gradient-to-br from-[#140c22] via-[#0d0918] to-[#08080c] p-8 md:col-span-2">
+      <div className='relative z-10 mx-auto max-w-6xl'>
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.9, ease: EASE }}
+          className='max-w-2xl'
+        >
+          <h2 className='text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[1.05] tracking-[-0.03em] text-white'>
+            One price.
+            <span className='text-white/40'> No tiers to compare.</span>
+          </h2>
+          <p className='mt-5 max-w-xl text-lg leading-relaxed text-white/55'>
+            Start free, then pay only for what you store past 10 GB. No
+            subscription, no invoice, no surprise bandwidth line item.
+          </p>
+        </motion.div>
 
-                        {/* Glow */}
-                        <div className="absolute right-0 top-0 h-60 w-60 rounded-full bg-purple-500/10 blur-[120px]" />
+        <div className='mt-16 grid gap-4 lg:grid-cols-[1.2fr_1fr]'>
+          {/* Price card */}
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.9, ease: EASE }}
+          >
+            <div className='shell h-full'>
+              <div className='shell-core relative flex h-full flex-col justify-between overflow-hidden p-8 sm:p-10'>
+                <div className='pointer-events-none absolute right-[-20%] top-[-30%] h-72 w-72 rounded-full bg-accent/10 blur-[90px]' />
 
-                        {/* Noise texture */}
-                        <div
-                            className="absolute inset-0 opacity-[0.03]"
-                            style={{
-                                backgroundImage:
-                                    'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)',
-                                backgroundSize: '14px 14px',
-                            }}
-                        />
-
-                        <div className="relative z-10 flex h-full flex-col justify-between">
-
-                            <div>
-                                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-purple-500/20 bg-purple-500/10">
-                                    <HardDrive className="h-6 w-6 text-purple-300" />
-                                </div>
-
-                                <h3 className="text-5xl md:text-6xl font-black tracking-[-0.08em] text-white">
-                                    10GB
-                                </h3>
-
-                                <p className="mt-2 text-lg font-semibold text-purple-300">
-                                    Free storage included
-                                </p>
-
-                                <p className="mt-3 max-w-md text-sm leading-relaxed text-zinc-400">
-                                    Every account starts with 10GB of Cloudflare R2 storage.
-                                </p>
-                            </div>
-                            {/* 
-                            <div className="border-t border-white/5 pt-4">
-                                <span className="text-sm text-zinc-500">
-                                    No credit card required
-                                </span>
-                            </div> */}
-
-                        </div>
-
-                    </div>
-
-                    {/* Card */}
-                    <div className="rounded-[36px] border border-white/5 bg-white/[0.03] p-8 backdrop-blur-xl">
-
-                        <Globe className="mb-6 h-7 w-7 text-purple-300" />
-
-                        <div className="text-4xl font-black text-white">
-                            $0
-                        </div>
-
-                        <div className="mt-2 text-lg font-semibold text-zinc-200">
-                            Egress Fees
-                        </div>
-
-                        <p className="mt-4 text-sm text-zinc-500">
-                            Download as much as you want.
-                        </p>
-
-                    </div>
-
-                    {/* Card */}
-                    <div className="rounded-[36px] border border-white/5 bg-white/[0.03] p-8 backdrop-blur-xl">
-
-                        <Wallet className="mb-6 h-7 w-7 text-purple-300" />
-
-                        <div className="text-4xl font-black text-white">
-                            SOL
-                        </div>
-
-                        <div className="mt-2 text-lg font-semibold text-zinc-200">
-                            Native Payments
-                        </div>
-
-                        <p className="mt-4 text-sm text-zinc-500">
-                            No cards. No banking friction.
-                        </p>
-
-                    </div>
-
-                    {/* Wide Card */}
-                    <div className="rounded-[36px] border border-white/5 bg-white/[0.03] p-8 backdrop-blur-xl md:col-span-2">
-
-                        <Cloud className="mb-6 h-7 w-7 text-purple-300" />
-
-                        <div className="text-3xl font-black text-white">
-                            Cloudflare R2
-                        </div>
-
-                        <p className="mt-4 max-w-md text-zinc-500">
-                            Production-ready object storage with
-                            full S3 compatibility and instant provisioning.
-                        </p>
-
-                    </div>
-
-                    {/* Pricing Card */}
-                    <div className="relative overflow-hidden rounded-[36px] border border-purple-500/20 bg-gradient-to-b from-[#181226] to-[#0d0d12] p-8 md:col-span-2">
-
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,85,247,.15),transparent_70%)]" />
-
-                        <div className="relative z-10">
-
-                            <div className="mb-4 text-sm uppercase tracking-[0.3em] text-purple-300">
-                                Usage Pricing
-                            </div>
-
-                            <div className="text-6xl font-black tracking-[-0.08em] text-white">
-                                $0.02
-                            </div>
-
-                            <div className="mt-2 text-lg text-zinc-400">
-                                per GB / month
-                            </div>
-
-                            <p className="mt-6 max-w-md text-zinc-500">
-                                You only pay after exceeding your free 10GB tier.
-                            </p>
-
-                        </div>
-
-                    </div>
-
+                <div className='relative'>
+                  <p className='text-sm font-medium text-white/50'>
+                    Usage-based, after your free 10 GB
+                  </p>
+                  <div className='mt-4 flex items-baseline gap-3'>
+                    <span className='tabular text-6xl font-semibold tracking-[-0.03em] text-white sm:text-7xl'>
+                      $0.02
+                    </span>
+                    <span className='text-lg text-white/45'>per GB / month</span>
+                  </div>
+                  <p className='mt-4 max-w-md text-[15px] leading-relaxed text-white/55'>
+                    Deducted daily from your SOL balance at the live exchange
+                    rate. Storing 100 GB costs about $1.80 a month beyond the
+                    free tier.
+                  </p>
                 </div>
 
-                {/* Bottom CTA */}
-                <div className="mt-32 text-center">
-
-                    <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-purple-500/20 bg-purple-500/10 px-4 py-2 text-sm text-purple-300">
-                        <Zap size={14} />
-                        Instant Provisioning
-                    </div>
-
-                    <h3 className="text-5xl font-black tracking-tight text-white">
-                        Your first bucket
-                        <br />
-                        costs nothing.
-                    </h3>
-
-                    <p className="mx-auto mt-6 max-w-xl text-lg text-zinc-500">
-                        Connect your wallet.
-                        Send SOL.
-                        Receive your R2 credentials instantly.
-                    </p>
-
-                    <Link
-                        to="/register"
-                        className="
-              mt-10 inline-flex
-              items-center gap-3
-              rounded-2xl
-              bg-gradient-to-r
-              from-purple-500
-              to-violet-600
-              px-8 py-4
-              font-semibold
-              text-white
-              shadow-[0_0_40px_rgba(168,85,247,0.35)]
-              transition-all
-              duration-300
-              hover:scale-[1.02]
-            "
-                    >
-                        Start Building
-
-                        <ArrowRight
-                            size={18}
-                            className="transition-transform duration-300 group-hover:translate-x-1"
-                        />
-                    </Link>
-
+                <div className='relative mt-10'>
+                  <Link
+                    to='/register'
+                    className='group inline-flex items-center gap-3 rounded-full bg-accent py-2.5 pl-7 pr-2.5 text-[15px] font-semibold text-accent-ink transition-all duration-500 ease-out-expo hover:shadow-[0_0_36px_rgba(52,211,153,0.4)] active:scale-[0.98]'
+                  >
+                    Create your bucket
+                    <span className='flex h-9 w-9 items-center justify-center rounded-full bg-accent-ink/15 transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5'>
+                      <ArrowUpRight className='h-4 w-4' />
+                    </span>
+                  </Link>
+                  <p className='mt-4 text-sm text-white/40'>
+                    No card required. Your first 10 GB never expires.
+                  </p>
                 </div>
+              </div>
             </div>
-        </section>
-    )
+          </motion.div>
+
+          {/* What's included */}
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
+          >
+            <div className='shell h-full'>
+              <div className='shell-core flex h-full flex-col p-8'>
+                <h3 className='text-lg font-semibold tracking-tight text-white'>
+                  Every account includes
+                </h3>
+                <ul className='mt-6 flex-1 space-y-4'>
+                  {included.map((item) => (
+                    <li key={item} className='flex items-start gap-3'>
+                      <span className='mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-accent/25 bg-accent/10'>
+                        <Check className='h-3 w-3 text-accent' />
+                      </span>
+                      <span className='text-[15px] leading-relaxed text-white/70'>
+                        {item}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <div className='mt-8 border-t border-white/[0.07] pt-5'>
+                  <p className='text-sm leading-relaxed text-white/40'>
+                    Questions about volume pricing?{' '}
+                    <a
+                      href='https://x.com/amaaan_malik'
+                      target='_blank'
+                      rel='noreferrer'
+                      className='text-accent/90 transition-colors duration-300 hover:text-accent'
+                    >
+                      Talk to us
+                    </a>
+                    .
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
 }
 
 export default PricingSection
